@@ -1,7 +1,4 @@
-from . import db
-
-
-def db_connect(sql=None):
+def db_connect(db, sql=None):
     cur = db.connection.cursor()
     if sql is not None:
         #app.logger.info(sql) 

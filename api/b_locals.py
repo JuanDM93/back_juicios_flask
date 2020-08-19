@@ -1,17 +1,17 @@
 from flask import (
     Blueprint, request, jsonify
 )
-from .db import db_connect
 
-
-bp = Blueprint("locales", __name__, url_prefix='/locales')
+bp = Blueprint(
+    "locales", __name__,
+    url_prefix='/locales')
 
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
 def juzgados_locales():
     # mysql
     sql = "SELECT * from juzgados_locales"
-    cur, __ = db_connect(sql)
+    cur, __ = db_connect(my_db, sql)
     rv = cur.fetchall()
     return jsonify(rv)
 
@@ -35,7 +35,7 @@ def juicios_locales():
     'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' ' \
     'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local ' \
     'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'                
-    cur, __ = db_connect(sql)
+    cur, __ = db_connect(my_db, sql)
     rv = cur.fetchall()
     for r in rv:
         r["emails"] = correosLigadosJuiciosLocales(
@@ -62,7 +62,7 @@ def alta_juicio_local():
         sql += str(demandado).lstrip().rstrip().upper() + "', '"
         sql += str(numero_de_expediente) + "', '"
         sql += str(id_juzgado_local) + "')"
-        db_connect(sql)
+        db_connect(my_db, sql)
 
         registrarCorreosAbogadosLocales(
             numero_de_expediente, id_juzgado_local, emails)
@@ -76,7 +76,7 @@ def eliminar_juicio_local():
     emails = request.get_json()['emails']
     
     sql = "DELETE FROM juicios_locales where id = " + str(id_juicio_local)
-    __, response = db_connect(sql)
+    __, response = db_connect(my_db, sql)
     
     if response > 0:
         result = {'message': 'record delete'}
@@ -156,7 +156,7 @@ def juicios_locales_asignados():
     'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
     'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'    
 
-    cur = db_connect(sql)
+    cur = db_connect(my_db, sql)
     rv = cur.fetchall()
     
     for r in rv:
@@ -194,7 +194,7 @@ def filtro_juicios_locales():
     'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
     'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'\
 
-    cur, __ = db_connect(sql)
+    cur, __ = db_connect(my_db, sql)
     rv = cur.fetchall()
     for r in rv:
         r["emails"] = correosLigadosJuiciosLocales(
@@ -213,7 +213,7 @@ def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesEl
     data += "')"
     sql = "DELETE from abogados_responsables_juicios_locales WHERE email IN " + data
     sql += " AND id_juicio_local = " + str(id_juicio_local) 
-    db_connect(sql)
+    db_connect(my_db, sql)
 
 # Metodo para asignar abogados responsables
 def registrarCorreosAbogadosLocales(
@@ -222,7 +222,7 @@ def registrarCorreosAbogadosLocales(
     sql = "SELECT id FROM juicios_locales WHERE numero_de_expediente = '"
     sql += str(numero_de_expediente) 
     sql += "' AND id_juzgado_local = " + str(id_juzgado_local)
-    cur, __ = db_connect(sql)
+    cur, __ = db_connect(my_db, sql)
     rv = cur.fetchone()
     id_juicio_local = rv["id"]
     
@@ -241,7 +241,7 @@ def correosLigadosJuiciosLocales(id_juicio_local):
     sql = "SELECT email " 
     sql += "FROM abogados_responsables_juicios_locales "
     sql += "WHERE id_juicio_local  = " + str(id_juicio_local)                
-    cur, response = db_connect(sql)
+    cur, response = db_connect(my_db, sql)
     rv = cur.fetchall()
     return rv    
 
@@ -257,7 +257,7 @@ def metodo_actualizar_juicio(
     sql += "numero_de_expediente = '" + str(numero_de_expediente) + "', "
     sql += "id_juzgado_local = '" + str(id_juzgado_local) + "' "
     sql += " WHERE id = " + str(id_juicio_local)
-    db_connect(sql)
+    db_connect(my_db, sql)
 
     eliminarCorreosAbogadosLocales(id_juicio_local, emailsEliminar)
     registrarCorreosAbogadosLocales(numero_de_expediente, id_juzgado_local, emails)
@@ -267,7 +267,7 @@ def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
     sql = "SELECT COUNT(1) AS BIT FROM juicios_locales "
     sql += "WHERE numero_de_expediente = '" + str(numero_de_expediente)
     sql += "' AND id_juzgado_local = " + str(id_juzgado_local)
-    cur, __ = db_connect(sql) 
+    cur, __ = db_connect(my_db, sql) 
 
     rv = cur.fetchone()
     if rv["BIT"] == 0 :
