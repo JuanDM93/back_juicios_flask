@@ -1,30 +1,25 @@
-# importing libraries 
-from flask import Flask 
-from flask_mail import Mail, Message 
+from flask_mail import Message
+from . import mail
 
-app = Flask(__name__) 
-mail = Mail(app) # instantiate the mail class 
 
-# configuration of mail 
-app.config['MAIL_SERVER']='smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'yourId@gmail.com'
-app.config['MAIL_PASSWORD'] = '*****'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-mail = Mail(app) 
-
-# message object mapped to a particular URL ‘/’ 
-@app.route("/") 
-def index(): 
-    msg = Message( 
-				'Hello', 
-				sender ='yourId@gmail.com', 
-				recipients = ['reciever’sid@gmail.com'] 
-			) 
+def sendMail(text, sender, recipients=[]): 
+    msg = Message(
+        text,
+        sender = sender,
+        recipients = recipients) 
     msg.body = 'Hello Flask message sent from Flask-Mail'
     mail.send(msg) 
-return 'Sent'
+    return 'Sent'
 
-if __name__ == '__main__': 
-    app.run(debug = True) 
+
+def sendMulti(users, ):
+    with mail.connect() as conn:
+        for user in users:
+            message = '...'
+            subject = "hello, %s" % user.name
+            msg = Message(
+                recipients=[user.email],
+                body=message,
+                subject=subject
+            )
+            conn.send(msg)

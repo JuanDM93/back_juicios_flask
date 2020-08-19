@@ -9,12 +9,17 @@ from flask_jwt_extended import JWTManager
 jwt  = JWTManager()
 
 # Cors
-#from flask_cors import CORS
-#CORS()
+from flask_cors import CORS
+CORS()
 
 # Bcrypt
 from flask_bcrypt import Bcrypt
 bcrypt = Bcrypt()
+
+# Mail
+from flask_mail import Mail
+mail = Mail() 
+
 
 from flask import Flask
 

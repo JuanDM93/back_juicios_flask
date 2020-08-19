@@ -22,6 +22,14 @@ class Config:
     MYSQL_DB = 'juicios'
     MYSQL_CURSORCLASS = 'DictCursor'
 
-    # General Config
+    # JWT
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = False #60 * 60
+
+    # Mail 
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USERNAME = 'yourId@gmail.com'
+    MAIL_PASSWORD = '*****'
+    MAIL_USE_TLS = False
+    MAIL_USE_SSL = True
