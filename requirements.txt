@@ -1,0 +1,13 @@
+flask
+
+#flask_sqlalchemy
+flask_mysqldb
+
+flask_cors
+flask_bcrypt
+flask_jwt_extended
+
+Flask-Mail
+apscheduler
+
+tika # java required
