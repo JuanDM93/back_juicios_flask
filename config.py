@@ -9,10 +9,7 @@ class Config:
 
     # General Config
     #SECRET_KEY = environ.get('SECRET_KEY')
-
-    #export FLASK_APP=app_name False
     FLASK_APP = environ.get('FLASK_APP')
-    #export FLASK_ENV=development False
     FLASK_ENV = environ.get('FLASK_ENV')
 
     # Database

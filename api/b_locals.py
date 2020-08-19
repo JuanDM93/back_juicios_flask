@@ -4,7 +4,7 @@ from flask import (
 from .db import db_connect
 
 
-bp = Blueprint("locales", __name__)
+bp = Blueprint("locales", __name__, url_prefix='/locales')
 
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
