@@ -14,17 +14,21 @@ def create_app():
 
     with app.app_context():
 
+        # Mail
+        from flask_mail import Mail
+        my_mail = Mail()
+
         # JWT
         from flask_jwt_extended import JWTManager
-        jwt  = JWTManager()
+        my_jwt  = JWTManager()
 
         # Bcrypt
         from flask_bcrypt import Bcrypt
-        bcrypt = Bcrypt()
+        my_bcrypt = Bcrypt()
         
         # DB
         from flask_mysqldb import MySQL
-        from .self_db import db_connect
+        from .db import db_connect
         my_db = MySQL()
         
         # Import routes

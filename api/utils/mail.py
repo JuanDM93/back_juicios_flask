@@ -1,8 +1,7 @@
 from flask_mail import Message
-from . import mail
 
 
-def sendMail(text, sender, recipients=[]): 
+def sendMail(mail, text, sender, recipients=[]): 
     msg = Message(
         text,
         sender = sender,
@@ -12,7 +11,7 @@ def sendMail(text, sender, recipients=[]):
     return 'Sent'
 
 
-def sendMulti(users, ):
+def sendMulti(mail, users):
     with mail.connect() as conn:
         for user in users:
             message = '...'
