@@ -28,7 +28,6 @@ def create_app():
         
         # DB
         from flask_mysqldb import MySQL
-        from .db import db_connect
         my_db = MySQL()
         
         # Import routes

@@ -1,6 +1,7 @@
 from flask import (
     Blueprint, request, jsonify
 )
+from .db import db_connect
 
 bp = Blueprint(
     "locales", __name__,

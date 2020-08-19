@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import (
     Blueprint, request, jsonify
 )
+from .db import db_connect
 
 bp = Blueprint(
     "users", __name__,
