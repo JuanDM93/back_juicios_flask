@@ -6,10 +6,6 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
 
-    # CORS
-    from flask_cors import CORS
-    CORS(app)
-
     with app.app_context():
         # Mail
         from flask_mail import Mail
@@ -20,4 +16,7 @@ def create_app():
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
 
+        # CORS
+        from flask_cors import CORS
+        #return CORS(app)
         return app
