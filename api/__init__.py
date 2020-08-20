@@ -28,7 +28,7 @@ def create_app():
         
         # DB
         from flask_mysqldb import MySQL
-        my_db = MySQL()
+        my_db = MySQL().init_app()
         
         # Import routes
         from . import users, b_locals
