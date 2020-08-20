@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 """Initialize Flask app."""
 def create_app():
@@ -8,6 +9,9 @@ def create_app():
         instance_relative_config=False,
     )
     app.config.from_object('config.Config')
+
+    # CORS
+    CORS(app)
 
     with app.app_context():
         # Import routes
