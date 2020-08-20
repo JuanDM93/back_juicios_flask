@@ -2,17 +2,16 @@ from datetime import datetime
 from flask import (
     Blueprint, request, jsonify
 )
-
-bp = Blueprint(
-    "users", __name__,
-    url_prefix='/users')
-
 # DB
 from .db import db_connect
 
 # JWT & BCRYPT
 from .utils.auth import init_auth
 jwt, bcrypt = init_auth()
+
+bp = Blueprint(
+    "users", __name__,
+    url_prefix='/users')
 
 # REGISTER
 @bp.route('/register', methods=['POST'])
