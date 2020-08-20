@@ -2,19 +2,17 @@ from datetime import datetime
 from flask import (
     Blueprint, request, jsonify
 )
-from .db import db_connect
 
 bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
+#DB
+from .db import db_connect
+
 # JWT & BCRYPT
 from .utils.auth import init_auth
 jwt, bcrypt = init_auth()
-
-#DB
-from .db import init_db
-my_db = init_db()
 
 # REGISTER
 @bp.route('/register', methods=['POST'])
@@ -42,7 +40,7 @@ def register():
     + str(id_tipo_usuario) + "', '"
     + str(id_despacho) + "', '"
     + str(creado) + "')"
-    db_connect(my_db, sql)
+    db_connect(sql)
     
     return jsonify({'status' : 200})
 
@@ -55,7 +53,7 @@ def login():
     
     # sql
     sql = "SELECT * FROM usuarios where email = '" + str(email) + "'"
-    cur, __ = db_connect(my_db, sql)
+    cur, __ = db_connect(sql)
     rv = cur.fetchone()
 
 	# PASS
