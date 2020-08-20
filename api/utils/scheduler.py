@@ -1,12 +1,11 @@
 from flask_apscheduler import APScheduler
-from flask import current_app
 
 
 # SCHEDULER
 scheduler = APScheduler()
 
 def start_jobs():
-    scheduler.init_app(current_app)
+    scheduler.init_app()
     scheduler.start()
 
 # interval examples
