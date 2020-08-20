@@ -9,14 +9,14 @@ def create_app():
     from flask_cors import CORS
     CORS(app)
 
-     # DB
-    from flask_mysqldb import MySQL
-    my_db = MySQL(app)
-        
     #from flask_sqlalchemy import SQLAlchemy
     #db = SQLAlchemy()
 
     with app.app_context():
+        
+        # DB
+        from .db import db_init
+        my_db = db_init(app)
 
         # Mail
         from flask_mail import Mail
@@ -29,8 +29,6 @@ def create_app():
         # Bcrypt
         from flask_bcrypt import Bcrypt
         my_bcrypt = Bcrypt()
-        
-       
         
         # Import routes
         from . import users, b_locals
