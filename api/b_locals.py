@@ -6,10 +6,6 @@ bp = Blueprint(
     "locales", __name__,
     url_prefix='/locales')
 
-# CORS
-from flask_cors import CORS, cross_origin
-#CORS(bp, supports_credentials=True)
-
 #DB
 from .db import db_connect
 

@@ -8,7 +8,7 @@ def create_app():
 
     # CORS
     from flask_cors import CORS
-    #CORS(app, resources={r"*": {"origins": "*"}})
+    CORS(app)
 
     with app.app_context():
         # Mail
