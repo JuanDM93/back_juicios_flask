@@ -7,7 +7,6 @@ from flask_jwt_extended import JWTManager
 jwt = JWTManager()
 bcrypt = Bcrypt()
 
-
 def init_auth():
     jwt.init_app(current_app)
     bcrypt.init_app(current_app)
