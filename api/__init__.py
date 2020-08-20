@@ -8,6 +8,10 @@ def create_app():
 
     from flask_cors import CORS
     CORS(app)
+
+     # DB
+    from flask_mysqldb import MySQL
+    my_db = MySQL(app)
         
     #from flask_sqlalchemy import SQLAlchemy
     #db = SQLAlchemy()
@@ -26,9 +30,7 @@ def create_app():
         from flask_bcrypt import Bcrypt
         my_bcrypt = Bcrypt()
         
-        # DB
-        from flask_mysqldb import MySQL
-        my_db = MySQL().init_app()
+       
         
         # Import routes
         from . import users, b_locals
