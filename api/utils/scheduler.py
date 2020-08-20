@@ -9,16 +9,6 @@ def start_jobs():
     scheduler.init_app(current_app)
     scheduler.start()
 
-# test job
-@scheduler.task(
-    'interval', id='hello_job',
-    seconds=30, misfire_grace_time=900)
-def hello_job():
-    with current_app.app_context():
-        from datetime import datetime
-        current_app.logger.warn(
-            'Hello Job! The time is: %s' % datetime.now())
-
 # interval examples
 @scheduler.task(
     'interval', id='do_job_1',
