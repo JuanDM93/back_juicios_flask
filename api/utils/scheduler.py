@@ -5,7 +5,9 @@ from apscheduler.schedulers.background import BackgroundScheduler
 ##
 from datetime import datetime
 def hello_job():
-    current_app.logger.info('Hello Job! The time is: %s' % datetime.now())
+    with current_app.app_context():
+        current_app.logger.info(
+            'Hello Job! The time is: %s' % datetime.now())
 
 # SCHEDULER
 scheduler = BackgroundScheduler()
