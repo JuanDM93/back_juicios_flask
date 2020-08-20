@@ -19,4 +19,8 @@ def create_app():
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
 
+        # Jobs
+        from .utils.scheduler import start_jobs()
+        start_jobs(app)
+
         return app
