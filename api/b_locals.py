@@ -215,9 +215,6 @@ def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesEl
         data += "'" + CorreoAbogadoLocal + "', "
     data = data[:-2]
     data += ")"
-    #####
-    current_app.logger.debug(data)
-    #####
     sql = "DELETE from abogados_responsables_juicios_locales WHERE email IN " + data
     sql += " AND id_juicio_local = " + str(id_juicio_local) 
     db_connect(sql)
