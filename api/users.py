@@ -7,6 +7,10 @@ bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
+# CORS
+from flask_cors import CORS
+CORS(bp, supports_credentials=True)
+
 #DB
 from .db import db_connect
 
