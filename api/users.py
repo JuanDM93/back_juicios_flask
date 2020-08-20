@@ -47,7 +47,7 @@ def register():
 
 # LOGIN
 @bp.route('/login', methods=['POST'])
-@cross_origin()
+@cross_origin(supports_credentials=True)
 def login():
     # qs
     email = request.get_json()['email']
