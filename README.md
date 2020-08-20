@@ -4,11 +4,23 @@ Python-based Flask system
 
 ## Installation
 
-Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', activate it and install reqs
+Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', activate it
 
 ```bash
 python -m venv env
 source env/bin/activate
+```
+
+Windows
+
+```bash
+py -3 -m venv venv
+env\Scripts\activate
+```
+
+and install reqs
+
+```bash
 pip install --upgrade pip setuptools
 pip install -r requirements.txt
 ```
@@ -20,6 +32,16 @@ Run service
 ```bash
 export FLASK_APP=api
 export FLASK_ENV=development
+```
+
+Windows
+
+```bash
+set FLASK_APP=api
+set FLASK_ENV=development
+```
+
+```bash
 flask run
 ```
 
