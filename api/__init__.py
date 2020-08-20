@@ -20,7 +20,7 @@ def create_app():
         app.register_blueprint(b_locals.bp)
 
         # Jobs
-        from .utils.scheduler import start_jobs()
+        from .utils.scheduler import start_jobs
         start_jobs()
 
         return app
