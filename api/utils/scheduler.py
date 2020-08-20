@@ -4,8 +4,9 @@ from flask_apscheduler import APScheduler
 # SCHEDULER
 scheduler = APScheduler()
 
-def start_jobs():
-    scheduler.init_app()
+
+def start_jobs(app):
+    scheduler.init_app(app)
     scheduler.start()
 
 # interval examples

@@ -15,17 +15,16 @@ def create_app():
     
     # DB
     from .db import db
-    db.init_app()
+    db.init_app(app)
     
     # Jobs
     from .utils.scheduler import start_jobs
-    start_jobs()
+    start_jobs(app)
     
     with app.app_context():
         # Import routes
         from . import users, b_locals
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
-
 
         return app
