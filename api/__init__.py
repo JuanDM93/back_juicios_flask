@@ -12,15 +12,15 @@ def create_app():
 
     # CORS
     CORS(app)
-
-    # Jobs
-    from .utils.scheduler import start_jobs
-    start_jobs()
     
     with app.app_context():
         # Import routes
         from . import users, b_locals
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
+
+        # Jobs
+        from .utils.scheduler import start_jobs
+        start_jobs()
 
         return app

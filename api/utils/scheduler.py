@@ -1,5 +1,6 @@
+from flask_apscheduler import APScheduler
 from flask import current_app
-from apscheduler.schedulers.background import BackgroundScheduler
+
 ##
 # test job
 ##
@@ -10,7 +11,7 @@ def hello_job():
             'Hello Job! The time is: %s' % datetime.now())
 
 # SCHEDULER
-scheduler = BackgroundScheduler()
+scheduler = APScheduler()
 
 def add_job(job, interval):
     scheduler.add_job(
@@ -34,5 +35,6 @@ def add_s_jobs(job, interval=60):
         add_job(job, interval)  
 
 def start_jobs():
+    scheduler.init_app(current_app)
     add_s_jobs(hello_job)
     scheduler.start()

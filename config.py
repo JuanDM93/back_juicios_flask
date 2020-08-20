@@ -18,10 +18,14 @@ class Config:
     MYSQL_PASSWORD = environ.get('MYSQL_PASSWORD')
     MYSQL_DB = 'juicios'
     MYSQL_CURSORCLASS = 'DictCursor'
+    MYSQL_PORT = 3306
 
     # JWT
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = False #60 * 60
+
+    # SCHEDULER
+    SCHEDULER_API_ENABLED = True
 
     # Mail 
     MAIL_SERVER = 'smtp.gmail.com'

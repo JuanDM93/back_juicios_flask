@@ -16,7 +16,7 @@ setup(
         'flask_bcrypt',
         'flask_jwt_extended',
         'Flask-Mail',
-        'apscheduler',
+        'Flask-APScheduler',
         'tika',     # java required
     ],
 )
