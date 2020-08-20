@@ -47,7 +47,7 @@ def register():
     return jsonify({'status' : 200})
 
 # LOGIN
-@bp.route('/login', methods=['POST'])
+@bp.route('/login', methods=['POST', 'OPTIONS'])
 @cross_origin(supports_credentials=True)
 def login():
     # qs
