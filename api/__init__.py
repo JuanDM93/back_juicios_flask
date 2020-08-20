@@ -13,4 +13,5 @@ def create_app():
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
 
-        return CORS(app)
+        return app
+        #return CORS(app)
