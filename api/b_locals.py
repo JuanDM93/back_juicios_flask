@@ -1,20 +1,19 @@
 from flask import (
     Blueprint, request, jsonify
 )
-from .db import db_connect
 
 bp = Blueprint(
     "locales", __name__,
     url_prefix='/locales')
 
 #DB
-from .db import init_db
+from .db import init_db, db_connect
 my_db = init_db()
 
 
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
-def juzgados_locales():
+def juzgados():
     # mysql
     sql = "SELECT * from juzgados_locales"
     cur, __ = db_connect(my_db, sql)
@@ -23,7 +22,7 @@ def juzgados_locales():
 
 # Obtener los juicios locales la informacion
 @bp.route('/juicios', methods=['POST'])
-def juicios_locales():
+def juicios():
     id_despacho = request.get_json()['id_despacho']
     sql = "SELECT "
     sql += 'juzgados_locales.nombre as nombre_juzgado_local, ' \
@@ -50,7 +49,7 @@ def juicios_locales():
 
 # Ruta de alta juicio local
 @bp.route('/alta_juicio', methods=['POST'])
-def alta_juicio_local():
+def alta_juicio():
     actor = request.get_json()['actor']
     demandado = request.get_json()['demandado']
     numero_de_expediente = request.get_json()['numero_de_expediente']
@@ -77,7 +76,7 @@ def alta_juicio_local():
 
 # Eliminar juicio local
 @bp.route('/eliminar_juicio', methods=['POST'])
-def eliminar_juicio_local():
+def eliminar_juicio():
     id_juicio_local = request.get_json()['id_juicio_local']
     emails = request.get_json()['emails']
     
@@ -96,7 +95,7 @@ def eliminar_juicio_local():
 
 # Actualizar juicio local
 @bp.route('/actualizar_juicio', methods=['POST'])
-def actualizar_juicio_local():
+def actualizar_juicio():
     orginalNumeroExpediente = request.get_json()['orginalNumeroExpediente']
     orginalJuzgado = request.get_json()['orginalJuzgado']
     actor = request.get_json()['actor']
@@ -142,7 +141,7 @@ def actualizar_juicio_local():
 
 # Juicios locales asignados
 @bp.route('/juicios_asignados', methods=['POST'])
-def juicios_locales_asignados():
+def juicios_asignados():
     id_usuario = request.get_json()['id_usuario']
 
     sql = 'SELECT ' \
@@ -171,7 +170,7 @@ def juicios_locales_asignados():
     
 # Filtros Juicios locales
 @bp.route('/filtro_juicios', methods=['POST'])
-def filtro_juicios_locales():
+def filtro_juicios():
     id_despacho = request.get_json()['id_despacho']
     id_juzgado_local = request.get_json()['id_juzgado_local']
     numero_de_expediente = request.get_json()['numero_de_expediente'] 
