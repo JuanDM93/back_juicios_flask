@@ -31,6 +31,6 @@ def add_s_jobs(job, interval=60):
     if interval<3600:
         add_job(job, interval)  
 
-def start_jobs()
+def start_jobs():
     add_s_jobs(hello_job)
     scheduler.start()
