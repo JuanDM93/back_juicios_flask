@@ -13,6 +13,10 @@ def create_app():
     # CORS
     CORS(app)
     
+    # DB
+    from .db import db
+    db = init_app()
+    
     with app.app_context():
         # Import routes
         from . import users, b_locals

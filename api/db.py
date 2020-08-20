@@ -2,7 +2,7 @@ from flask_mysqldb import MySQL
 from flask import current_app
 
 
-db = MySQL().init_app(current_app)
+db = MySQL()
 
 
 def db_connect(sql=None):
