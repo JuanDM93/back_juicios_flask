@@ -12,5 +12,4 @@ def db_connect(db, sql=None):
         #app.logger.info(sql) 
         result = cur.execute(sql)
         db.connection.commit()
-        return result
     return cur, result
