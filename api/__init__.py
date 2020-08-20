@@ -7,7 +7,7 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
 
-    #CORS(app, supports_credentials=True)
+    CORS(app, supports_credentials=True)
 
     with app.app_context():
         # Import routes
