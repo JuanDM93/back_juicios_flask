@@ -51,8 +51,7 @@ def register():
 @cross_origin(
     origin='localhost',
     headers=[
-        'Content- Type',
-        'Authorization'
+        'Access-Control-Allow-Origin',
     ])
 def login():
     # qs
