@@ -13,8 +13,7 @@ bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
-from flask_cors import CORS
-CORS(bp)
+from flask_cors import cross_origin
 
 # REGISTER
 @bp.route('/register', methods=['POST'])
@@ -48,6 +47,7 @@ def register():
 
 # LOGIN
 @bp.route('/login', methods=['POST'])
+@cross_origin()
 def login():
     # qs
     email = request.get_json()['email']
