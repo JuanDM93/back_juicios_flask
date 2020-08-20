@@ -7,7 +7,11 @@ bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
-#DB
+# CORS
+from flask_cors import CORS
+CORS(bp)
+
+# DB
 from .db import db_connect
 
 # JWT & BCRYPT

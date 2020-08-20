@@ -6,15 +6,6 @@ def create_app():
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
     
-    # CORS
-    from flask_cors import CORS
-    CORS(
-        app,
-        supports_credentials=True,
-        send_wildcard=True,
-        vary_header=True,
-        )
-
     with app.app_context():
         # Import routes
         from . import users, b_locals
