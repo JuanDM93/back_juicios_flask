@@ -10,8 +10,9 @@ def create_app():
     from flask_cors import CORS
     CORS(
         app,
-        supports_credentials=True,
-        send_wildcard=True)
+        #supports_credentials=True,
+        send_wildcard=True,
+        )
 
     with app.app_context():
         # Import routes
