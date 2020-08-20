@@ -1,24 +1,4 @@
-"""
-# Flask
-from flask import Flask
-app = Flask(__name__)
-app.config.from_object('config.Config')
-
-# Import routes
-from api import users, b_locals
-app.register_blueprint(users.bp)
-app.register_blueprint(b_locals.bp)
-
-# CORS
-from flask_cors import CORS
-CORS(app)
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-"""
-
-from flask import Flask,redirect,url_for,render_template,request,json, jsonify
+from flask import Flask, request, jsonify
 from flask_mysqldb import MySQL
 from datetime import datetime
 from flask_cors import CORS
@@ -44,10 +24,10 @@ CORS(app)
 
 def hello_job():
     app.logger.info('Hello Job! The time is: %s' % datetime.now())
-scheduler = BackgroundScheduler()
-# in your case you could change seconds to hours
-scheduler.add_job(hello_job, trigger='interval', hours=24)
-scheduler.start()
+    scheduler = BackgroundScheduler()
+    # in your case you could change seconds to hours
+    scheduler.add_job(hello_job, trigger='interval', hours=24)
+    scheduler.start()
 
 @app.route('/users/register', methods=['POST'])
 def register():
@@ -128,6 +108,7 @@ def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesEl
                 " AND id_juicio_local = " + str(id_juicio_local) 
                 )
     mysql.connection.commit()
+
 ##metodo para asignar abogados responsables
 def registrarCorreosAbogadosLocales(numero_de_expediente, id_juzgado_local, listaCorreoAbogadosLocales):
     data = ""
@@ -184,8 +165,6 @@ def correosLigadosJuiciosLocales(id_juicio_local):
     rv = cur.fetchall()
     return rv
 
-
-
 #obtener los juicios locales la informacion
 @app.route('/juicios_locales', methods=['POST'])
 def juicios_locales():
@@ -235,7 +214,6 @@ def eliminar_juicio_local():
     eliminarCorreosAbogadosLocales(id_juicio_local, emails)
     return jsonify({'status': 200, 'result': result})
 
-
 def metodo_actualizar_juicio(actor,demandado,numero_de_expediente,id_juzgado_local,emails,emailsEliminar,id_juicio_local):
     cur = mysql.connection.cursor()
     cur.execute("UPDATE juicios_locales SET "+
@@ -277,7 +255,6 @@ def actualizar_juicio_local():
                 metodo_actualizar_juicio(actor,demandado,numero_de_expediente,id_juzgado_local,emails,emailsEliminar,id_juicio_local)
                 return jsonify({'status': 200})
             
-
 @app.route('/filtro_juicios_locales', methods=['POST'])
 def filtro_juicios_locales():
     cur = mysql.connection.cursor()
@@ -314,7 +291,6 @@ def filtro_juicios_locales():
     for r in rv:
         r["emails"] = correosLigadosJuiciosLocales(r["id_juicio_local"])
     return jsonify(rv)
-
 
 def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
     cur = mysql.connection.cursor()    
@@ -356,7 +332,6 @@ def juicios_locales_asignados():
     for r in rv:
         r["emails"] = correosLigadosJuiciosLocales(r["id_juicio_local"])
     return jsonify(rv)
-    
 
 #ruta de validacion para pruebas
 @app.route('/validate', methods=['POST'])
@@ -374,9 +349,5 @@ def validate():
         app.logger.info(rv["id"])
     return jsonify(rv)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-    
