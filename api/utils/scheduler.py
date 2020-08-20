@@ -7,7 +7,7 @@ from flask import current_app
 from datetime import datetime
 def hello_job():
     with current_app.app_context():
-        current_app.logger.info(
+        current_app.logger.warn(
             'Hello Job! The time is: %s' % datetime.now())
 
 # SCHEDULER
