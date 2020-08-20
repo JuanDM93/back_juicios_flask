@@ -8,7 +8,7 @@ bp = Blueprint(
 
 # CORS
 from flask_cors import CORS
-CORS(bp, supports_credentials=True)
+#CORS(bp, supports_credentials=True)
 
 #DB
 from .db import db_connect
