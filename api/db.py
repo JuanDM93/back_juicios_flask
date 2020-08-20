@@ -1,8 +1,9 @@
 from flask_mysqldb import MySQL
+from flask import current_app
 
 
-def db_init(app):
-    return MySQL(app)
+def init_db():
+    return MySQL(current_app)
 
 
 def db_connect(db, sql=None):

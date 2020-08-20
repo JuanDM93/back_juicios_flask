@@ -7,6 +7,11 @@ bp = Blueprint(
     "locales", __name__,
     url_prefix='/locales')
 
+#DB
+from .db import init_db
+my_db = init_db()
+
+
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
 def juzgados_locales():

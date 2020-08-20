@@ -8,6 +8,14 @@ bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
+# JWT & BCRYPT
+from .utils.auth import init_auth
+jwt, bcrypt = init_auth()
+
+#DB
+from .db import init_db
+my_db = init_db()
+
 # REGISTER
 @bp.route('/register', methods=['POST'])
 def register():
@@ -16,7 +24,7 @@ def register():
     apellido_materno = request.get_json()['apellido_materno']
     nombre = request.get_json()['nombre']
     email = request.get_json()['email']
-    password = my_bcrypt.generate_password_hash(
+    password = bcrypt.generate_password_hash(
         request.get_json()['password']).decode('utf-8')
     id_tipo_usuario = request.get_json()['id_tipo_usuario']
     id_despacho = request.get_json()['id_despacho']
@@ -51,8 +59,8 @@ def login():
     rv = cur.fetchone()
 
 	# PASS
-    if my_bcrypt.check_password_hash(rv['password'], password):
-        access_token = my_jwt._create_access_token(
+    if bcrypt.check_password_hash(rv['password'], password):
+        access_token = jwt._create_access_token(
             identity = {
                 'apellido_paterno': rv['apellido_paterno'],
                 'apellido_materno': rv['apellido_materno'],
