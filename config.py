@@ -18,7 +18,6 @@ class Config:
     MYSQL_PASSWORD = environ.get('MYSQL_PASSWORD')
     MYSQL_DB = 'juicios'
     MYSQL_CURSORCLASS = 'DictCursor'
-    MYSQL_PORT = 3306
 
     # JWT
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')

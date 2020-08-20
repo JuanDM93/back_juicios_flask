@@ -21,6 +21,6 @@ def create_app():
 
         # Jobs
         from .utils.scheduler import start_jobs
-        #start_jobs()
+        start_jobs()
 
         return app

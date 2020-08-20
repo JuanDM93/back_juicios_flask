@@ -1,7 +1,9 @@
 from flask_mysqldb import MySQL
+from flask import current_app
 
 
-db = MySQL()
+db = MySQL().init_app(current_app)
+
 
 def db_connect(sql=None):
     cur = db.connection.cursor()

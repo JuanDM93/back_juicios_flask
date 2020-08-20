@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'flask',
         'flask_mysqldb',
+        'mysql',
         'flask_cors',
         'flask_bcrypt',
         'flask_jwt_extended',
