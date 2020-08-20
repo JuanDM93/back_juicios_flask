@@ -1,6 +1,4 @@
 from flask import Flask
-from flask_cors import CORS
-
 
 """Initialize Flask app."""
 def create_app():
@@ -13,7 +11,5 @@ def create_app():
         from . import users, b_locals
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
-
-        CORS(app)
         
         return app
