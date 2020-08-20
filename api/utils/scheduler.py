@@ -13,9 +13,9 @@ def start_jobs():
 @scheduler.task(
     'interval', id='hello_job',
     seconds=30, misfire_grace_time=900)
-from datetime import datetime
 def hello_job():
     with current_app.app_context():
+        from datetime import datetime
         current_app.logger.warn(
             'Hello Job! The time is: %s' % datetime.now())
 
