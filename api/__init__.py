@@ -5,6 +5,10 @@ def create_app():
     """Construct the core application."""
     app = Flask(__name__, instance_relative_config=False)
     app.config.from_object('config.Config')
+    
+    # CORS
+    from flask_cors import CORS
+    CORS(app)
 
     with app.app_context():
         # Import routes
@@ -12,7 +16,4 @@ def create_app():
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
 
-        # CORS
-        from flask_cors import CORS
-        return CORS(app)
-        #return app
+        return app
