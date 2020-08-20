@@ -11,5 +11,5 @@ def create_app():
         from . import users, b_locals
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
-        
+
         return app
