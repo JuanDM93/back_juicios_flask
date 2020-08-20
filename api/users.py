@@ -14,8 +14,8 @@ bp = Blueprint(
     url_prefix='/users')
 
 # CORS
-#from flask_cors import CORS
-#CORS(bp)
+from flask_cors import CORS
+CORS(bp)
 
 # REGISTER
 @bp.route('/register', methods=['POST'])
