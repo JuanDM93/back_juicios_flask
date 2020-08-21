@@ -19,6 +19,7 @@ def ms_actual_fed(data):
     data['tipo']
     """
     msg = f'{}'
+    sub = f'{}'
     return sub, msg
 
 def ms_nuevo_local(data):
@@ -30,4 +31,5 @@ def ms_nuevo_local(data):
     data['tipo']
     """
     msg = f'{}'
+    sub = f'{}'
     return sub, msg
