@@ -1,3 +1,13 @@
+## TODO 
+# mailinfo
+
+from api.db import db_connect
+
+def return_juzgado(id_juz):
+    sql = f'SELECT {id_juz}'
+    cur, __ = db_connect(sql)
+    return cur.fetchone()
+
 def ms_actual_local(data):
     """
     data['id_juzgado_local']
@@ -5,6 +15,8 @@ def ms_actual_local(data):
     data['actor']
     data['demandado']
     data['tipo']
+
+    templar_acrulocal.html
     """
     msg = f"{data['actor']} ha actualizado su juicio local"
     sub = f"{data['numero_de_expediente']}"

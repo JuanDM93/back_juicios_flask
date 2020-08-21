@@ -102,24 +102,24 @@ def actualizar_juicio():
     orginalJuzgado = request.get_json()['orginalJuzgado']#
     emailsEliminar = request.get_json()['emailsEliminar']#
     id_juicio_local = request.get_json()['id_juicio_local']#
-    
-    data = {}
     emails = request.get_json()['emails']
-    data['emails'] = emails
-
     id_juzgado_local = request.get_json()['id_juzgado_local']
-    data['id_juzgado_local'] = id_juzgado_local
-    
     numero_de_expediente = request.get_json()['numero_de_expediente']
-    data['numero_de_expediente'] = numero_de_expediente
-    
-    actor = request.get_json()['actor']
-    data['actor'] = actor
-    
     demandado = request.get_json()['demandado']
-    data['demandado'] = demandado
-
+    actor = request.get_json()['actor']
+    
+    # from .utils.m_help import return_juzgado
+    data = {}
     data['tipo'] = 'a_j_l'
+
+    data['emails'] = emails
+    data['numero_de_expediente'] = numero_de_expediente
+    data['actor'] = actor
+    data['demandado'] = demandado
+    # data['juzgado_local'] = return_juzgado(id_juzgado_local)   
+
+    #data['acuerdos'] = pdf(args)
+    ##
 
     if orginalNumeroExpediente == False:
         if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
