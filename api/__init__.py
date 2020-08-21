@@ -34,9 +34,4 @@ def create_app():
 
         app.register_blueprint(admin.bp)
 
-        # test mail
-        from .utils.mail import sendMail
-        m_to = ['ricaror@hotmail.com',]
-        #result = sendMail(m_to)
-
         return app
