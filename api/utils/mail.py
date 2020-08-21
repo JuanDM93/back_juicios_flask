@@ -3,7 +3,7 @@ from flask_mail import Mail, Message
 
 mail = Mail()
 
-def search_msg():
+def search_msg(data):
 
     from . import m_help
 
