@@ -7,13 +7,13 @@ def search_msg():
 
     from . import m_help
 
-    if data['tipo'] is 'a_j_l':
+    if data['tipo'] == 'a_j_l':
         return m_help.ms_actual_local(data)
 
-    if data['tipo'] is 'a_j_f':
+    if data['tipo'] == 'a_j_f':
         return m_help.ms_actual_fed(data)
         
-    if data['tipo'] is 'n_j_l':
+    if data['tipo'] == 'n_j_l':
         return m_help.ms_nuevo_local(data)
 
 
