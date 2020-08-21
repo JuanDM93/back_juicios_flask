@@ -20,7 +20,11 @@ def create_app():
     # Jobs
     from .utils.scheduler import start_jobs
     start_jobs(app)
-    
+
+    # Mail
+    from .utils.mail import mail
+    mail.init_app(app)
+
     with app.app_context():
         # Import routes
         from . import users, b_locals, admin
@@ -29,5 +33,10 @@ def create_app():
         app.register_blueprint(b_locals.bp)
 
         app.register_blueprint(admin.bp)
+
+        # test mail
+        from .utils.mail import sendMail
+        m_to = ['ricaror@hotmail.com',]
+        #result = sendMail(m_to)
 
         return app

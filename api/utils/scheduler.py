@@ -1,9 +1,7 @@
 from flask_apscheduler import APScheduler
 
-
 # SCHEDULER
 scheduler = APScheduler()
-
 
 def start_jobs(app):
     scheduler.init_app(app)
@@ -16,14 +14,12 @@ def start_jobs(app):
 def job1():
     print('Job 1 executed')
 
-
 # cron examples
 @scheduler.task(
     'cron', id='do_job_2',
     minute='*')
 def job2():
     print('Job 2 executed')
-
 
 @scheduler.task(
     'cron', id='do_job_3',

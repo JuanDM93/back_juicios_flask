@@ -3,7 +3,6 @@ from os import environ, path
 
 basedir = path.abspath(path.dirname(__file__))
 
-
 class Config:
     """Set Flask configuration from .env file."""
 
@@ -29,7 +28,8 @@ class Config:
     # Mail 
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
-    MAIL_USERNAME = 'juicios_flask@gmail.com'
-    MAIL_PASSWORD = 'pass123'
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+    MAIL_USERNAME = environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = environ.get('MAIL_USERNAME')

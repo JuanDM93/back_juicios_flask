@@ -3,14 +3,16 @@ from flask_mail import Mail, Message
 
 mail = Mail()
 
-def sendMail(text, sender, recipients=[]): 
+def sendMail(recipients=[]):
+    subject = 'Testin'
+    message = 'Hello Flask message sent from Flask-Mail'
     msg = Message(
-        text,
-        sender = sender,
-        recipients = recipients) 
-    msg.body = 'Hello Flask message sent from Flask-Mail'
-    mail.send(msg) 
-    return 'Sent'
+                recipients=recipients,
+                body=message,
+                subject=subject
+            )
+    mail.send(msg)
+    return f'Sent to: {recipients}'
 
 def sendMulti(users):
     with mail.connect() as conn:

@@ -159,7 +159,7 @@ def juicios_asignados():
     'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
     'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'    
 
-    cur = db_connect(sql)
+    cur, __ = db_connect(sql)
     rv = cur.fetchall()
     
     for r in rv:
@@ -233,7 +233,7 @@ def registrarCorreosAbogadosLocales(
     data = ""
     for CorreoAbogadoLocal in listaCorreoAbogadosLocales:
         data += "('" + str(id_juicio_local) +"', '" + CorreoAbogadoLocal + "'), "
-        #enviarCorreo(correoabogadolocal, rv)
+        #enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
     data = data[:-2]
     
     sql = "INSERT INTO abogados_responsables_juicios_locales (id_juicio_local, email) VALUES"
