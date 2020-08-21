@@ -9,6 +9,9 @@ bp = Blueprint(
 #DB
 from .db import db_connect
 
+# Mail
+from .utils.mail import sendMulti
+
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
 def juzgados():
@@ -94,15 +97,29 @@ def eliminar_juicio():
 # Actualizar juicio local
 @bp.route('/actualizar_juicio', methods=['POST'])
 def actualizar_juicio():
-    orginalNumeroExpediente = request.get_json()['orginalNumeroExpediente']
-    orginalJuzgado = request.get_json()['orginalJuzgado']
-    actor = request.get_json()['actor']
-    demandado = request.get_json()['demandado']
-    numero_de_expediente = request.get_json()['numero_de_expediente']
-    id_juzgado_local = request.get_json()['id_juzgado_local']
+
+    orginalNumeroExpediente = request.get_json()['orginalNumeroExpediente']#
+    orginalJuzgado = request.get_json()['orginalJuzgado']#
+    emailsEliminar = request.get_json()['emailsEliminar']#
+    id_juicio_local = request.get_json()['id_juicio_local']#
+    
+    data = {}
     emails = request.get_json()['emails']
-    emailsEliminar = request.get_json()['emailsEliminar']
-    id_juicio_local = request.get_json()['id_juicio_local']
+    data['emails'] = emails
+
+    id_juzgado_local = request.get_json()['id_juzgado_local']
+    data['id_juzgado_local'] = id_juzgado_local
+    
+    numero_de_expediente = request.get_json()['numero_de_expediente']
+    data['numero_de_expediente'] = numero_de_expediente
+    
+    actor = request.get_json()['actor']
+    data['actor'] = actor
+    
+    demandado = request.get_json()['demandado']
+    data['demandado'] = demandado
+
+    data['tipo'] = 'a_j_l'
 
     if orginalNumeroExpediente == False:
         if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
@@ -113,6 +130,7 @@ def actualizar_juicio():
             metodo_actualizar_juicio(
                 actor, demandado, numero_de_expediente, id_juzgado_local,
                 emails, emailsEliminar, id_juicio_local)
+            sendMulti(data)
             return jsonify({
                 'status': 200
                 })
@@ -121,6 +139,7 @@ def actualizar_juicio():
             metodo_actualizar_juicio(
                 actor, demandado, numero_de_expediente, id_juzgado_local,
                 emails, emailsEliminar, id_juicio_local)
+            sendMulti(data)
             return jsonify({
                 'status': 200
                 })
@@ -133,6 +152,7 @@ def actualizar_juicio():
                 metodo_actualizar_juicio(
                     actor, demandado, numero_de_expediente, id_juzgado_local,
                     emails, emailsEliminar, id_juicio_local)
+                sendMulti(data)
                 return jsonify({
                     'status': 200
                     })

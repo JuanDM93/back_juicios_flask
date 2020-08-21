@@ -3,25 +3,30 @@ from flask_mail import Mail, Message
 
 mail = Mail()
 
-def sendMail(recipients=[]):
-    subject = 'Testin'
-    message = 'Hello Flask message sent from Flask-Mail'
-    msg = Message(
-                recipients=recipients,
-                body=message,
-                subject=subject
-            )
-    mail.send(msg)
-    return f'Sent to: {recipients}'
+def search_msg():
 
-def sendMulti(users):
+    from .m_help import *
+
+    if data['tipo'] is 'a_j_l':
+        return ms_actual_local(data)
+
+    if data['tipo'] is 'a_j_f':
+        return ms_actual_fed(data)
+        
+    if data['tipo'] is 'n_j_l':
+        return ms_nuevo_local(data)
+
+
+def sendMulti(data):
+    subject, message = search_msg(data)
+
     with mail.connect() as conn:
-        for user in users:
-            message = '...'
-            subject = "hello, %s" % user.name
+
+        for user in data['emails']:            
+            
             msg = Message(
-                recipients=[user.email],
+                recipients=[user],
+                subject=subject,
                 body=message,
-                subject=subject
             )
             conn.send(msg)
