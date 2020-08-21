@@ -6,8 +6,8 @@ def ms_actual_local(data):
     data['demandado']
     data['tipo']
     """
-    msg = f'{data['actor']} ha actualizado su juicio local'
-    sub = f'{data['numero_de_expediente']}'
+    msg = f"{data['actor']} ha actualizado su juicio local"
+    sub = f"{data['numero_de_expediente']}"
     return sub, msg
 
 def ms_actual_fed(data):
@@ -18,8 +18,8 @@ def ms_actual_fed(data):
     data['demandado']
     data['tipo']
     """
-    msg = f'{}'
-    sub = f'{}'
+    msg = f"{data['actor']} ha actualizado su juicio local"
+    sub = f"{data['numero_de_expediente']}"
     return sub, msg
 
 def ms_nuevo_local(data):
@@ -30,6 +30,6 @@ def ms_nuevo_local(data):
     data['demandado']
     data['tipo']
     """
-    msg = f'{}'
-    sub = f'{}'
+    msg = f"{data['actor']} ha actualizado su juicio local"
+    sub = f"{data['numero_de_expediente']}"
     return sub, msg
