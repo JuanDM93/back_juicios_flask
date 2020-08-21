@@ -19,7 +19,7 @@ def create_app():
     
     # Jobs
     from .utils.scheduler import start_jobs
-    start_jobs(app)
+    #start_jobs(app)
 
     # Mail
     from .utils.mail import mail
