@@ -14,7 +14,7 @@ source env/bin/activate
 Windows
 
 ```bash
-py -3 -m venv venv
+py -3 -m venv env
 env\Scripts\activate
 ```
 
