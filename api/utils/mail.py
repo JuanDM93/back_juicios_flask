@@ -5,16 +5,16 @@ mail = Mail()
 
 def search_msg():
 
-    from m_help import *
+    from . import m_help
 
     if data['tipo'] is 'a_j_l':
-        return ms_actual_local(data)
+        return m_help.ms_actual_local(data)
 
     if data['tipo'] is 'a_j_f':
-        return ms_actual_fed(data)
+        return m_help.ms_actual_fed(data)
         
     if data['tipo'] is 'n_j_l':
-        return ms_nuevo_local(data)
+        return m_help.ms_nuevo_local(data)
 
 
 def sendMulti(data):
