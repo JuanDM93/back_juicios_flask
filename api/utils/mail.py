@@ -5,7 +5,7 @@ mail = Mail()
 
 def search_msg():
 
-    from .m_help import *
+    from m_help import *
 
     if data['tipo'] is 'a_j_l':
         return ms_actual_local(data)
