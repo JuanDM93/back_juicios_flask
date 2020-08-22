@@ -73,20 +73,21 @@ def alta_juicio():
         registrarCorreosAbogadosLocales(
             numero_de_expediente, id_juzgado_local, emails)
         
-        ## TODO
         sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
         sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
         sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
         sql += str(numero_de_expediente) +"'"
         cur, __ = db_connect(sql)
         rv = cur.fetchone()
+        
         from .utils.pdf.parse import fetch_history
         fetch_history([rv])
-        ##
+
+        ## TODO
         ##sedmail donde mande los datos y los acuerdos
         ##sqlenviarcorreo
         ## emails
-
+        
         return jsonify({'status' : 200})
 
 # Eliminar juicio local
