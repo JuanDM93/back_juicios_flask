@@ -74,19 +74,18 @@ def alta_juicio():
             numero_de_expediente, id_juzgado_local, emails)
         
         ## TODO
-        sql_juzgado = ''
-        cur, res = db_connect(sql_juzgado)
-        juzgado = cur.fetchone()
-
-        data = []
-        juzgado = {
-            'juzgado': juzgado,
-            'expediente': numero_de_expediente}
-        data.append(juzgado)
-
+        sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
+        sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
+        sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
+        sql += str(numero_de_expediente) +"'"
+        cur, __ = db_connect(sql)
+        rv = cur.fetchone()
         from .utils.pdf.parse import fetch_history
-        fetch_history(data)
+        fetch_history([rv])
         ##
+        ##sedmail donde mande los datos y los acuerdos
+        ##sqlenviarcorreo
+        ## emails
 
         return jsonify({'status' : 200})
 
@@ -98,6 +97,9 @@ def eliminar_juicio():
     
     sql = "DELETE FROM juicios_locales where id = " + str(id_juicio_local)
     __, response = db_connect(sql)
+    
+    sql2 = "DELETE FROM acuerdos_locales where id_juicio_local = " + str(id_juicio_local)
+    __, response = db_connect(sql2)
     
     if response > 0:
         result = {'message': 'record delete'}

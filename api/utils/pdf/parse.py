@@ -22,7 +22,7 @@ data len = 1010010101
 def extract_acuerdo(pdf:str, data):
     x = pdf.find(data['juzgado'])
     juzgado = pdf[x:]
-    acuerdo = data['acuerdos']
+    acuerdo = "Exp. " + data['expediente']
     y = juzgado.find(acuerdo)
     if y == -1:
         return None    
@@ -34,45 +34,62 @@ def extract_acuerdo(pdf:str, data):
 
 
 def extract_multi(pdf, data):
-    result = {}
+    result = []
     for d in data:
-        result[d['acuerdo']] = extract_acuerdo(pdf['content'], d)
+        d["acuerdo"] = extract_acuerdo(pdf, d)
+        if d["acuerdo"] != None:
+            result.append(d)
+        else:
+            return None
     return result
 
 
-def is_parsed(data, pdf='metadata.pdf'}):
+def is_parsed(data, pdf='metadata.pdf'):
     # tika
     pdf = parser.from_file(pdf)
     # has content
-    if pdf['content'] < 1:
-        if len(data) > 1:
-            return extract_multi(pdf['content'], data)
-        return extract_acuerdo(pdf['content'], data)
+    
+    if len(pdf['content']) > 1:
+        #if len(data) > 1:
+        return extract_multi(pdf['content'], data)
+        #return extract_acuerdo(pdf['content'], data)
     return None
 
 
-def fetch_pdf(date:str, data:[]):
-    url = f'https://www.poderjudicialcdmx.gob.mx/wp-content/PHPs/boletin/boletin_repositorio/{date}1.pdf'
+def fetch_pdf(date, data:[]):
+    fechaurl = date.strftime('%d%m%Y')
+    ##############
+    
+    #try con 
+    
+    url = f'https://www.poderjudicialcdmx.gob.mx/wp-content/PHPs/boletin/boletin_repositorio/{fechaurl}1.pdf'
     # fetch
     response = requests.get(url)
     # create pdf
+    
+    
+    ###################
     filename = Path('metadata.pdf')
     filename.write_bytes(response.content)
-
-    ## SQL
-    if result is None:
-        pass
-    for r in result:
-        sql = f'{r['acuerdos']}'
-    ###
     result = is_parsed(data)
+    ## SQL
+    if result != None:
+        values = ""
+        for r in result:
+            fechasql = datetime.strftime(date - timedelta(days=1), '%Y-%m-%d')
+            #fecha - 1
+            #yyyy-mm-dd
+            #values += "( '" +  datetime.strftime(datetime.strptime(date[2:4] + "-"  + date[0:2] + "-" + date[4:8],'%m-%d-%Y') - timedelta(days=1),  '%Y/%m/%d')+ "','" +  str(r["acuerdo"]) + "'," + str(r["id_juicio_local"]) +"),"
+            values += "( '" + fechasql + "','" +  str(r["acuerdo"]) + "'," + str(r["id_juicio_local"]) +"),"
+        values = values[:-1]
+        sql = "INSERT INTO acuerdos_locales (fecha,descripcion,id_juicio_local) VALUES " + values
+        db_connect(sql)
+    ###
 
 # public methods
 # --------------
 def fetch_day(date, data):
-    now = str(date).split('-')
-    now = str().join(now[::-1])
-    fetch_pdf(now, data)
+    fetch_pdf(date, data)
 
 
 def fetch_history(data):
