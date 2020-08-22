@@ -57,7 +57,7 @@ def req_cdmx(fecha:str):
 
 # threads - deamon
 def fetch_pdf(fecha, data:[]):
-    fechaurl = date.strftime('%d%m%Y')
+    fechaurl = datetime.strftime(fecha,'%d%m%Y')
     response = req_cdmx(fechaurl)
 
     # create pdf

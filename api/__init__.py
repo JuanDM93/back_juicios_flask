@@ -22,7 +22,7 @@ def create_app():
     #start_jobs(app)
 
     # Mail
-    from .utils.mail import mail
+    from .utils.mail.service import mail
     mail.init_app(app)
 
     with app.app_context():
