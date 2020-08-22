@@ -73,6 +73,21 @@ def alta_juicio():
         registrarCorreosAbogadosLocales(
             numero_de_expediente, id_juzgado_local, emails)
         
+        ## TODO
+        sql_juzgado = ''
+        cur, res = db_connect(sql_juzgado)
+        juzgado = cur.fetchone()
+
+        data = []
+        juzgado = {
+            'juzgado': juzgado,
+            'expediente': numero_de_expediente}
+        data.append(juzgado)
+
+        from .utils.pdf.parse import fetch_history
+        fetch_history(data)
+        ##
+
         return jsonify({'status' : 200})
 
 # Eliminar juicio local

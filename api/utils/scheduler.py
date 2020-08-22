@@ -21,8 +21,24 @@ def job1():
 def job2():
     print('Job 2 executed')
 
+# dayly pdf
+from api.utils.pdf.parse import fetch_day
+from datetime import datetime, timedelta
 @scheduler.task(
-    'cron', id='do_job_3',
-    week='*', day_of_week='thu')
-def job3():
-    print('Job 3 executed')
+    'cron', id='daylyPDF',
+    week='*',
+    )
+def daylyPDF():
+
+    sqlactual = ''
+    cur, res = db_connect(sqlactual)
+    juzgado = cur.fetchone()
+
+    data = []
+    
+    juzgados = {
+        'juzgado': juzgado,
+        'expediente': numero_de_expediente}
+    hoy = datetime.now().date()
+    fetch_day(hoy, data)
+    print('daylyPDF')
