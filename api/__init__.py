@@ -12,6 +12,11 @@ def create_app():
 
     # CORS
     CORS(app)
+
+    # JWT & BCRYPT
+    from .utils.auth import jwt, bcrypt
+    jwt.init_app(app)
+    bcrypt.init_app(app)
     
     # DB
     from .db import db

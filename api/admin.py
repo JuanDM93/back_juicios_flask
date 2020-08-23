@@ -1,13 +1,16 @@
 from flask import (
     Blueprint, request, jsonify
 )
+#DB
+from .db import db_connect
+
+# BCRYPT
+from .utils.auth import bcrypt
+
 
 bp = Blueprint(
     "admin", __name__,
     url_prefix='/admin')
-
-#DB
-from .db import db_connect
 
 ### NO MOVER ARRIBA
 #------------------
