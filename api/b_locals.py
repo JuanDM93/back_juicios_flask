@@ -83,7 +83,7 @@ def alta_juicio():
         cur, __ = db_connect(sql)
         rv = cur.fetchone()
         
-        from .utils.pdf.parse import fetch_history
+        from .utils.pdf.fetch import fetch_history
         fetch_history([rv])
 
         ## TODO

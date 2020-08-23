@@ -76,15 +76,3 @@ def fetch_pdf(fecha, data:[]):
         sql = "INSERT INTO acuerdos_locales (fecha,descripcion,id_juicio_local) VALUES " + values
         db_connect(sql)
 
-# public methods
-# --------------
-def fetch_day(fecha, data):
-    fetch_pdf(fecha, data)
-
-
-def fetch_history(data):
-    init_date = date(2020, 8, 1)
-    now = datetime.now().date()
-    while now != init_date:
-        fetch_day(now, data)
-        now = now - timedelta(days=1)
