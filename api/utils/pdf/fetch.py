@@ -12,7 +12,7 @@ def fetch_history(data):
     #init_date = date(2020, 8, 1)               # THIS year
     now = datetime.now().date()
     #init_date = now - timedelta(weeks=52)      # ONE year
-    init_date = now - timedelta(weeks=1)       # 1 year
+    init_date = now - timedelta(weeks=1)       # ONE week
     while now != init_date:
         fetch_day(now, data)
-        now = now - timedelta(days=1)           # 1 day
+        now = now - timedelta(days=1)           # ONE day

@@ -16,8 +16,8 @@ def job1():
     print('Job 1 executed')
 
 # dayly pdf
-from api.utils.pdf.fetch import fetch_day
 from datetime import datetime
+from api.utils.pdf.fetch import fetch_day
 @scheduler.task('cron', id='daylyPDF', week='*',)
 def daylyPDF():
     sql = "SELECT juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado, "
