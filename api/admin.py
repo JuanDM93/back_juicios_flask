@@ -13,272 +13,33 @@ from .db import db_connect
 #------------------
 ###
 
-# Get despachos
-@bp.route('/despachos', methods=['GET'])
-def despachos():
-    # mysql
-    sql = "SELECT * from despachos"
-    cur, __ = db_connect(sql)
-    rv = cur.fetchall()
-    return jsonify(rv)
-
-# Obtener los juicios locales la informacion
-@bp.route('/juicios', methods=['POST'])
-def juicios():
+# REGISTER
+@bp.route('/register', methods=['POST'])
+def register():
+    # qs
+    apellido_paterno = request.get_json()['apellido_paterno']
+    apellido_materno = request.get_json()['apellido_materno']
+    nombre = request.get_json()['nombre']
+    email = request.get_json()['email']
+    password = bcrypt.generate_password_hash(
+        request.get_json()['password']).decode('utf-8')
+    id_tipo_usuario = request.get_json()['id_tipo_usuario']
     id_despacho = request.get_json()['id_despacho']
-    sql = "SELECT "
-    sql += 'juzgados_locales.nombre as nombre_juzgado_local, ' \
-    'juicios_locales.id_juzgado_local,  ' \
-    'juicios_locales.actor,  ' \
-    'juicios_locales.demandado,  ' \
-    'juicios_locales.numero_de_expediente,  ' \
-    'abogados_responsables_juicios_locales.id_juicio_local,  ' \
-    'abogados_responsables_juicios_locales.email,  ' \
-    'usuarios.id_despacho  ' \
-    'FROM abogados_responsables_juicios_locales ' \
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  ' \
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local ' \
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local ' \
-    'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' ' \
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local ' \
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'                
-    cur, __ = db_connect(sql)
-    rv = cur.fetchall()
-    for r in rv:
-        r["emails"] = correosLigadosJuiciosLocales(
-            r["id_juicio_local"])
-    return jsonify(rv)
+    creado = datetime.utcnow()
 
-# Ruta de alta juicio local
-@bp.route('/alta_juicio', methods=['POST'])
-def alta_juicio():
-    actor = request.get_json()['actor']
-    demandado = request.get_json()['demandado']
-    numero_de_expediente = request.get_json()['numero_de_expediente']
-    id_juzgado_local = request.get_json()['id_juzgado_local']
-    emails = request.get_json()['emails']
-
-    if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
-        return jsonify({
-            'status' : 400,
-            'mensaje': 'Esta repetido el registro' })
-    else:
-        sql = "INSERT INTO juicios_locales "
-        sql += "(actor, demandado, numero_de_expediente, id_juzgado_local) VALUES ('"
-        sql += str(actor).lstrip().rstrip().upper() + "', '"
-        sql += str(demandado).lstrip().rstrip().upper() + "', '"
-        sql += str(numero_de_expediente) + "', '"
-        sql += str(id_juzgado_local) + "')"
-        db_connect(sql)
-
-        registrarCorreosAbogadosLocales(
-            numero_de_expediente, id_juzgado_local, emails)
-        
-        return jsonify({'status' : 200})
-
-# Eliminar juicio local
-@bp.route('/eliminar_juicio', methods=['POST'])
-def eliminar_juicio():
-    id_juicio_local = request.get_json()['id_juicio_local']
-    emails = request.get_json()['emails']
-    
-    sql = "DELETE FROM juicios_locales where id = " + str(id_juicio_local)
-    __, response = db_connect(sql)
-    
-    if response > 0:
-        result = {'message': 'record delete'}
-    else:
-        result = {'message': 'no record found'}
-    
-    eliminarCorreosAbogadosLocales(id_juicio_local, emails)
-    return jsonify({
-        'status': 200, 'result': result
-        })
-
-# Actualizar juicio local
-@bp.route('/actualizar_juicio', methods=['POST'])
-def actualizar_juicio():
-    orginalNumeroExpediente = request.get_json()['orginalNumeroExpediente']
-    orginalJuzgado = request.get_json()['orginalJuzgado']
-    actor = request.get_json()['actor']
-    demandado = request.get_json()['demandado']
-    numero_de_expediente = request.get_json()['numero_de_expediente']
-    id_juzgado_local = request.get_json()['id_juzgado_local']
-    emails = request.get_json()['emails']
-    emailsEliminar = request.get_json()['emailsEliminar']
-    id_juicio_local = request.get_json()['id_juicio_local']
-
-    if orginalNumeroExpediente == False:
-        if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
-            return jsonify({
-                'status' : 400, 'mensaje': 'Esta repetido el registro'
-                })
-        else:
-            metodo_actualizar_juicio(
-                actor, demandado, numero_de_expediente, id_juzgado_local,
-                emails, emailsEliminar, id_juicio_local)
-            return jsonify({
-                'status': 200
-                })
-    else:
-        if orginalJuzgado == True:
-            metodo_actualizar_juicio(
-                actor, demandado, numero_de_expediente, id_juzgado_local,
-                emails, emailsEliminar, id_juicio_local)
-            return jsonify({
-                'status': 200
-                })
-        else:
-            if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
-                return jsonify({
-                    'status' : 400, 'mensaje': 'Esta repetido el registro'
-                    })
-            else:
-                metodo_actualizar_juicio(
-                    actor, demandado, numero_de_expediente, id_juzgado_local,
-                    emails, emailsEliminar, id_juicio_local)
-                return jsonify({
-                    'status': 200
-                    })
-
-# Juicios locales asignados
-@bp.route('/juicios_asignados', methods=['POST'])
-def juicios_asignados():
-    id_usuario = request.get_json()['id_usuario']
-
-    sql = 'SELECT ' \
-    'juzgados_locales.nombre as nombre_juzgado_local, ' \
-    'juicios_locales.id_juzgado_local,  '\
-    'juicios_locales.actor,  '\
-    'juicios_locales.demandado,  '\
-    'juicios_locales.numero_de_expediente,  '\
-    'abogados_responsables_juicios_locales.id_juicio_local,  '\
-    'abogados_responsables_juicios_locales.email,  '\
-    'usuarios.id_despacho  '\
-    'FROM abogados_responsables_juicios_locales '\
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  '\
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local '\
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local '\
-    'WHERE usuarios.id  =  '+ str(id_usuario) +' '\
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'    
-
-    cur = db_connect(sql)
-    rv = cur.fetchall()
-    
-    for r in rv:
-        r["emails"] = correosLigadosJuiciosLocales(r["id_juicio_local"])
-    return jsonify(rv)
-    
-# Filtros Juicios locales
-@bp.route('/filtro_juicios', methods=['POST'])
-def filtro_juicios():
-    id_despacho = request.get_json()['id_despacho']
-    id_juzgado_local = request.get_json()['id_juzgado_local']
-    numero_de_expediente = request.get_json()['numero_de_expediente'] 
-    
-    Where = ""
-    if len(numero_de_expediente) > 0 and str(numero_de_expediente).isspace() == False:
-        Where += " AND juicios_locales.numero_de_expediente like '%"+ str(numero_de_expediente) +"%' "
-  
-    if id_juzgado_local > 0:
-        Where += " AND juicios_locales.id_juzgado_local = '"+ str(id_juzgado_local) +"' "
-                    
-    sql = 'SELECT ' \
-    'juzgados_locales.nombre as nombre_juzgado_local, '\
-    'juicios_locales.id_juzgado_local,  '\
-    'juicios_locales.actor,  '\
-    'juicios_locales.demandado,  '\
-    'juicios_locales.numero_de_expediente,  '\
-    'abogados_responsables_juicios_locales.id_juicio_local,  '\
-    'abogados_responsables_juicios_locales.email,  '\
-    'usuarios.id_despacho  '\
-    'FROM abogados_responsables_juicios_locales '\
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  '\
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local '\
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local '\
-    'WHERE usuarios.id_despacho  =  '+ str(id_despacho) +' '+ Where + \
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'\
-
-    cur, __ = db_connect(sql)
-    rv = cur.fetchall()
-    for r in rv:
-        r["emails"] = correosLigadosJuiciosLocales(
-            r["id_juicio_local"])
-    return jsonify(rv)
-
-##TODO##
-# should reuse bellow code (local, federal)
-from flask import current_app
-
-# Eliminar abogados reponsables
-def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesElimar):
-    data = "("
-    for CorreoAbogadoLocal in listaCorreoAbogadosLocalesElimar:
-        data += "'" + CorreoAbogadoLocal + "', "
-    data = data[:-2]
-    data += ")"
-    sql = "DELETE from abogados_responsables_juicios_locales WHERE email IN " + data
-    sql += " AND id_juicio_local = " + str(id_juicio_local) 
+    # sql
+    sql = "INSERT INTO usuarios ("
+    sql += "apellido_paterno, apellido_materno, nombre, email, password, id_tipo_usuario, id_despacho, creado"
+    sql += ") VALUES ('"
+    sql += str(apellido_paterno).lstrip().rstrip().upper() + "', '" 
+    + str(apellido_materno).lstrip().rstrip().upper() + "', '"
+    + str(nombre).lstrip().rstrip().upper() + "', '"
+    + str(email) + "', '" 
+    + str(password) + "', '"
+    + str(id_tipo_usuario) + "', '"
+    + str(id_despacho) + "', '"
+    + str(creado) + "')"
     db_connect(sql)
-
-# Metodo para asignar abogados responsables
-def registrarCorreosAbogadosLocales(
-    numero_de_expediente, id_juzgado_local, listaCorreoAbogadosLocales
-    ):
-    sql = "SELECT id FROM juicios_locales WHERE numero_de_expediente = '"
-    sql += str(numero_de_expediente) 
-    sql += "' AND id_juzgado_local = " + str(id_juzgado_local)
-    cur, __ = db_connect(sql)
-    rv = cur.fetchone()
-    id_juicio_local = rv["id"]
     
-    data = ""
-    for CorreoAbogadoLocal in listaCorreoAbogadosLocales:
-        data += "('" + str(id_juicio_local) +"', '" + CorreoAbogadoLocal + "'), "
-        #enviarCorreo(correoabogadolocal, rv)
-    data = data[:-2]
-    
-    sql = "INSERT INTO abogados_responsables_juicios_locales (id_juicio_local, email) VALUES"
-    sql += data
-    db_connect(sql)
+    return jsonify({'status' : 200})
 
-# Correos juicios locales
-def correosLigadosJuiciosLocales(id_juicio_local):
-    sql = "SELECT email " 
-    sql += "FROM abogados_responsables_juicios_locales "
-    sql += "WHERE id_juicio_local  = " + str(id_juicio_local)                
-    cur, response = db_connect(sql)
-    rv = cur.fetchall()
-    return rv    
-
-# Helper juicio local
-def metodo_actualizar_juicio(
-    actor, demandado, numero_de_expediente, id_juzgado_local,
-    emails, emailsEliminar, id_juicio_local
-    ):
-
-    sql = "UPDATE juicios_locales SET "
-    sql += "actor = '" + str(actor) + "', " 
-    sql += "demandado = '" + str(demandado) + "', "
-    sql += "numero_de_expediente = '" + str(numero_de_expediente) + "', "
-    sql += "id_juzgado_local = '" + str(id_juzgado_local) + "' "
-    sql += " WHERE id = " + str(id_juicio_local)
-    db_connect(sql)
-
-    eliminarCorreosAbogadosLocales(id_juicio_local, emailsEliminar)
-    registrarCorreosAbogadosLocales(numero_de_expediente, id_juzgado_local, emails)
-
-# Validar expediente
-def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
-    sql = "SELECT COUNT(1) AS BIT FROM juicios_locales "
-    sql += "WHERE numero_de_expediente = '" + str(numero_de_expediente)
-    sql += "' AND id_juzgado_local = " + str(id_juzgado_local)
-    cur, __ = db_connect(sql) 
-
-    rv = cur.fetchone()
-    if rv["BIT"] == 0 :
-        return False
-    else:
-        return True

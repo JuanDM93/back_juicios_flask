@@ -27,11 +27,12 @@ def create_app():
 
     with app.app_context():
         # Import routes
-        from . import users, b_locals, admin
+        from . import (
+            admin, users,
+            b_locals,)
         
+        app.register_blueprint(admin.bp)
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)
-
-        app.register_blueprint(admin.bp)
 
         return app

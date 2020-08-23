@@ -53,11 +53,16 @@ baseURL = http://127.0.0.1:5000
 flask routes
 ```
 
+CRUD (baseURL/admin)
+
+```bash
+../register
+```
+
 Users (baseURL/users)
 
 ```bash
 ../login
-../register
 ```
 
 Locales (baseURL/locales)

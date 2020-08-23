@@ -46,10 +46,10 @@ from time import sleep
 def req_cdmx(fecha:str):    
     url = f'https://www.poderjudicialcdmx.gob.mx/wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
     try:
-        sleep(10)
+        sleep(2)
         response = requests.get(url) 
     except Exception:
-        sleep(10)
+        sleep(5)
         response = req_cdmx(fecha)
     finally:
         return response
