@@ -7,14 +7,12 @@ from .db import db_connect
 # BCRYPT
 from .utils.auth import bcrypt
 
+from .utils.route_helpers import *
+
 
 bp = Blueprint(
     "admin", __name__,
     url_prefix='/admin')
-
-### NO MOVER ARRIBA
-#------------------
-###
 
 # REGISTER
 @bp.route('/register', methods=['POST'])
@@ -46,3 +44,76 @@ def register():
     
     return jsonify({'status' : 200})
 
+
+@bp.route('/logotipo', methods=['POST'])
+def logotipo():
+    id_despacho = request.get_json()['id_despacho']
+    cur, __ = db_connect("select imagen from despachos WHERE id = " + str(id_despacho))
+    rv = cur.fetchone()
+    return jsonify(rv["imagen"])
+
+
+@bp.route('/desapachos', methods=['GET'])
+def despachos():
+    cur, __ = db_connect("select * from despachos")
+    rv = cur.fetchall()
+    return jsonify(rv)
+
+
+@bp.route('/altaDespacho', methods=['POST'])
+def altaDespacho():
+    nombreDespacho = request.get_json()['nombreDespacho']
+    base64 = request.get_json()['base64']
+    
+    if validarExpedienteDespachos(nombreDespacho):
+        return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
+    
+    sql = "INSERT INTO despachos (nombre,imagen) VALUES ('" + str(nombreDespacho).lstrip().rstrip().upper() + "', '" + str(base64) +"')"
+    db_connect(sql)
+    return jsonify({'status':200})
+
+
+@bp.route('/eliminarDespacho', methods=['POST'])
+def eliminarDespacho():
+    id_despacho = request.get_json()['id_despacho']
+    
+    sql = "DELETE FROM despachos where id = " + str(id_despacho)
+    __, response = db_connect(sql)
+    
+    if response > 0:
+        result = {'message': 'record delete'}
+    else:
+        result = {'message': 'no record found'}
+    
+    return jsonify({
+        'status': 200, 'result': result
+        })
+
+
+@bp.route('/actualizarDespacho', methods=['POST'])
+def actualizarDespacho():
+    id_despacho = request.get_json()['id_despacho']
+    nombreDespacho = request.get_json()['nombreDespacho']
+    base64 = request.get_json()['base64']
+    originalNombre = request.get_json()['originalNombre']
+    if originalNombre == False:
+        if validarExpedienteDespachos(nombreDespacho):
+            return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
+        else:
+            sql = "UPDATE despachos SET "
+            sql += "nombre = '" + str(nombreDespacho) + "', " 
+            sql += "imagen = '" + str(base64) + "'"
+            sql += " WHERE id = " + str(id_despacho)
+            db_connect(sql)
+            return jsonify({
+                'status': 200
+                })
+    else:
+        sql = "UPDATE despachos SET "
+        sql += "nombre = '" + str(nombreDespacho) + "', " 
+        sql += "imagen = '" + str(base64) + "'"
+        sql += " WHERE id = " + str(id_despacho)
+        db_connect(sql)
+        return jsonify({
+                'status': 200
+                })

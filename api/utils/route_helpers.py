@@ -1,6 +1,5 @@
 from api.db import db_connect
 
-
 # Eliminar abogados reponsables
 def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesElimar):
     data = "("
@@ -71,3 +70,16 @@ def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
         return False
     else:
         return True
+
+# Validar expediente
+def validarExpedienteDespachos(nombre_despacho):
+    sql = "SELECT COUNT(1) AS BIT FROM despachos "
+    sql += "WHERE nombre = '" + str(nombre_despacho)
+    sql += "'"
+    cur, __ = db_connect(sql) 
+    rv = cur.fetchone()
+    if rv["BIT"] == 0 :
+        return False
+    else:
+        return True
+

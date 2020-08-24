@@ -57,6 +57,13 @@ CRUD (baseURL/admin)
 
 ```bash
 ../register
+../logotipo
+../despachos
+../altaDespacho
+../eliminarDespacho
+../eliminarDespacho
+../actualizarDespacho
+../actualizarDespacho
 ```
 
 Users (baseURL/users)
