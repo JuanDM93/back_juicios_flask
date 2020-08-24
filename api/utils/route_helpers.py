@@ -48,8 +48,8 @@ def metodo_actualizar_juicio(
     ):
 
     sql = "UPDATE juicios_locales SET "
-    sql += "actor = '" + str(actor) + "', " 
-    sql += "demandado = '" + str(demandado) + "', "
+    sql += "actor = '" + str(actor).lstrip().rstrip().upper() + "', " 
+    sql += "demandado = '" + str(demandado).lstrip().rstrip().upper() + "', "
     sql += "numero_de_expediente = '" + str(numero_de_expediente) + "', "
     sql += "id_juzgado_local = '" + str(id_juzgado_local) + "' "
     sql += " WHERE id = " + str(id_juicio_local)
@@ -74,7 +74,7 @@ def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
 # Validar expediente
 def validarExpedienteDespachos(nombre_despacho):
     sql = "SELECT COUNT(1) AS BIT FROM despachos "
-    sql += "WHERE nombre = '" + str(nombre_despacho)
+    sql += "WHERE nombre = '" + str(nombre_despacho).lstrip().rstrip().upper()
     sql += "'"
     cur, __ = db_connect(sql) 
     rv = cur.fetchone()

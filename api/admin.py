@@ -101,7 +101,7 @@ def actualizarDespacho():
             return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
         else:
             sql = "UPDATE despachos SET "
-            sql += "nombre = '" + str(nombreDespacho) + "', " 
+            sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', " 
             sql += "imagen = '" + str(base64) + "'"
             sql += " WHERE id = " + str(id_despacho)
             db_connect(sql)
@@ -110,7 +110,7 @@ def actualizarDespacho():
                 })
     else:
         sql = "UPDATE despachos SET "
-        sql += "nombre = '" + str(nombreDespacho) + "', " 
+        sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', " 
         sql += "imagen = '" + str(base64) + "'"
         sql += " WHERE id = " + str(id_despacho)
         db_connect(sql)

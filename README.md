@@ -61,8 +61,6 @@ CRUD (baseURL/admin)
 ../despachos
 ../altaDespacho
 ../eliminarDespacho
-../eliminarDespacho
-../actualizarDespacho
 ../actualizarDespacho
 ```
 
