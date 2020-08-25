@@ -11,4 +11,6 @@ flask_jwt_extended
 Flask-Mail
 Flask-APScheduler
 
+beautifulsoup4 # scrapper
+
 tika # java required

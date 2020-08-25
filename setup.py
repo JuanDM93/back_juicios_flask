@@ -18,6 +18,7 @@ setup(
         'flask_jwt_extended',
         'Flask-Mail',
         'Flask-APScheduler',
+        'beautifulsoup4',
         'tika',     # java required
     ],
 )
