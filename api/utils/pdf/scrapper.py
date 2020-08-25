@@ -67,10 +67,9 @@ def scrap_circuitos(url, circuito):
 
             data = {
                 'org_id': o_id,
-                'cir_id': 134,
+                'cir_id': c_id,
                 'cir_name': c_name,
-            }
-            
+            }            
             results['organismos'][o_id] = {
                 #o_txt : 'tipos_obj',
                 o_txt: scrap_tipo(data),
@@ -82,14 +81,15 @@ def scrap_circuitos(url, circuito):
 # GET circuitos
 def get_circuitos():
     cirs_ids = [
-        1,2,3,4,5,6,7,8,
-        109,
-        # circuitos.keys()
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        20, 30, 38, 39, 40, 41, 42, 43,
+        44, 45, 46, 47, 48, 49, 50, 51,
+        52, 53, 54, 55, 56, 109
     ]
     circuitos = {}
-    #for i in cirs_ids:
     #for i in range(1, 110):
-    for i in range(1, 2):
+    #for i in range(1, 2):
+    for i in cirs_ids:
         b_url = f'https://www.dgepj.cjf.gob.mx/internet/expedientes/circuitos.asp?Cir={i}'
         flag, result = scrap_circuitos(b_url, i)
         if flag:
