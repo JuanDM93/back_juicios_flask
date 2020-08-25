@@ -41,10 +41,25 @@ def register():
     + str(id_despacho) + "', '"
     + str(creado) + "')"
     db_connect(sql)
-    
     return jsonify({'status' : 200})
 
-
+@bp.route('/listausuarios', methods=['POST'])
+def listausuarios():
+    superroot = request.get_json()['superroot']
+    id_despacho = request.get_json()['id_despacho']
+    where = ""
+    if superroot == False:
+        where = "WHERE usuarios.id_despacho = " +str(id_despacho)
+    sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, usuarios.apellido_materno, "
+    sql += "usuarios.nombre, usuarios.email, usuarios.id_tipo_usuario, "
+    sql += "tipo_de_usuario.nombre as nombre_tipo_usuario, usuarios.id_despacho,"
+    sql += "despachos.nombre as nombre_despacho from usuarios INNER JOIN despachos on despachos.id = usuarios.id_despacho "
+    sql += " INNER JOIN tipo_de_usuario on tipo_de_usuario.id = usuarios.id_tipo_usuario " + where
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    return jsonify(rv)
+    
+    
 @bp.route('/logotipo', methods=['POST'])
 def logotipo():
     id_despacho = request.get_json()['id_despacho']
@@ -53,11 +68,19 @@ def logotipo():
     return jsonify(rv["imagen"])
 
 
+@bp.route('/tipousuario', methods=['GET'])
+def dtipousuario():
+    cur, __ = db_connect("select * from tipo_de_usuario")
+    rv = cur.fetchall()
+    return jsonify(rv)
+
+
 @bp.route('/desapachos', methods=['GET'])
 def despachos():
     cur, __ = db_connect("select * from despachos")
     rv = cur.fetchall()
     return jsonify(rv)
+
 
 
 @bp.route('/altaDespacho', methods=['POST'])
@@ -117,3 +140,5 @@ def actualizarDespacho():
         return jsonify({
                 'status': 200
                 })
+
+

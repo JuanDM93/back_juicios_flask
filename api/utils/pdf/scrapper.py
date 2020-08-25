@@ -9,7 +9,6 @@ def scrap_tipo(data):
         'Organismo': data['org_id'],
         'Buscar': 'Buscar',
         'Circuito': data['cir_id'],
-        'CircuitoName': data['cir_name'],
     }
     html = requests.post(b_url, body)
     soup = bs4.BeautifulSoup(html.text)
@@ -25,7 +24,6 @@ def scrap_tipo(data):
     results = {} 
     if len(options) > 1:
         for o in options:
-            option = f"{o.get('value')}: {o.text} \n"
             results[o.get('value')] = o.text
 
         return results
@@ -57,7 +55,8 @@ def scrap_circuitos(url, circuito):
 
     # Object
     results = {
-        'name': c_name,
+        'c_name': c_name,
+        'c_id': c_id,
         'organismos': {}
     }
     if len(options) > 1:
@@ -68,10 +67,8 @@ def scrap_circuitos(url, circuito):
             data = {
                 'org_id': o_id,
                 'cir_id': c_id,
-                'cir_name': c_name,
             }            
             results['organismos'][o_id] = {
-                #o_txt : 'tipos_obj',
                 o_txt: scrap_tipo(data),
             }
 
@@ -87,8 +84,7 @@ def get_circuitos():
         52, 53, 54, 55, 56, 109
     ]
     circuitos = {}
-    #for i in range(1, 110):
-    #for i in range(1, 2):
+    #for i in range(1, 1000):
     for i in cirs_ids:
         b_url = f'https://www.dgepj.cjf.gob.mx/internet/expedientes/circuitos.asp?Cir={i}'
         flag, result = scrap_circuitos(b_url, i)
