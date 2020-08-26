@@ -4,6 +4,9 @@
 # Code #
 .vscode
 
+# Docker #
+.dockerignore
+
 # Environments
 env
 

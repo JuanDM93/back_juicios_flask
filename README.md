@@ -2,9 +2,23 @@
 
 Python-based Flask system
 
-## Installation
+## Installation (docker)
 
-Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', activate it
+Once cloned, build [container](https://www.docker.com/resources/what-container)
+
+```bash
+docker build -t <CONTAINER_NAME> .
+```
+
+Run it
+
+```bash
+docker run -p <PORT>:5000 flask_test
+```
+
+## Installation (local python env)
+
+Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', then activate it
 
 ```bash
 python -m venv env
@@ -25,8 +39,6 @@ python -m pip install --upgrade pip
 pip install --upgrade setuptools wheel
 pip install -r requirements.txt
 ```
-
-## Usage
 
 Run service
 
@@ -57,7 +69,13 @@ CRUD (baseURL/admin)
 
 ```bash
 ../register
+
+../listausuarios
+
 ../logotipo
+
+../tipousuario
+
 ../despachos
 ../altaDespacho
 ../eliminarDespacho
