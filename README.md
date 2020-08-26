@@ -50,13 +50,12 @@ pip install --upgrade setuptools wheel
 pip install -r requirements.txt
 ```
 
+Set ENV_VARS
 
 ```bash
 export FLASK_APP=api
 export FLASK_ENV=development
 ```
-
-Set ENV_VARS
 
 Windows
 
