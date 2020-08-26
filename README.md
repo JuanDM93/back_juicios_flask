@@ -2,7 +2,17 @@
 
 Python-based Flask system
 
-## Installation (docker)
+## Run options
+
+### Dockerized
+
+Just [compose](https://docs.docker.com/compose/)
+
+```bash
+docker-compose up
+```
+
+### Container build and run
 
 Once cloned, build [container](https://www.docker.com/resources/what-container)
 
@@ -16,7 +26,7 @@ Run it
 docker run -p <PORT>:5000 <CONTAINER_NAME>
 ```
 
-## Installation (local python env)
+### Installation (local python env)
 
 Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', then activate it
 
@@ -58,7 +68,7 @@ set FLASK_ENV=development
 flask run
 ```
 
-## APIs
+## APIs endpoints
 baseURL = http://127.0.0.1:5000
 
 ```bash
