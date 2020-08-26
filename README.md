@@ -6,7 +6,7 @@ Python-based Flask system
 
 ### Dockerized
 
-Just [compose](https://docs.docker.com/compose/)
+Once cloned, just [compose](https://docs.docker.com/compose/)
 
 ```bash
 docker-compose up
