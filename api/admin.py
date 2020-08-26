@@ -1,15 +1,14 @@
+from datetime import datetime
 from flask import (
     Blueprint, request, jsonify
 )
 #DB
 from .db import db_connect
-
 # BCRYPT
 from .utils.auth import bcrypt
-
+# Helpers
 from .utils.route_helpers import *
 
-from datetime import datetime
 
 bp = Blueprint(
     "admin", __name__,
@@ -28,7 +27,6 @@ def register():
     id_tipo_usuario = request.get_json()['id_tipo_usuario']
     id_despacho = request.get_json()['id_despacho']
     creado = datetime.utcnow()
-
     # sql
     if validarUsuario(email):
         return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
@@ -44,9 +42,9 @@ def register():
     sql += str(id_tipo_usuario) + "', '"
     sql += str(id_despacho) + "', '"
     sql += str(creado) + "')"
-    print(sql)
     db_connect(sql)
     return jsonify({'status' : 200})
+
 
 @bp.route('/listausuarios', methods=['POST'])
 def listausuarios():
@@ -73,19 +71,17 @@ def eliminarUsuario():
     __, response = db_connect(sql)
     
     if response > 0:
-        result = {'message': 'record delete'}
+        result = {'message': 'record deleted'}
     else:
-        result = {'message': 'no record found'}
+        result = {'message': 'record not found'}
     
     return jsonify({
         'status': 200, 'result': result
         })
 
 
-
 @bp.route('/actualizarUsuario', methods=['POST'])
 def actualizarUsuario():
-    
     id_usuario = request.get_json()['id_usuario']
     apellido_paterno = request.get_json()['apellido_paterno']
     apellido_materno = request.get_json()['apellido_materno']
@@ -98,28 +94,12 @@ def actualizarUsuario():
     id_despacho = request.get_json()['id_despacho']
     creado = datetime.utcnow()
     
-    
     originalemail = request.get_json()['originalemail']
     
     if originalemail == False:
         if validarUsuario(email):
             return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
-        else:
-            sql = "UPDATE usuarios SET "
-            sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', " 
-            sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
-            sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
-            sql += " email = '" + str(email) + "', " 
-            if newPwd == True:
-                sql += " password = '" + str(password) + "', "
-            sql += " id_tipo_usuario = " + str(id_tipo_usuario) + ", "
-            sql += " id_despacho = " + str(id_despacho) 
-            sql += " WHERE id = " + str(id_usuario)
-            db_connect(sql)
-            return jsonify({
-                'status': 200
-                })
-    else:
+
         sql = "UPDATE usuarios SET "
         sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', " 
         sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
@@ -131,9 +111,20 @@ def actualizarUsuario():
         sql += " id_despacho = " + str(id_despacho) 
         sql += " WHERE id = " + str(id_usuario)
         db_connect(sql)
-        return jsonify({
-                'status': 200
-                })
+        return jsonify({'status': 200})
+
+    sql = "UPDATE usuarios SET "
+    sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', " 
+    sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
+    sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
+    sql += " email = '" + str(email) + "', " 
+    if newPwd == True:
+        sql += " password = '" + str(password) + "', "
+    sql += " id_tipo_usuario = " + str(id_tipo_usuario) + ", "
+    sql += " id_despacho = " + str(id_despacho) 
+    sql += " WHERE id = " + str(id_usuario)
+    db_connect(sql)
+    return jsonify({'status': 200})
 
 
 @bp.route('/logotipo', methods=['POST'])
@@ -156,7 +147,6 @@ def despachos():
     cur, __ = db_connect("select * from despachos")
     rv = cur.fetchall()
     return jsonify(rv)
-
 
 
 @bp.route('/altaDespacho', methods=['POST'])
@@ -197,22 +187,18 @@ def actualizarDespacho():
     originalNombre = request.get_json()['originalNombre']
     if originalNombre == False:
         if validarExpedienteDespachos(nombreDespacho):
-            return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
-        else:
-            sql = "UPDATE despachos SET "
-            sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', " 
-            sql += "imagen = '" + str(base64) + "'"
-            sql += " WHERE id = " + str(id_despacho)
-            db_connect(sql)
-            return jsonify({
-                'status': 200
-                })
-    else:
+            return jsonify({'status': 400, 'mensaje': 'Esta repetido el registro' })
+
         sql = "UPDATE despachos SET "
         sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', " 
         sql += "imagen = '" + str(base64) + "'"
         sql += " WHERE id = " + str(id_despacho)
         db_connect(sql)
-        return jsonify({
-                'status': 200
-                })
+        return jsonify({'status': 200})
+
+    sql = "UPDATE despachos SET "
+    sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', " 
+    sql += "imagen = '" + str(base64) + "'"
+    sql += " WHERE id = " + str(id_despacho)
+    db_connect(sql)
+    return jsonify({'status': 200})

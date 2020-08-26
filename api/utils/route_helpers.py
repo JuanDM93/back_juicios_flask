@@ -13,8 +13,8 @@ def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesEl
 
 # Metodo para asignar abogados responsables
 def registrarCorreosAbogadosLocales(
-    numero_de_expediente, id_juzgado_local, listaCorreoAbogadosLocales
-    ):
+    numero_de_expediente, id_juzgado_local,
+    listaCorreoAbogadosLocales):
     sql = "SELECT id FROM juicios_locales WHERE numero_de_expediente = '"
     sql += str(numero_de_expediente) 
     sql += "' AND id_juzgado_local = " + str(id_juzgado_local)
@@ -25,7 +25,8 @@ def registrarCorreosAbogadosLocales(
     data = ""
     for CorreoAbogadoLocal in listaCorreoAbogadosLocales:
         data += "('" + str(id_juicio_local) +"', '" + CorreoAbogadoLocal + "'), "
-        #enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
+        #TODO
+        # enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
     data = data[:-2]
     
     sql = "INSERT INTO abogados_responsables_juicios_locales (id_juicio_local, email) VALUES"
@@ -44,8 +45,7 @@ def correosLigadosJuiciosLocales(id_juicio_local):
 # Helper juicio local
 def metodo_actualizar_juicio(
     actor, demandado, numero_de_expediente, id_juzgado_local,
-    emails, emailsEliminar, id_juicio_local
-    ):
+    emails, emailsEliminar, id_juicio_local):
 
     sql = "UPDATE juicios_locales SET "
     sql += "actor = '" + str(actor).lstrip().rstrip().upper() + "', " 
@@ -68,8 +68,8 @@ def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
     rv = cur.fetchone()
     if rv["BIT"] == 0 :
         return False
-    else:
-        return True
+    return True
+    
 
 # Validar expediente
 def validarExpedienteDespachos(nombre_despacho):
@@ -80,8 +80,7 @@ def validarExpedienteDespachos(nombre_despacho):
     rv = cur.fetchone()
     if rv["BIT"] == 0 :
         return False
-    else:
-        return True
+    return True
 
 # Validar usuario
 def validarUsuario(email):
@@ -92,6 +91,4 @@ def validarUsuario(email):
     rv = cur.fetchone()
     if rv["BIT"] == 0 :
         return False
-    else:
-        return True
-
+    return True

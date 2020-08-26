@@ -1,12 +1,12 @@
 from flask_mail import Mail, Message
 
+from . import m_help
+
 
 mail = Mail()
 
+
 def search_msg(data):
-
-    from . import m_help
-
     if data['tipo'] == 'a_j_l':
         return m_help.ms_actual_local(data)
 
@@ -19,18 +19,14 @@ def search_msg(data):
 
 def sendMulti(data):
     subject, message = search_msg(data)
-
     with mail.connect() as conn:
-
         for user in data['emails']:
-            
             msg = Message(
                 recipients=[user],
                 subject=subject,
                 body=message,
             )
             conn.send(msg)
-
     
 """
 rv = [
@@ -66,6 +62,8 @@ rv = [
     },  
 ]
 """
+# este metodo esta en route_helpers
+from ..route_helpers import correosLigadosJuiciosLocales
 def sqlenviarcorreo(data):
     fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
     yearsql = datetime.strftime(datetime.now(), '%Y')
@@ -79,7 +77,7 @@ def sqlenviarcorreo(data):
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
         for r in rv:
-            ##este metodo esta en b_locals
+            # este metodo esta en route_helpers
             r["emails"] = correosLigadosJuiciosLocales(r["id_juicio_local"])
         return rv
     else:
@@ -91,7 +89,7 @@ def sqlenviarcorreo(data):
         sql += "acuerdos_locales.fecha BETWEEN '"+fechasql+"' AND '"+yearsql+"-01-01'"
         cur, __ = db_connect(sql)
         rv = cur.fetchone()
-        ##este metodo esta en b_locals
+        # este metodo esta en route_helpers
         rv["emails"] = correosLigadosJuiciosLocales(rv["id_juicio_local"])
         return [rv]
         

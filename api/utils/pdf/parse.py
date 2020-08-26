@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 
 from api.db import db_connect
 
+
 def extract_acuerdo(pdf:str, data):
     x = pdf.find(data['juzgado'])
     juzgado = pdf[x:]
@@ -45,17 +46,14 @@ def is_parsed(data, file='metadata.pdf'):
 from time import sleep
 def req_cdmx(fecha:str):    
     url = f'https://www.poderjudicialcdmx.gob.mx/wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
-    try:
-        sleep(2)
-        response = requests.get(url) 
-    except Exception:
-        sleep(5)
-        response = req_cdmx(fecha)
-    finally:
+    response = requests.get(url)
+    
+    if response.status_code == 200:
         return response
+    sleep(1)
+    response = req_cdmx(fecha)
 
 
-# threads - deamon
 def fetch_pdf(fecha, data:[]):
     fechaurl = datetime.strftime(fecha,'%d%m%Y')
     response = req_cdmx(fechaurl)
@@ -67,12 +65,10 @@ def fetch_pdf(fecha, data:[]):
     ## SQL
     if len(result) > 0:
         values = ""
-        
         for r in result: 
-            fechasql = datetime.strftime(fecha - timedelta(days=1), '%Y-%m-%d')
-            values += "( '" + fechasql + "','" +  str(r["acuerdo"]) + "'," + str(r["id_juicio_local"]) +"),"
+            fecha_sql = datetime.strftime(fecha - timedelta(days=1), '%Y-%m-%d')
+            values += "( '" + fecha_sql + "','" +  str(r["acuerdo"]) + "'," + str(r["id_juicio_local"]) +"),"
 
         values = values[:-1]
         sql = "INSERT INTO acuerdos_locales (fecha,descripcion,id_juicio_local) VALUES " + values
         db_connect(sql)
-

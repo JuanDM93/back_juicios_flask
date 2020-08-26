@@ -2,16 +2,15 @@ from flask import (
     Blueprint, request, jsonify
 )
 
+
 bp = Blueprint(
     "locales", __name__,
     url_prefix='/locales')
 
 #DB
 from .db import db_connect
-
 # Mail
 from .utils.mail.service import sendMulti
-
 # Helpers
 from .utils.route_helpers import *
 
@@ -63,35 +62,33 @@ def alta_juicio():
     if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
         return jsonify({
             'status' : 400,
-            'mensaje': 'Esta repetido el registro' })
-    else:
-        sql = "INSERT INTO juicios_locales "
-        sql += "(actor, demandado, numero_de_expediente, id_juzgado_local) VALUES ('"
-        sql += str(actor).lstrip().rstrip().upper() + "', '"
-        sql += str(demandado).lstrip().rstrip().upper() + "', '"
-        sql += str(numero_de_expediente) + "', '"
-        sql += str(id_juzgado_local) + "')"
-        db_connect(sql)
+            'mensaje': 'Esta repetido el registro'})
 
-        registrarCorreosAbogadosLocales(
-            numero_de_expediente, id_juzgado_local, emails)
-        
-        sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
-        sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
-        sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
-        sql += str(numero_de_expediente) +"'"
-        cur, __ = db_connect(sql)
-        rv = cur.fetchone()
-        
-        from .utils.pdf.fetch import fetch_history
-        fetch_history([rv])
+    sql = "INSERT INTO juicios_locales "
+    sql += "(actor, demandado, numero_de_expediente, id_juzgado_local) VALUES ('"
+    sql += str(actor).lstrip().rstrip().upper() + "', '"
+    sql += str(demandado).lstrip().rstrip().upper() + "', '"
+    sql += str(numero_de_expediente) + "', '"
+    sql += str(id_juzgado_local) + "')"
+    db_connect(sql)
 
-        ## TODO
-        ##sedmail donde mande los datos y los acuerdos
-        ##sqlenviarcorreo
-        ## emails
-        
-        return jsonify({'status' : 200})
+    registrarCorreosAbogadosLocales(
+        numero_de_expediente, id_juzgado_local, emails)
+    
+    sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
+    sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
+    sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
+    sql += str(numero_de_expediente) +"'"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchone()
+    
+    from .utils.pdf.fetch import fetch_history
+    fetch_history([rv])
+    ## TODO
+    ##sedmail donde mande los datos y los acuerdos
+    ##sqlenviarcorreo
+    ## emails
+    return jsonify({'status' : 200})
 
 # Eliminar juicio local
 @bp.route('/eliminar_juicio', methods=['POST'])
@@ -138,45 +135,38 @@ def actualizar_juicio():
     data['actor'] = actor
     data['demandado'] = demandado
     # data['juzgado_local'] = return_juzgado(id_juzgado_local)   
-
+    #  TODO
     #data['acuerdos'] = pdf(args)
     ##
-
     if orginalNumeroExpediente == False:
         if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
             return jsonify({
                 'status' : 400, 'mensaje': 'Esta repetido el registro'
                 })
-        else:
-            metodo_actualizar_juicio(
-                actor, demandado, numero_de_expediente, id_juzgado_local,
-                emails, emailsEliminar, id_juicio_local)
-            sendMulti(data)
-            return jsonify({
-                'status': 200
-                })
-    else:
-        if orginalJuzgado == True:
-            metodo_actualizar_juicio(
-                actor, demandado, numero_de_expediente, id_juzgado_local,
-                emails, emailsEliminar, id_juicio_local)
-            sendMulti(data)
-            return jsonify({
-                'status': 200
-                })
-        else:
-            if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
-                return jsonify({
-                    'status' : 400, 'mensaje': 'Esta repetido el registro'
-                    })
-            else:
-                metodo_actualizar_juicio(
-                    actor, demandado, numero_de_expediente, id_juzgado_local,
-                    emails, emailsEliminar, id_juicio_local)
-                sendMulti(data)
-                return jsonify({
-                    'status': 200
-                    })
+
+        metodo_actualizar_juicio(
+            actor, demandado, numero_de_expediente, id_juzgado_local,
+            emails, emailsEliminar, id_juicio_local)
+        sendMulti(data)
+        return jsonify({'status': 200})
+
+    if orginalJuzgado == True:
+        metodo_actualizar_juicio(
+            actor, demandado, numero_de_expediente, id_juzgado_local,
+            emails, emailsEliminar, id_juicio_local)
+        sendMulti(data)
+        return jsonify({'status': 200})
+
+    if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
+        return jsonify({
+            'status' : 400, 'mensaje': 'Esta repetido el registro'
+            })
+    
+    metodo_actualizar_juicio(
+        actor, demandado, numero_de_expediente, id_juzgado_local,
+        emails, emailsEliminar, id_juicio_local)
+    sendMulti(data)
+    return jsonify({'status': 200})
 
 # Juicios locales asignados
 @bp.route('/juicios_asignados', methods=['POST'])

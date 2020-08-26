@@ -4,7 +4,6 @@ from flask import (
 )
 # DB
 from .db import db_connect
-
 # JWT & BCRYPT
 from .utils.auth import jwt, bcrypt
 
@@ -47,7 +46,6 @@ def login():
                 "id_despacho": rv["id_despacho"]
                 }]
             })
-    else:
-        return jsonify({
-            "error":"Invalid username and password"
-            })
+    return jsonify({
+        "error":"Invalid username and password"
+        })

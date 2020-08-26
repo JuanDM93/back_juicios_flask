@@ -14,9 +14,8 @@ def create_app():
     CORS(app)
 
     # JWT & BCRYPT
-    from .utils.auth import jwt, bcrypt
-    jwt.init_app(app)
-    bcrypt.init_app(app)
+    from .utils.auth import init_auth
+    init_auth(app)
     
     # DB
     from .db import db
@@ -24,7 +23,7 @@ def create_app():
     
     # Jobs
     from .utils.scheduler import start_jobs
-    #start_jobs(app)
+    start_jobs(app)
 
     # Mail
     from .utils.mail.service import mail
