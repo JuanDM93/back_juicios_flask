@@ -4,7 +4,7 @@ Python-based Flask system
 
 ## Run options
 
-### Dockerized
+### Dockerized compose
 
 Once cloned, just [compose](https://docs.docker.com/compose/)
 
@@ -26,7 +26,7 @@ Run it
 docker run -p <PORT>:5000 <CONTAINER_NAME>
 ```
 
-### Installation (local python env)
+### Local python env install
 
 Once cloned, create new [python environment](https://docs.python.org/3/tutorial/venv.html) 'env', then activate it
 
@@ -50,12 +50,13 @@ pip install --upgrade setuptools wheel
 pip install -r requirements.txt
 ```
 
-Run service
 
 ```bash
 export FLASK_APP=api
 export FLASK_ENV=development
 ```
+
+Set ENV_VARS
 
 Windows
 
@@ -63,6 +64,8 @@ Windows
 set FLASK_APP=api
 set FLASK_ENV=development
 ```
+
+Run service
 
 ```bash
 flask run
