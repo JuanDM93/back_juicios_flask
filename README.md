@@ -13,7 +13,7 @@ docker build -t <CONTAINER_NAME> .
 Run it
 
 ```bash
-docker run -p <PORT>:5000 flask_test
+docker run -p <PORT>:5000 <CONTAINER_NAME>
 ```
 
 ## Installation (local python env)
