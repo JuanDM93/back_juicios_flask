@@ -9,6 +9,7 @@ from .utils.auth import bcrypt
 
 from .utils.route_helpers import *
 
+from datetime import datetime
 
 bp = Blueprint(
     "admin", __name__,
@@ -29,17 +30,21 @@ def register():
     creado = datetime.utcnow()
 
     # sql
+    if validarUsuario(email):
+        return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
+    
     sql = "INSERT INTO usuarios ("
     sql += "apellido_paterno, apellido_materno, nombre, email, password, id_tipo_usuario, id_despacho, creado"
     sql += ") VALUES ('"
     sql += str(apellido_paterno).lstrip().rstrip().upper() + "', '" 
-    + str(apellido_materno).lstrip().rstrip().upper() + "', '"
-    + str(nombre).lstrip().rstrip().upper() + "', '"
-    + str(email) + "', '" 
-    + str(password) + "', '"
-    + str(id_tipo_usuario) + "', '"
-    + str(id_despacho) + "', '"
-    + str(creado) + "')"
+    sql += str(apellido_materno).lstrip().rstrip().upper() + "', '"
+    sql += str(nombre).lstrip().rstrip().upper() + "', '"
+    sql += str(email) + "', '" 
+    sql += str(password) + "', '"
+    sql += str(id_tipo_usuario) + "', '"
+    sql += str(id_despacho) + "', '"
+    sql += str(creado) + "')"
+    print(sql)
     db_connect(sql)
     return jsonify({'status' : 200})
 
@@ -49,7 +54,7 @@ def listausuarios():
     id_despacho = request.get_json()['id_despacho']
     where = ""
     if superroot == False:
-        where = "WHERE usuarios.id_despacho = " +str(id_despacho)
+        where = "WHERE usuarios.id_despacho = " +str(id_despacho) + " AND NOT tipo_de_usuario.id = 1"
     sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, usuarios.apellido_materno, "
     sql += "usuarios.nombre, usuarios.email, usuarios.id_tipo_usuario, "
     sql += "tipo_de_usuario.nombre as nombre_tipo_usuario, usuarios.id_despacho,"
@@ -58,8 +63,79 @@ def listausuarios():
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
     return jsonify(rv)
+
+#eliminarUsuario
+@bp.route('/eliminarUsuario', methods=['POST'])
+def eliminarUsuario():
+    id_usuario = request.get_json()['id_usuario']
+    
+    sql = "DELETE FROM usuarios where id = " + str(id_usuario)
+    __, response = db_connect(sql)
+    
+    if response > 0:
+        result = {'message': 'record delete'}
+    else:
+        result = {'message': 'no record found'}
+    
+    return jsonify({
+        'status': 200, 'result': result
+        })
+
+
+
+@bp.route('/actualizarUsuario', methods=['POST'])
+def actualizarUsuario():
+    
+    id_usuario = request.get_json()['id_usuario']
+    apellido_paterno = request.get_json()['apellido_paterno']
+    apellido_materno = request.get_json()['apellido_materno']
+    nombre = request.get_json()['nombre']
+    email = request.get_json()['email']
+    newPwd  = request.get_json()['newPwd']
+    if newPwd == True:
+        password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+    id_tipo_usuario = request.get_json()['id_tipo_usuario']
+    id_despacho = request.get_json()['id_despacho']
+    creado = datetime.utcnow()
     
     
+    originalemail = request.get_json()['originalemail']
+    
+    if originalemail == False:
+        if validarUsuario(email):
+            return jsonify({'status' : 400, 'mensaje': 'Esta repetido el registro' })
+        else:
+            sql = "UPDATE usuarios SET "
+            sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', " 
+            sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
+            sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
+            sql += " email = '" + str(email) + "', " 
+            if newPwd == True:
+                sql += " password = '" + str(password) + "', "
+            sql += " id_tipo_usuario = " + str(id_tipo_usuario) + ", "
+            sql += " id_despacho = " + str(id_despacho) 
+            sql += " WHERE id = " + str(id_usuario)
+            db_connect(sql)
+            return jsonify({
+                'status': 200
+                })
+    else:
+        sql = "UPDATE usuarios SET "
+        sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', " 
+        sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
+        sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
+        sql += " email = '" + str(email) + "', " 
+        if newPwd == True:
+            sql += " password = '" + str(password) + "', "
+        sql += " id_tipo_usuario = " + str(id_tipo_usuario) + ", "
+        sql += " id_despacho = " + str(id_despacho) 
+        sql += " WHERE id = " + str(id_usuario)
+        db_connect(sql)
+        return jsonify({
+                'status': 200
+                })
+
+
 @bp.route('/logotipo', methods=['POST'])
 def logotipo():
     id_despacho = request.get_json()['id_despacho']
@@ -140,5 +216,3 @@ def actualizarDespacho():
         return jsonify({
                 'status': 200
                 })
-
-

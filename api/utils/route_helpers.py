@@ -83,3 +83,15 @@ def validarExpedienteDespachos(nombre_despacho):
     else:
         return True
 
+# Validar usuario
+def validarUsuario(email):
+    sql = "SELECT COUNT(1) AS BIT FROM usuarios "
+    sql += "WHERE email = '" + str(email).lstrip().rstrip().upper()
+    sql += "'"
+    cur, __ = db_connect(sql) 
+    rv = cur.fetchone()
+    if rv["BIT"] == 0 :
+        return False
+    else:
+        return True
+
