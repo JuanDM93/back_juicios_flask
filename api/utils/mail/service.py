@@ -27,7 +27,7 @@ def sendMulti(data):
                 body=message,
             )
             conn.send(msg)
-    
+
 """
 rv = [
     {

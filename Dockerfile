@@ -2,11 +2,11 @@ FROM python:3.7
 
 EXPOSE 5000
 
-WORKDIR /
+WORKDIR /flask
 
 ENV FLASK_APP api
 
-COPY . .
+COPY . /flask
 
 RUN pip install --upgrade pip
 

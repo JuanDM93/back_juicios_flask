@@ -7,14 +7,31 @@ scheduler = APScheduler()
 def start_jobs(app):
     scheduler.init_app(app)
     scheduler.start()
-
 #-------------------
 # interval example
 @scheduler.task(
     'interval', id='do_job_1',
-    minute=1,)
+    minutes=1,)
 def job1():
     print('Job 1 executed')
+
+# Mail test
+from .mail.service import sendMulti
+@scheduler.task(
+    'cron', id='mail_tester',
+    day='*', hour='12', minute='30')
+def mail_tester():
+    data = {}
+    data['tipo'] = 'a_j_l'
+    data['emails'] = ['ricaror@hotmail.com']
+    data['numero_de_expediente'] = '1/2020'
+    data['actor'] = 'ACTOR'
+    data['demandado'] = 'DEMANDADO'
+
+    with scheduler.app.app_context():
+        sendMulti(data)
+    
+    print('Mail job executed')
 
 # dayly pdf
 from datetime import datetime

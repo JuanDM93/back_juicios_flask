@@ -13,23 +13,23 @@ def create_app():
     # CORS
     CORS(app)
 
-    # JWT & BCRYPT
-    from .utils.auth import init_auth
-    init_auth(app)
-    
-    # DB
-    from .db import db
-    db.init_app(app)
-    
-    # Jobs
-    from .utils.scheduler import start_jobs
-    start_jobs(app)
-
-    # Mail
-    from .utils.mail.service import mail
-    mail.init_app(app)
-
     with app.app_context():
+        # JWT & BCRYPT
+        from .utils.auth import init_auth
+        init_auth(app)
+        
+        # DB
+        from .db import db
+        db.init_app(app)
+        
+        # Mail
+        from .utils.mail.service import mail
+        mail.init_app(app)
+        
+        # Jobs
+        from .utils.scheduler import start_jobs
+        start_jobs(app)
+    
         # Import routes
         from . import (
             admin, users,

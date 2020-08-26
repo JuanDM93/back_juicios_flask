@@ -19,6 +19,6 @@ setup(
         'Flask-Mail',
         'Flask-APScheduler',
         'beautifulsoup4',
-        'tika',     # java required
+        'tika',     # java required (docker?)
     ],
 )
