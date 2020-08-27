@@ -4,7 +4,8 @@ import requests
 
 def scrap_tipo(data):
     # Scrap Tipos
-    b_url = 'https://www.dgepj.cjf.gob.mx/internet/expedientes/ExpedienteyTipo.asp'
+    b_url = 'https://www.dgepj.cjf.gob.mx/'
+    b_url += 'internet/expedientes/ExpedienteyTipo.asp'
     body = {
         'Organismo': data['org_id'],
         'Buscar': 'Buscar',
@@ -86,7 +87,8 @@ def get_circuitos():
     circuitos = {}
     # for i in range(1, 1000):
     for i in cirs_ids:
-        b_url = f'https://www.dgepj.cjf.gob.mx/internet/expedientes/circuitos.asp?Cir={i}'
+        b_url = 'https://www.dgepj.cjf.gob.mx/'
+        b_url += f'internet/expedientes/circuitos.asp?Cir={i}'
         flag, result = scrap_circuitos(b_url, i)
         if flag:
             circuitos[i] = result
@@ -99,8 +101,12 @@ def get_acuerdos(data):
     id_org = data['id_org']
     n_exp = data['n_exp']
 
-    b_url = 'https://www.dgepj.cjf.gob.mx/siseinternet/reportes/vercaptura.aspx?'
-    form = f'tipoasunto={t_ast}&organismo={id_org}&expediente={n_exp}&tipoprocedimiento=0'
+    b_url = 'https://www.dgepj.cjf.gob.mx/'
+    b_url += 'siseinternet/reportes/vercaptura.aspx?'
+    form = f'tipoasunto={t_ast}'
+    form += f'&organismo={id_org}'
+    form += f'&expediente={n_exp}'
+    form += '&tipoprocedimiento=0'
 
     html = requests.get(b_url + form)
     soup = bs4.BeautifulSoup(html.text)

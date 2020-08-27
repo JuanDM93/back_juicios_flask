@@ -45,7 +45,8 @@ def is_parsed(f_name, data):
 
 
 def req_cdmx(fecha: str):
-    url = f'https://www.poderjudicialcdmx.gob.mx/wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
+    url = 'https://www.poderjudicialcdmx.gob.mx/'
+    url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -65,16 +66,20 @@ def fetch_pdf(fecha, data: []):
         ran = randint(0, 1000)
         f_name = f'{fechaurl}{ran}.pdf'
         file_pdf = Path(f_name)
-        __ = file_pdf.write_bytes(response)
+        file_pdf.write_bytes(response)
 
         result = is_parsed(f_name, data)
         # SQL
         if len(result) > 0:
             values = ""
             for r in result:
-                fecha_sql = datetime.strftime(fecha - timedelta(days=1), '%Y-%m-%d')
-                values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "'," + str(r["id_juicio_local"]) + "),"
+                f_str = fecha - timedelta(days=1)
+                fecha_sql = datetime.strftime(f_str, '%Y-%m-%d')
+                values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
+                values += str(r["id_juicio_local"]) + "),"
 
             values = values[:-1]
-            sql = "INSERT INTO acuerdos_locales (fecha,descripcion,id_juicio_local) VALUES " + values
+            sql = "INSERT INTO "
+            sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
+            sql += "VALUES " + values
             db_connect(sql)
