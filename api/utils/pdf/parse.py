@@ -49,18 +49,23 @@ def req_cdmx(fecha:str):
     response = requests.get(url)
     
     if response.status_code == 200:
-        return response
+        return False, response.content
+    if response.status_code == 404:
+        return True, response
     sleep(1)
     return req_cdmx(fecha)
 
 
 def fetch_pdf(fecha, data:[]):
     fechaurl = datetime.strftime(fecha,'%d%m%Y')
-    response = req_cdmx(fechaurl)
+
+    flag, response = req_cdmx(fechaurl)
+    if flag:
+        break
 
     # create pdf
     filename = Path('metadata.pdf')
-    filename.write_bytes(response.content)
+    filename.write_bytes(response)
     result = is_parsed(data)
     ## SQL
     if len(result) > 0:
