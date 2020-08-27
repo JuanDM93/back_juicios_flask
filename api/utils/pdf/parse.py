@@ -51,7 +51,7 @@ def req_cdmx(fecha:str):
     if response.status_code == 200:
         return response
     sleep(1)
-    response = req_cdmx(fecha)
+    return req_cdmx(fecha)
 
 
 def fetch_pdf(fecha, data:[]):
