@@ -5,7 +5,7 @@ from flask import (
 # DB
 from api.utils.db import db_connect
 # JWT & BCRYPT
-from .utils.auth import jwt, bcrypt
+from api.utils.auth import jwt, bcrypt
 
 
 bp = Blueprint(

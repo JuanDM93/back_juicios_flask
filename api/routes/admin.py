@@ -5,9 +5,9 @@ from flask import (
 #DB
 from api.utils.db import db_connect
 # BCRYPT
-from .utils.auth import bcrypt
+from api.utils.auth import bcrypt
 # Helpers
-from .utils.route_helpers import *
+from api.utils.route_helpers import *
 
 
 bp = Blueprint(

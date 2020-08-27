@@ -1,18 +1,18 @@
 from flask import (
     Blueprint, request, jsonify
 )
+# DB
+from api.utils.db import db_connect
+# Mail
+from api.utils.mail.service import sendMulti
+# Helpers
+from api.utils.route_helpers import *
 
 
 bp = Blueprint(
     "locales", __name__,
     url_prefix='/locales')
 
-#DB
-from api.utils.db import db_connect
-# Mail
-from .utils.mail.service import sendMulti
-# Helpers
-from .utils.route_helpers import *
 
 # Get juzgados
 @bp.route('/juzgados', methods=['GET'])
@@ -76,7 +76,7 @@ def alta_juicio():
         numero_de_expediente, id_juzgado_local, emails)
     rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
         
-    from .utils.pdf.fetch import fetch_history
+    from api.utils.pdf.fetch import fetch_history
     fetch_history([rv])
     ## TODO
     ##sedmail donde mande los datos y los acuerdos
@@ -142,7 +142,8 @@ def actualizar_juicio():
             emails, emailsEliminar, id_juicio_local)
         eliminarAcuerdosLocales(id_juicio_local)
         rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
-        from .utils.pdf.fetch import fetch_history
+        
+        from api.utils.pdf.fetch import fetch_history
         fetch_history([rv])
         
         #sendMulti(data)
@@ -165,7 +166,8 @@ def actualizar_juicio():
         emails, emailsEliminar, id_juicio_local)
     eliminarAcuerdosLocales(id_juicio_local)
     rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
-    from .utils.pdf.fetch import fetch_history
+
+    from api.utils.pdf.fetch import fetch_history
     fetch_history([rv])
     #sendMulti(data)
     return jsonify({'status': 200})
