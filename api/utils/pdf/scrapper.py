@@ -1,9 +1,9 @@
 import bs4
 import requests
-from time import sleep
 
-# Scrap Tipos
+
 def scrap_tipo(data):
+    # Scrap Tipos
     b_url = 'https://www.dgepj.cjf.gob.mx/internet/expedientes/ExpedienteyTipo.asp'
     body = {
         'Organismo': data['org_id'],
@@ -12,24 +12,23 @@ def scrap_tipo(data):
     }
     html = requests.post(b_url, body)
     soup = bs4.BeautifulSoup(html.text)
-    
     # Tipos
     select = soup.find(
         'select', {
             'name': 'TipoAsunto',
         })
     options = select.findAll('option')
-    
     # Object
-    results = {} 
+    results = {}
     if len(options) > 1:
         for o in options:
             results[o.get('value')] = o.text
 
         return results
 
-# Scrap Circuitos
+
 def scrap_circuitos(url, circuito):
+    # Scrap Circuitos
     html = requests.get(url)
     soup = bs4.BeautifulSoup(html.text)
 
@@ -38,8 +37,8 @@ def scrap_circuitos(url, circuito):
         'input', {
             'name': 'CircuitoName',
         })
-    c_name = c_name['value']    
-    
+    c_name = c_name['value']
+
     c_id = soup.find(
         'input', {
             'name': 'Circuito',
@@ -67,7 +66,7 @@ def scrap_circuitos(url, circuito):
             data = {
                 'org_id': o_id,
                 'cir_id': c_id,
-            }            
+            }
             results['organismos'][o_id] = {
                 o_txt: scrap_tipo(data),
             }
@@ -75,8 +74,9 @@ def scrap_circuitos(url, circuito):
         return True, results
     return False, results
 
-# GET circuitos
+
 def get_circuitos():
+    # GET circuitos
     cirs_ids = [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
         20, 30, 38, 39, 40, 41, 42, 43,
@@ -84,7 +84,7 @@ def get_circuitos():
         52, 53, 54, 55, 56, 109
     ]
     circuitos = {}
-    #for i in range(1, 1000):
+    # for i in range(1, 1000):
     for i in cirs_ids:
         b_url = f'https://www.dgepj.cjf.gob.mx/internet/expedientes/circuitos.asp?Cir={i}'
         flag, result = scrap_circuitos(b_url, i)
@@ -92,8 +92,9 @@ def get_circuitos():
             circuitos[i] = result
     return circuitos
 
-# GET Acuerdos
+
 def get_acuerdos(data):
+    # GET Acuerdos
     t_ast = data['t_ast']
     id_org = data['id_org']
     n_exp = data['n_exp']
@@ -121,5 +122,4 @@ def get_acuerdos(data):
 
     for ac in acuerdos:
         ac['No.'] = ac['No.'].replace('\n', '')
-    
     return acuerdos

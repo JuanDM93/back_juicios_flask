@@ -1,4 +1,6 @@
 env
 
+*.pdf
+
 .vscode
 __pycache__/
