@@ -1,5 +1,5 @@
-from api.db import db_connect
-from datetime import date, datetime, timedelta 
+from api.utils.db import db_connect
+from datetime import datetime, timedelta 
 
 # Eliminar abogados reponsables
 def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesElimar):
