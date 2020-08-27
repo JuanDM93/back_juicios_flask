@@ -3,7 +3,7 @@ from flask import (
     Blueprint, request, jsonify
 )
 #DB
-from .db import db_connect
+from api.utils.db import db_connect
 # BCRYPT
 from .utils.auth import bcrypt
 # Helpers

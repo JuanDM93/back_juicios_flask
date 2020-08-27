@@ -1,7 +1,8 @@
+"""Initialize Flask app."""
 from flask import Flask
 from flask_cors import CORS
 
-"""Initialize Flask app."""
+
 def create_app():
     """Construct the core application."""
     app = Flask(
@@ -10,32 +11,31 @@ def create_app():
     )
     app.config.from_object('config.Config')
 
-
     with app.app_context():
         # CORS
         CORS(app)
-        
+
         # JWT & BCRYPT
         from .utils.auth import init_auth
         init_auth(app)
-        
+
         # DB
-        from .db import db
+        from .utils.db import db
         db.init_app(app)
-        
+
         # Mail
         from .utils.mail.service import mail
         mail.init_app(app)
-        
+
         # Jobs
         from .utils.scheduler import start_jobs
         start_jobs(app)
-    
+
         # Import routes
-        from . import (
+        from .routes import (
             admin, users,
             b_locals,)
-        
+
         app.register_blueprint(admin.bp)
         app.register_blueprint(users.bp)
         app.register_blueprint(b_locals.bp)

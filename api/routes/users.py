@@ -3,7 +3,7 @@ from flask import (
     Blueprint, request, jsonify
 )
 # DB
-from .db import db_connect
+from api.utils.db import db_connect
 # JWT & BCRYPT
 from .utils.auth import jwt, bcrypt
 
@@ -12,9 +12,10 @@ bp = Blueprint(
     "users", __name__,
     url_prefix='/users')
 
-# LOGIN
+
 @bp.route('/login', methods=['POST'])
 def login():
+    # LOGIN
     # qs
     email = request.get_json()['email']
     password = request.get_json()['password']
@@ -47,5 +48,5 @@ def login():
                 }]
             })
     return jsonify({
-        "error":"Invalid username and password"
+        "error": "Invalid username and password"
         })

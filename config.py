@@ -1,7 +1,9 @@
 """Flask configuration variables."""
 from os import environ, path
 
+
 basedir = path.abspath(path.dirname(__file__))
+
 
 class Config:
     """Set Flask configuration from .env file."""
@@ -20,12 +22,12 @@ class Config:
 
     # JWT
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = False #60 * 60
+    JWT_ACCESS_TOKEN_EXPIRES = False    # 60 * 60
 
     # SCHEDULER
     SCHEDULER_API_ENABLED = True
 
-    # Mail 
+    # Mail
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_TLS = False

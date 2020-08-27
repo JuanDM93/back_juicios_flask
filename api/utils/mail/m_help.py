@@ -1,6 +1,5 @@
-## TODO 
+# TODO 
 # mailinfo
-from api.db import db_connect
 
 
 def ms_actual_local(data):
@@ -17,6 +16,7 @@ def ms_actual_local(data):
     sub = f"{data['numero_de_expediente']}"
     return sub, msg
 
+
 def ms_actual_fed(data):
     """
     data['id_juzgado_local']
@@ -28,6 +28,7 @@ def ms_actual_fed(data):
     msg = f"{data['actor']} ha actualizado su juicio local"
     sub = f"{data['numero_de_expediente']}"
     return sub, msg
+
 
 def ms_nuevo_local(data):
     """

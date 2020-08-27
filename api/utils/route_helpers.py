@@ -1,4 +1,5 @@
 from api.db import db_connect
+from datetime import date, datetime, timedelta 
 
 # Eliminar abogados reponsables
 def eliminarCorreosAbogadosLocales(id_juicio_local, listaCorreoAbogadosLocalesElimar):
@@ -92,3 +93,41 @@ def validarUsuario(email):
     if rv["BIT"] == 0 :
         return False
     return True
+
+
+#data actualizacion o insercion 
+def dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente):
+    sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
+    sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
+    sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
+    sql += str(numero_de_expediente) +"'"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchone()
+    return rv
+
+#eliminar acuerdos locales
+def eliminarAcuerdosLocales(id_juicio_local):
+    sql = "DELETE FROM acuerdos_locales where id_juicio_local = " + str(id_juicio_local)
+    __, response = db_connect(sql)
+
+
+#en lazar acuerdos historicos
+def acuerdosHistoricos(id_juicio_local):
+    fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    yearsql = datetime.strftime(datetime.now() - timedelta(days=365), '%Y')
+    sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion"
+    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "+ str(id_juicio_local)+" AND "
+    sql += " acuerdos_locales.fecha BETWEEN '"+yearsql+"-01-01' AND '"+ fechasql +"'"
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+    return rv 
+
+#acuerdos locales diarios
+def acuerdoslocalesdiarios(id_juicio_local):
+    fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion"
+    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "+ str(id_juicio_local)+" AND "
+    sql += " acuerdos_locales.fecha = '"+ fechasql +"'"
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+    return rv 

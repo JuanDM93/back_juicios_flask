@@ -4,7 +4,7 @@ from pathlib import Path
 from random import randint
 from datetime import (datetime, timedelta)
 
-from ...db import db_connect
+from api.utils.db import db_connect
 
 
 def extract_acuerdo(pdf: str, data):

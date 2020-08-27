@@ -8,7 +8,7 @@ bp = Blueprint(
     url_prefix='/locales')
 
 #DB
-from .db import db_connect
+from api.utils.db import db_connect
 # Mail
 from .utils.mail.service import sendMulti
 # Helpers
@@ -74,14 +74,8 @@ def alta_juicio():
 
     registrarCorreosAbogadosLocales(
         numero_de_expediente, id_juzgado_local, emails)
-    
-    sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
-    sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
-    sql += "WHERE juicios_locales.id_juzgado_local = "+ str(id_juzgado_local)+ " and  juicios_locales.numero_de_expediente = '"
-    sql += str(numero_de_expediente) +"'"
-    cur, __ = db_connect(sql)
-    rv = cur.fetchone()
-    
+    rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
+        
     from .utils.pdf.fetch import fetch_history
     fetch_history([rv])
     ## TODO
@@ -99,8 +93,7 @@ def eliminar_juicio():
     sql = "DELETE FROM juicios_locales where id = " + str(id_juicio_local)
     __, response = db_connect(sql)
     
-    sql2 = "DELETE FROM acuerdos_locales where id_juicio_local = " + str(id_juicio_local)
-    __, response = db_connect(sql2)
+    eliminarAcuerdosLocales(id_juicio_local)
     
     if response > 0:
         result = {'message': 'record delete'}
@@ -147,14 +140,19 @@ def actualizar_juicio():
         metodo_actualizar_juicio(
             actor, demandado, numero_de_expediente, id_juzgado_local,
             emails, emailsEliminar, id_juicio_local)
-        sendMulti(data)
+        eliminarAcuerdosLocales(id_juicio_local)
+        rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
+        from .utils.pdf.fetch import fetch_history
+        fetch_history([rv])
+        
+        #sendMulti(data)
         return jsonify({'status': 200})
 
     if orginalJuzgado == True:
         metodo_actualizar_juicio(
             actor, demandado, numero_de_expediente, id_juzgado_local,
             emails, emailsEliminar, id_juicio_local)
-        sendMulti(data)
+        #sendMulti(data)
         return jsonify({'status': 200})
 
     if validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
@@ -165,7 +163,11 @@ def actualizar_juicio():
     metodo_actualizar_juicio(
         actor, demandado, numero_de_expediente, id_juzgado_local,
         emails, emailsEliminar, id_juicio_local)
-    sendMulti(data)
+    eliminarAcuerdosLocales(id_juicio_local)
+    rv = dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
+    from .utils.pdf.fetch import fetch_history
+    fetch_history([rv])
+    #sendMulti(data)
     return jsonify({'status': 200})
 
 # Juicios locales asignados
