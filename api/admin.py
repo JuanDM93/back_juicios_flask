@@ -46,6 +46,16 @@ def register():
     return jsonify({'status' : 200})
 
 
+@bp.route('/informacionperfil', methods=['POST'])
+def informacionperfil():
+    id_usuario = request.get_json()['id_usuario']
+    sql = "select  id as id_usuario, apellido_paterno,  apellido_materno, nombre,"
+    sql += "email, id_tipo_usuario, id_despacho from  usuarios WHERE id = " + str(id_usuario)
+    cur, __ = db_connect(sql) 
+    rv = cur.fetchone()
+    return rv
+
+
 @bp.route('/listausuarios', methods=['POST'])
 def listausuarios():
     superroot = request.get_json()['superroot']

@@ -11,15 +11,17 @@ def start_jobs(app):
 # interval example
 @scheduler.task(
     'interval', id='do_job_1',
-    minutes=1,)
+    seconds=30,)
 def job1():
-    print('Job 1 executed')
+    #logger
+    with scheduler.app.app_context():
+        scheduler.app.logger.debug('Do Job Scheduler 30')
 
 # Mail test
 from .mail.service import sendMulti
 @scheduler.task(
     'cron', id='mail_tester',
-    day='*', hour='12', minute='30')
+    day='*', hour='*', minute='30')
 def mail_tester():
     data = {}
     data['tipo'] = 'a_j_l'
@@ -30,8 +32,7 @@ def mail_tester():
 
     with scheduler.app.app_context():
         sendMulti(data)
-    
-    print('Mail job executed')
+        scheduler.app.logger.debug('Mail job executed')
 
 # dayly pdf
 from datetime import datetime

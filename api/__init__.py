@@ -10,10 +10,11 @@ def create_app():
     )
     app.config.from_object('config.Config')
 
-    # CORS
-    CORS(app)
 
     with app.app_context():
+        # CORS
+        CORS(app)
+        
         # JWT & BCRYPT
         from .utils.auth import init_auth
         init_auth(app)
