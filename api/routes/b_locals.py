@@ -27,21 +27,25 @@ def juicios():
     # Obtener los juicios locales la informacion
     id_despacho = request.get_json()['id_despacho']
     sql = "SELECT "
-    sql += 'juzgados_locales.nombre as nombre_juzgado_local, ' \
-    'juicios_locales.id_juzgado_local,  ' \
-    'juicios_locales.actor,  ' \
-    'juicios_locales.demandado,  ' \
-    'juicios_locales.numero_de_expediente,  ' \
-    'abogados_responsables_juicios_locales.id_juicio_local,  ' \
-    'abogados_responsables_juicios_locales.email,  ' \
-    'usuarios.id_despacho  ' \
-    'FROM abogados_responsables_juicios_locales ' \
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  ' \
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local ' \
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local ' \
-    'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' ' \
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local ' \
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'                
+    sql += 'juzgados_locales.nombre as nombre_juzgado_local, '
+    sql += 'juicios_locales.id_juzgado_local,  '
+    sql += 'juicios_locales.actor,  '
+    sql += 'juicios_locales.demandado,  '
+    sql += 'juicios_locales.numero_de_expediente,  '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local,  '
+    sql += 'abogados_responsables_juicios_locales.email,  '
+    sql += 'usuarios.id_despacho  '
+    sql += 'FROM abogados_responsables_juicios_locales '
+    sql += 'LEFT JOIN usuarios ON usuarios.email = '
+    sql += 'abogados_responsables_juicios_locales.email '
+    sql += 'INNER JOIN juicios_locales on juicios_locales.id = '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'INNER JOIN juzgados_locales on juzgados_locales.id = '
+    sql += 'juicios_locales.id_juzgado_local '
+    sql += 'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' '
+    sql += 'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'ORDER BY juicios_locales.id_juzgado_local, '
+    sql += 'juicios_locales.numero_de_expediente DESC;'
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
     for r in rv:
@@ -67,7 +71,8 @@ def alta_juicio():
             'mensaje': 'Esta repetido el registro'})
 
     sql = "INSERT INTO juicios_locales "
-    sql += "(actor, demandado, numero_de_expediente, id_juzgado_local) VALUES ('"
+    sql += "(actor, demandado, numero_de_expediente, id_juzgado_local)"
+    sql += " VALUES ('"
     sql += str(actor).lstrip().rstrip().upper() + "', '"
     sql += str(demandado).lstrip().rstrip().upper() + "', '"
     sql += str(numero_de_expediente) + "', '"
@@ -165,7 +170,7 @@ def actualizar_juicio():
         numero_de_expediente, id_juzgado_local
             ):
         return jsonify({
-            'status' : 400, 'mensaje': 'Esta repetido el registro'
+            'status': 400, 'mensaje': 'Esta repetido el registro'
             })
     rh.metodo_actualizar_juicio(
         actor, demandado, numero_de_expediente, id_juzgado_local,
@@ -183,22 +188,26 @@ def actualizar_juicio():
 def juicios_asignados():
     # Juicios locales asignados
     id_usuario = request.get_json()['id_usuario']
-    sql = 'SELECT ' \
-    'juzgados_locales.nombre as nombre_juzgado_local, ' \
-    'juicios_locales.id_juzgado_local,  '\
-    'juicios_locales.actor,  '\
-    'juicios_locales.demandado,  '\
-    'juicios_locales.numero_de_expediente,  '\
-    'abogados_responsables_juicios_locales.id_juicio_local,  '\
-    'abogados_responsables_juicios_locales.email,  '\
-    'usuarios.id_despacho  '\
-    'FROM abogados_responsables_juicios_locales '\
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  '\
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local '\
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local '\
-    'WHERE usuarios.id  =  '+ str(id_usuario) +' '\
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'    
+    sql = 'SELECT '
+    sql += 'juzgados_locales.nombre as nombre_juzgado_local, '
+    sql += 'juicios_locales.id_juzgado_local,  '
+    sql += 'juicios_locales.actor,  '
+    sql += 'juicios_locales.demandado,  '
+    sql += 'juicios_locales.numero_de_expediente,  '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local,  '
+    sql += 'abogados_responsables_juicios_locales.email,  '
+    sql += 'usuarios.id_despacho  '
+    sql += 'FROM abogados_responsables_juicios_locales '
+    sql += 'LEFT JOIN usuarios ON usuarios.email = '
+    sql += 'abogados_responsables_juicios_locales.email '
+    sql += 'INNER JOIN juicios_locales on juicios_locales.id'
+    sql += ' = abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'INNER JOIN juzgados_locales on juzgados_locales.id = '
+    sql += 'juicios_locales.id_juzgado_local '
+    sql += 'WHERE usuarios.id  =  ' + str(id_usuario) + ' '
+    sql += 'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'ORDER BY juicios_locales.id_juzgado_local, '
+    sql += 'juicios_locales.numero_de_expediente DESC;'
 
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
@@ -212,31 +221,41 @@ def filtro_juicios():
     # Filtros Juicios locales
     id_despacho = request.get_json()['id_despacho']
     id_juzgado_local = request.get_json()['id_juzgado_local']
-    numero_de_expediente = request.get_json()['numero_de_expediente'] 
+    numero_de_expediente = request.get_json()['numero_de_expediente']
 
     Where = ""
-    if len(numero_de_expediente) > 0 and str(numero_de_expediente).isspace() == False:
-        Where += " AND juicios_locales.numero_de_expediente like '%" + str(numero_de_expediente) + "%' "
+    if (
+        len(numero_de_expediente) > 0 and
+        str(numero_de_expediente).isspace() is False
+            ):
+        Where += " AND juicios_locales.numero_de_expediente like '%"
+        Where += str(numero_de_expediente) + "%' "
 
     if id_juzgado_local > 0:
-        Where += " AND juicios_locales.id_juzgado_local = '" + str(id_juzgado_local) + "' "
+        Where += " AND juicios_locales.id_juzgado_local = '"
+        Where += str(id_juzgado_local) + "' "
 
-    sql = 'SELECT ' \
-    'juzgados_locales.nombre as nombre_juzgado_local, '\
-    'juicios_locales.id_juzgado_local,  '\
-    'juicios_locales.actor,  '\
-    'juicios_locales.demandado,  '\
-    'juicios_locales.numero_de_expediente,  '\
-    'abogados_responsables_juicios_locales.id_juicio_local,  '\
-    'abogados_responsables_juicios_locales.email,  '\
-    'usuarios.id_despacho  '\
-    'FROM abogados_responsables_juicios_locales '\
-    'LEFT JOIN usuarios ON usuarios.email = abogados_responsables_juicios_locales.email  '\
-    'INNER JOIN juicios_locales on juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local '\
-    'INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local '\
-    'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' ' + Where + \
-    'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '\
-    'ORDER BY juicios_locales.id_juzgado_local, juicios_locales.numero_de_expediente DESC;'\
+    sql = 'SELECT '
+    sql += 'juzgados_locales.nombre as nombre_juzgado_local, '
+    sql += 'juicios_locales.id_juzgado_local,  '
+    sql += 'juicios_locales.actor,  '
+    sql += 'juicios_locales.demandado,  '
+    sql += 'juicios_locales.numero_de_expediente,  '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local,  '
+    sql += 'abogados_responsables_juicios_locales.email,  '
+    sql += 'usuarios.id_despacho  '
+    sql += 'FROM abogados_responsables_juicios_locales '
+    sql += 'LEFT JOIN usuarios ON usuarios.email = '
+    sql += 'abogados_responsables_juicios_locales.email '
+    sql += 'INNER JOIN juicios_locales on juicios_locales.id '
+    sql += '= abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'INNER JOIN juzgados_locales on juzgados_locales.id '
+    sql += '= juicios_locales.id_juzgado_local '
+    sql += 'WHERE usuarios.id_despacho  =  '
+    sql += str(id_despacho) + ' ' + Where
+    sql += 'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'ORDER BY juicios_locales.id_juzgado_local, '
+    sql += 'juicios_locales.numero_de_expediente DESC;'
 
     cur, __ = db_connect(sql)
     rv = cur.fetchall()

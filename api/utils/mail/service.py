@@ -123,14 +123,22 @@ from api.utils.db import db_connect
 
 
 def sqlenviarcorreo(data):
-    fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    fechasql = datetime.strftime(
+        datetime.now() - timedelta(days=1),
+        '%Y-%m-%d'
+    )
     sql = ""
     if(len(data) > 1):
-        sql = "SELECT juicios_locales.numero_de_expediente as expediente, juzgados_locales.nombre as juzgado,"
-        sql += "juicios_locales.actor, juicios_locales.demandado, juicios_locales.id as id_juicio_local "
-        sql += "FROM acuerdos_locales INNER JOIN juicios_locales ON juicios_locales.id = acuerdos_locales.id_juicio_local "
-        sql += "INNER JOIN juzgados_locales ON juzgados_locales.id = juicios_locales.id_juzgado_local "
+        sql = "SELECT juicios_locales.numero_de_expediente as expediente, "
+        sql += "juzgados_locales.nombre as juzgado,"
+        sql += "juicios_locales.actor, juicios_locales.demandado, "
+        sql += "juicios_locales.id as id_juicio_local "
+        sql += "FROM acuerdos_locales INNER JOIN juicios_locales "
+        sql += "ON juicios_locales.id = acuerdos_locales.id_juicio_local "
+        sql += "INNER JOIN juzgados_locales "
+        sql += "ON juzgados_locales.id = juicios_locales.id_juzgado_local "
         sql += "WHERE  acuerdos_locales.fecha = '" + fechasql + "'"
+
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
         for r in rv:
@@ -138,11 +146,18 @@ def sqlenviarcorreo(data):
         for r in rv:
             r["acuerdos"] = rh.acuerdoslocalesdiarios(r["id_juicio_local"])
         return rv
-    sql = "select juicios_locales.numero_de_expediente as expediente, juzgados_locales.nombre as juzgado, juicios_locales.actor,"
-    sql += "juicios_locales.demandado,juicios_locales.id as id_juicio_local from juicios_locales "
-    sql += " INNER JOIN juzgados_locales ON juzgados_locales.id = juicios_locales.id_juzgado_local "
-    sql += " WHERE juicios_locales.numero_de_expediente = '"+str(data[0]["expediente"])+"' AND juicios_locales.id_juzgado_local = "
+
+    sql = "select juicios_locales.numero_de_expediente as expediente, "
+    sql = "juzgados_locales.nombre as juzgado, juicios_locales.actor,"
+    sql += "juicios_locales.demandado, juicios_locales.id "
+    sql += "as id_juicio_local FROM juicios_locales "
+    sql += " INNER JOIN juzgados_locales ON juzgados_locales.id"
+    sql += " = juicios_locales.id_juzgado_local "
+    sql += " WHERE juicios_locales.numero_de_expediente = '"
+    sql += str(data[0]["expediente"])
+    sql += "' AND juicios_locales.id_juzgado_local = "
     sql += str(data[0]["id_juzgado_local"])
+
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
     for r in rv:

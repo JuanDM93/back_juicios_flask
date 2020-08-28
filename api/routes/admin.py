@@ -30,7 +30,8 @@ def register():
         return jsonify({
             'status': 400, 'mensaje': 'Esta repetido el registro'})
     sql = "INSERT INTO usuarios ("
-    sql += "apellido_paterno, apellido_materno, nombre, email, password, id_tipo_usuario, id_despacho, creado"
+    sql += "apellido_paterno, apellido_materno, nombre, email, password, "
+    sql += "id_tipo_usuario, id_despacho, creado"
     sql += ") VALUES ('"
     sql += str(apellido_paterno).lstrip().rstrip().upper() + "', '"
     sql += str(apellido_materno).lstrip().rstrip().upper() + "', '"
@@ -47,8 +48,10 @@ def register():
 @bp.route('/informacionperfil', methods=['POST'])
 def informacionperfil():
     id_usuario = request.get_json()['id_usuario']
-    sql = "select  id as id_usuario, apellido_paterno,  apellido_materno, nombre,"
-    sql += "email, id_tipo_usuario, id_despacho from  usuarios WHERE id = " + str(id_usuario)
+    sql = "select  id as id_usuario, apellido_paterno, "
+    sql += "apellido_materno, nombre, "
+    sql += "email, id_tipo_usuario, id_despacho from  usuarios WHERE id = "
+    sql += str(id_usuario)
     cur, __ = db_connect(sql)
     rv = cur.fetchone()
     return rv
@@ -60,12 +63,18 @@ def listausuarios():
     id_despacho = request.get_json()['id_despacho']
     where = ""
     if superroot is False:
-        where = "WHERE usuarios.id_despacho = " + str(id_despacho) + " AND NOT tipo_de_usuario.id = 1"
-    sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, usuarios.apellido_materno, "
+        where = "WHERE usuarios.id_despacho = "
+        where += str(id_despacho) + " AND NOT tipo_de_usuario.id = 1"
+    sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, "
+    sql += "usuarios.apellido_materno, "
     sql += "usuarios.nombre, usuarios.email, usuarios.id_tipo_usuario, "
-    sql += "tipo_de_usuario.nombre as nombre_tipo_usuario, usuarios.id_despacho,"
-    sql += "despachos.nombre as nombre_despacho from usuarios INNER JOIN despachos on despachos.id = usuarios.id_despacho "
-    sql += " INNER JOIN tipo_de_usuario on tipo_de_usuario.id = usuarios.id_tipo_usuario " + where
+    sql += "tipo_de_usuario.nombre as nombre_tipo_usuario, "
+    sql += "usuarios.id_despacho,"
+    sql += "despachos.nombre as nombre_despacho from usuarios "
+    sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho "
+    sql += " INNER JOIN tipo_de_usuario on "
+    sql += "tipo_de_usuario.id = usuarios.id_tipo_usuario "
+    sql += where
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
     return jsonify(rv)
@@ -98,7 +107,8 @@ def actualizarUsuario():
     email = request.get_json()['email']
     newPwd = request.get_json()['newPwd']
     if newPwd is True:
-        password = bcrypt.generate_password_hash(request.get_json()['password']).decode('utf-8')
+        password = bcrypt.generate_password_hash(
+            request.get_json()['password']).decode('utf-8')
     id_tipo_usuario = request.get_json()['id_tipo_usuario']
     id_despacho = request.get_json()['id_despacho']
     # creado = datetime.utcnow()
@@ -107,11 +117,14 @@ def actualizarUsuario():
 
     if originalemail is False:
         if rh.validarUsuario(email):
-            return jsonify({'status': 400, 'mensaje': 'Esta repetido el registro'})
+            return jsonify({
+                'status': 400, 'mensaje': 'Esta repetido el registro'})
 
         sql = "UPDATE usuarios SET "
-        sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', "
-        sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
+        sql += " apellido_paterno = '"
+        sql += str(apellido_paterno).lstrip().rstrip().upper() + "', "
+        sql += " apellido_materno = '"
+        sql += str(apellido_materno).lstrip().rstrip().upper() + "', "
         sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
         sql += " email = '" + str(email) + "', "
         if newPwd is True:
@@ -123,8 +136,10 @@ def actualizarUsuario():
         return jsonify({'status': 200})
 
     sql = "UPDATE usuarios SET "
-    sql += " apellido_paterno = '" + str(apellido_paterno).lstrip().rstrip().upper() + "', "
-    sql += " apellido_materno = '" + str(apellido_materno).lstrip().rstrip().upper() + "', "
+    sql += " apellido_paterno = '"
+    sql += str(apellido_paterno).lstrip().rstrip().upper() + "', "
+    sql += " apellido_materno = '"
+    sql += str(apellido_materno).lstrip().rstrip().upper() + "', "
     sql += " nombre = '" + str(nombre).lstrip().rstrip().upper() + "', "
     sql += " email = '" + str(email) + "', "
     if newPwd is True:
@@ -139,21 +154,24 @@ def actualizarUsuario():
 @bp.route('/logotipo', methods=['POST'])
 def logotipo():
     id_despacho = request.get_json()['id_despacho']
-    cur, __ = db_connect("select imagen from despachos WHERE id = " + str(id_despacho))
+    sql = "select imagen from despachos WHERE id = " + str(id_despacho)
+    cur, __ = db_connect(sql)
     rv = cur.fetchone()
     return jsonify(rv["imagen"])
 
 
 @bp.route('/tipousuario', methods=['GET'])
 def dtipousuario():
-    cur, __ = db_connect("select * from tipo_de_usuario")
+    sql = "select * from tipo_de_usuario"
+    cur, __ = db_connect(sql)
     rv = cur.fetchall()
     return jsonify(rv)
 
 
 @bp.route('/desapachos', methods=['GET'])
 def despachos():
-    cur, __ = db_connect("select * from despachos")
+    sql = "select * from despachos"
+    cur, __ = db_connect(sql)
     rv = cur.fetchall()
     return jsonify(rv)
 
@@ -164,9 +182,12 @@ def altaDespacho():
     base64 = request.get_json()['base64']
 
     if rh.validarExpedienteDespachos(nombreDespacho):
-        return jsonify({'status': 400, 'mensaje': 'Esta repetido el registro' })
+        return jsonify({
+            'status': 400, 'mensaje': 'Esta repetido el registro'})
 
-    sql = "INSERT INTO despachos (nombre,imagen) VALUES ('" + str(nombreDespacho).lstrip().rstrip().upper() + "', '" + str(base64) +"')"
+    sql = "INSERT INTO despachos (nombre,imagen) VALUES ('"
+    sql += str(nombreDespacho).lstrip().rstrip().upper()
+    sql += "', '" + str(base64) + "')"
     db_connect(sql)
     return jsonify({'status': 200})
 
@@ -196,11 +217,12 @@ def actualizarDespacho():
     originalNombre = request.get_json()['originalNombre']
     if originalNombre is False:
         if rh.validarExpedienteDespachos(nombreDespacho):
-            return jsonify({'status': 400, 'mensaje': 'Esta repetido el registro'})
+            return jsonify({
+                'status': 400, 'mensaje': 'Esta repetido el registro'})
 
         sql = "UPDATE despachos SET "
-        sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', "
-        sql += "imagen = '" + str(base64) + "'"
+        sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper()
+        sql += "', " + "imagen = '" + str(base64) + "'"
         sql += " WHERE id = " + str(id_despacho)
         db_connect(sql)
         return jsonify({'status': 200})

@@ -43,9 +43,12 @@ def mail_tester():
     day='*', hour='7')
 def daylyPDF():
     # dayly pdf
-    sql = "SELECT juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado, "
-    sql += "juicios_locales.numero_de_expediente as expediente FROM juicios_locales "
-    sql += "INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local"
+    sql = "SELECT juicios_locales.id as id_juicio_local, "
+    sql += "juzgados_locales.nombre as juzgado, "
+    sql += "juicios_locales.numero_de_expediente as expediente "
+    sql += "FROM juicios_locales "
+    sql += "INNER JOIN juzgados_locales on "
+    sql += "juzgados_locales.id = juicios_locales.id_juzgado_local"
     # cur, __ = db_connect(sql)
     # rv = cur.fetchall()
 

@@ -29,12 +29,14 @@ def registrarCorreosAbogadosLocales(
 
     data = ""
     for CorreoAbogadoLocal in listaCorreoAbogadosLocales:
-        data += "('" + str(id_juicio_local) + "', '" + CorreoAbogadoLocal + "'), "
+        data += "('" + str(id_juicio_local)
+        data += "', '" + CorreoAbogadoLocal + "'), "
         # TODO
         # enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
     data = data[:-2]
 
-    sql = "INSERT INTO abogados_responsables_juicios_locales (id_juicio_local, email) VALUES"
+    sql = "INSERT INTO abogados_responsables_juicios_locales"
+    sql += " (id_juicio_local, email) VALUES"
     sql += data
     db_connect(sql)
 
@@ -75,7 +77,7 @@ def validarExpedienteJuiciosLocales(numero_de_expediente, id_juzgado_local):
     cur, __ = db_connect(sql)
 
     rv = cur.fetchone()
-    if rv["BIT"] == 0 :
+    if rv["BIT"] == 0:
         return False
     return True
 
@@ -106,9 +108,14 @@ def validarUsuario(email):
 
 def dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente):
     # data actualizacion o insercion
-    sql = "select juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado ,juicios_locales.numero_de_expediente as expediente"
-    sql += " from juicios_locales INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local "
-    sql += "WHERE juicios_locales.id_juzgado_local = " + str(id_juzgado_local) + " and  juicios_locales.numero_de_expediente = '"
+    sql = "select juicios_locales.id as id_juicio_local, "
+    sql += "juzgados_locales.nombre as juzgado, "
+    sql += "juicios_locales.numero_de_expediente as expediente"
+    sql += " from juicios_locales INNER JOIN juzgados_locales "
+    sql += "on juzgados_locales.id = juicios_locales.id_juzgado_local "
+    sql += "WHERE juicios_locales.id_juzgado_local = "
+    sql += str(id_juzgado_local)
+    sql += " and  juicios_locales.numero_de_expediente = '"
     sql += str(numero_de_expediente) + "'"
     cur, __ = db_connect(sql)
     rv = cur.fetchone()
@@ -117,17 +124,23 @@ def dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente):
 
 def eliminarAcuerdosLocales(id_juicio_local):
     # eliminar acuerdos locales
-    sql = "DELETE FROM acuerdos_locales where id_juicio_local = " + str(id_juicio_local)
+    sql = "DELETE FROM acuerdos_locales where id_juicio_local = "
+    sql += str(id_juicio_local)
     __, response = db_connect(sql)
 
 
 def acuerdosHistoricos(id_juicio_local):
     # en lazar acuerdos historicos
-    fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
-    yearsql = datetime.strftime(datetime.now() - timedelta(days=365), '%Y')
+    fechasql = datetime.strftime(
+        datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    yearsql = datetime.strftime(
+        datetime.now() - timedelta(days=365), '%Y')
+
     sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion"
-    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = " + str(id_juicio_local) + " AND "
-    sql += " acuerdos_locales.fecha BETWEEN '" + yearsql + "-01-01' AND '" + fechasql + "'"
+    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "
+    sql += str(id_juicio_local) + " AND "
+    sql += " acuerdos_locales.fecha BETWEEN '" + yearsql
+    sql += "-01-01' AND '" + fechasql + "'"
     cur, response = db_connect(sql)
     rv = cur.fetchall()
     return rv
@@ -135,9 +148,11 @@ def acuerdosHistoricos(id_juicio_local):
 
 def acuerdoslocalesdiarios(id_juicio_local):
     # acuerdos locales diarios
-    fechasql = datetime.strftime(datetime.now() - timedelta(days=1), '%Y-%m-%d')
+    fechasql = datetime.strftime(
+        datetime.now() - timedelta(days=1), '%Y-%m-%d')
     sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion"
-    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = " + str(id_juicio_local)+" AND "
+    sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "
+    sql += str(id_juicio_local)+" AND "
     sql += " acuerdos_locales.fecha = '" + fechasql + "'"
     cur, response = db_connect(sql)
     rv = cur.fetchall()
