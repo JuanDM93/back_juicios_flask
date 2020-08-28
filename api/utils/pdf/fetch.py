@@ -1,6 +1,5 @@
 # public methods
 from datetime import datetime, timedelta
-
 from .parse import fetch_pdf
 
 

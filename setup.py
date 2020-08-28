@@ -1,7 +1,8 @@
-#TESTS
-#pip install '.[test]'
-#pytest
+# TESTS
+# pip install '.[test]'
+# pytest
 from setuptools import find_packages, setup
+
 
 setup(
     name='api',
@@ -19,6 +20,6 @@ setup(
         'Flask-Mail',
         'Flask-APScheduler',
         'beautifulsoup4',
-        'tika',     # java required (docker?)
+        'tika',     # java required (docker)
     ],
 )

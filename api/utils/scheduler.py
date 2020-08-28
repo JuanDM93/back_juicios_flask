@@ -1,6 +1,9 @@
 from flask_apscheduler import APScheduler
+from datetime import datetime
+from api.utils.mail.service import sendMulti
+# from api.utils.pdf.fetch import fetch_day
 
-# SCHEDULER
+
 scheduler = APScheduler()
 
 
@@ -9,16 +12,15 @@ def start_jobs(app):
     scheduler.start()
 
 
-# interval example
 @scheduler.task(
     'interval', id='do_job_1',
     seconds=30,)
 def job1():
+    # interval example
     with scheduler.app.app_context():
         scheduler.app.logger.debug('Do Job Scheduler 30')
 
 
-from .mail.service import sendMulti
 @scheduler.task(
     'cron', id='mail_tester',
     day='*', hour='*', minute='30')
@@ -36,13 +38,11 @@ def mail_tester():
         scheduler.app.logger.debug('Mail job executed')
 
 
-# dayly pdf
-from datetime import datetime
-from api.utils.pdf.fetch import fetch_day
 @scheduler.task(
     'cron', id='daylyPDF',
     day='*', hour='7')
 def daylyPDF():
+    # dayly pdf
     sql = "SELECT juicios_locales.id as id_juicio_local, juzgados_locales.nombre as juzgado, "
     sql += "juicios_locales.numero_de_expediente as expediente FROM juicios_locales "
     sql += "INNER JOIN juzgados_locales on juzgados_locales.id = juicios_locales.id_juzgado_local"
@@ -68,6 +68,6 @@ def daylyPDF():
     # for a in data:
     #   for ac in acuerdos:
     #       if ac == a:
-    #           db     
+    #           db
 
     scheduler.app.logger.debug(f'daylyPDF {hoy}')
