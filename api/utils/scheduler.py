@@ -72,5 +72,5 @@ def daylyPDF():
     #   for ac in acuerdos:
     #       if ac == a:
     #           db
-
-    scheduler.app.logger.debug(f'daylyPDF {hoy}')
+    with scheduler.app.app_context():
+        scheduler.app.logger.debug(f'daylyPDF {hoy}')

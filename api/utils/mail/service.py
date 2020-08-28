@@ -15,6 +15,15 @@ def search_msg(data):
     if data['tipo'] == 'n_j_l':
         return m_help.ms_nuevo_local(data)
 
+    if data['tipo'] == 'a_u':
+        return m_help.ms_nuevo_usuario(data)
+
+    if data['tipo'] == 'u_u':
+        return m_help.ms_actualizar_usuario(data)
+
+    if data['tipo'] == 'u_d':
+        return m_help.ms_eliminar_usuario(data)
+
 
 def sendMulti(data):
     subject, message = search_msg(data)
@@ -23,7 +32,7 @@ def sendMulti(data):
             msg = Message(
                 recipients=[user],
                 subject=subject,
-                body=message,
+                html=message,
             )
             conn.send(msg)
 

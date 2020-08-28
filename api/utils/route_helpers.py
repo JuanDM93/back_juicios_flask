@@ -157,3 +157,16 @@ def acuerdoslocalesdiarios(id_juicio_local):
     cur, response = db_connect(sql)
     rv = cur.fetchall()
     return rv
+
+
+def informacionActualizacionOregristroUsuario(email):
+    # informacion usuario interna nuevos usuario o actualizacion
+    sql = "select usuarios.apellido_paterno, usuarios.apellido_materno,"
+    sql += "usuarios.nombre, usuarios.email, despachos.nombre "
+    sql += "as nombre_despacho "
+    sql += "from usuarios  INNER JOIN despachos on "
+    sql += "despachos.id = usuarios.id_despacho"
+    sql += " WHERE email = '" + str(email) + "'"
+    cur, response = db_connect(sql)
+    rv = cur.fetchone()
+    return rv

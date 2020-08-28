@@ -6,6 +6,7 @@ from flask import (
 from api.utils.db import db_connect
 from api.utils.auth import bcrypt
 import api.utils.route_helpers as rh
+from api.utils.mail.service import sendMulti
 
 
 bp = Blueprint(
@@ -42,6 +43,12 @@ def register():
     sql += str(id_despacho) + "', '"
     sql += str(creado) + "')"
     db_connect(sql)
+
+    data = rh.informacionActualizacionOregristroUsuario(email)
+    data['tipo'] = 'a_u'
+    data['password'] = request.get_json()['password']
+    data['emails'] = [email]
+    sendMulti(data)
     return jsonify({'status': 200})
 
 
@@ -84,12 +91,17 @@ def listausuarios():
 def eliminarUsuario():
     # eliminarUsuario
     id_usuario = request.get_json()['id_usuario']
+    email = request.get_json()['email']
+    data = rh.informacionActualizacionOregristroUsuario(email)
 
     sql = "DELETE FROM usuarios where id = " + str(id_usuario)
     __, response = db_connect(sql)
 
     if response > 0:
         result = {'message': 'record deleted'}
+        data['tipo'] = 'u_d'
+        data['emails'] = [email]
+        sendMulti(data)
     else:
         result = {'message': 'record not found'}
 
@@ -133,6 +145,15 @@ def actualizarUsuario():
         sql += " id_despacho = " + str(id_despacho)
         sql += " WHERE id = " + str(id_usuario)
         db_connect(sql)
+
+        data = rh.informacionActualizacionOregristroUsuario(email)
+        data['tipo'] = 'u_u'
+        data['newPwd'] = newPwd
+        if newPwd is True:
+            data['password'] = request.get_json()['password']
+        data['emails'] = [email]
+        sendMulti(data)
+
         return jsonify({'status': 200})
 
     sql = "UPDATE usuarios SET "
@@ -148,6 +169,15 @@ def actualizarUsuario():
     sql += " id_despacho = " + str(id_despacho)
     sql += " WHERE id = " + str(id_usuario)
     db_connect(sql)
+
+    data = rh.informacionActualizacionOregristroUsuario(email)
+    data['tipo'] = 'u_u'
+    data['newPwd'] = newPwd
+    if newPwd is True:
+        data['password'] = request.get_json()['password']
+    data['emails'] = [email]
+    sendMulti(data)
+
     return jsonify({'status': 200})
 
 
