@@ -83,8 +83,8 @@ def alta_juicio():
         numero_de_expediente, id_juzgado_local, emails)
     rv = rh.dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
 
-    from api.utils.pdf.fetch import fetch_history
-    fetch_history([rv])
+    from api.utils.pdf.fetch import fetch_pdf_service
+    fetch_pdf_service([rv])
     # TODO
     # sedmail donde mande los datos y los acuerdos
     # sqlenviarcorreo
