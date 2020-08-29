@@ -53,7 +53,7 @@ def dailyPDF():
 
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
-    
+
     data = [rv]
     pdf_service(data, daily=True)
 

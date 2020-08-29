@@ -128,3 +128,8 @@ def get_acuerdos(data):
     for ac in acuerdos:
         ac['No.'] = ac['No.'].replace('\n', '')
     return acuerdos
+
+
+def get_daily(datas):
+    for d in datas:
+        d['acuerdos'] = get_acuerdos(d)
