@@ -7,7 +7,7 @@ def pdf_service(data, daily=False):
     now = datetime.now().date()
 
     if daily:
-        limit_date = now - timedelta(days=1)           # ONE day
+        limit_date = now - timedelta(days=1)        # ONE day
     else:
         # limit_date = now - timedelta(weeks=52)    # ONE year
         # limit_date = date(2020, 1, 1)             # THIS year

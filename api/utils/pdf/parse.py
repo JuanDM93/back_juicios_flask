@@ -59,7 +59,7 @@ def req_cdmx(fecha: str):
         return None
 
 
-def fetch_pdf_old(fecha, data: []):
+def fetch_pdf(fecha, data: []):
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
 
     response = req_cdmx(fechaurl)

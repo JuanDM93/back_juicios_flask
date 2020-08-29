@@ -51,11 +51,11 @@ def dailyPDF():
     sql += "INNER JOIN juzgados_locales on "
     sql += "juzgados_locales.id = juicios_locales.id_juzgado_local"
 
-    cur, __ = db_connect(sql)
-    rv = cur.fetchall()
-
-    data = [rv]
-    pdf_service(data, daily=True)
-
     with scheduler.app.app_context():
+        cur, __ = db_connect(sql)
+        rv = cur.fetchall()
+
+        data = [rv]
+        pdf_service(data, daily=True)
+
         scheduler.app.logger.debug('dailyPDF job')
