@@ -1,7 +1,8 @@
 from flask_apscheduler import APScheduler
-from datetime import datetime
+
+from api.utils.db import db_connect
 from api.utils.mail.service import sendMulti
-# from api.utils.pdf.fetch import fetch_day
+from api.utils.pdf.fetch import pdf_service
 
 
 scheduler = APScheduler()
@@ -39,38 +40,22 @@ def mail_tester():
 
 
 @scheduler.task(
-    'cron', id='daylyPDF',
-    day='*', hour='7')
-def daylyPDF():
-    # dayly pdf
+    'cron', id='dailyPDF',
+    day='*', hour='*', minute=30)
+def dailyPDF():
+    # daily pdf
     sql = "SELECT juicios_locales.id as id_juicio_local, "
     sql += "juzgados_locales.nombre as juzgado, "
     sql += "juicios_locales.numero_de_expediente as expediente "
     sql += "FROM juicios_locales "
     sql += "INNER JOIN juzgados_locales on "
     sql += "juzgados_locales.id = juicios_locales.id_juzgado_local"
-    # cur, __ = db_connect(sql)
-    # rv = cur.fetchall()
 
-    # data = [rv['']]
-    """
-    [
-        {
-            'juz': {
-                'exp':['ac', 'ac2']
-            },
-            'juz2': {
-                'exp':['ac', 'ac2']
-            },
-        },
-    ]
-    """
-    hoy = datetime.now().date()
-    # acuerdos = {juz, exp}
-    # acuerdos = fetch_day(hoy)
-    # for a in data:
-    #   for ac in acuerdos:
-    #       if ac == a:
-    #           db
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    
+    data = [rv]
+    pdf_service(data, daily=True)
+
     with scheduler.app.app_context():
-        scheduler.app.logger.debug(f'daylyPDF {hoy}')
+        scheduler.app.logger.debug('dailyPDF job')

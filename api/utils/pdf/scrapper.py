@@ -106,7 +106,6 @@ def get_acuerdos(data):
     form = f'tipoasunto={t_ast}'
     form += f'&organismo={id_org}'
     form += f'&expediente={n_exp}'
-    form += '&tipoprocedimiento=0'
 
     html = requests.get(b_url + form)
     soup = bs4.BeautifulSoup(html.text)

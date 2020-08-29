@@ -23,47 +23,13 @@ def extract_acuerdo(pdf: str, data):
     return result
 
 
-def extract_actuales(pdf: str):
-    flag = True
-    result = {}
-    while flag:
-        juzgado_separa = ''
-        x = pdf.find(juzgado_separa)
-        if x == -1:
-            return {}
-        y = pdf[x:].find(juzgado_separa)
-        juzgado = pdf[x:y]
-        # TODO
-        acuerdo_id = "Exp. "
-        ac_separa = '\n\n'
-        x = juzgado.find(ac_separa)
-        y = juzgado.find(acuerdo_id)
-        juzgado = juzgado[x:y]
-        acuerdos = juzgado[x:(y + len(juzgado))]
-        acuerdos = acuerdos.split(ac_separa)
-
-    result = {
-        'juzgado': 'test',
-        'acuerdos': acuerdos,
-        }
-    return result
-
-
 def extract_multi(pdf, data):
+    # TODO d['acuerdo']
     result = []
     for d in data:
         d['acuerdo'] = extract_acuerdo(pdf, d)
         if d['acuerdo'] is not None:
             result.append(d)
-
-    return result
-
-
-def extract_new(pdf):
-    result = []
-    data = extract_actuales(pdf)
-    for d in data:
-        result.append(d)
 
     return result
 
@@ -75,8 +41,6 @@ def is_parsed(f_name, data=None):
 
     # has content
     if len(pdf) > 1:
-        if data is None:
-            return extract_new(pdf)
         return extract_multi(pdf, data)
     return []
 
@@ -84,43 +48,30 @@ def is_parsed(f_name, data=None):
 def req_cdmx(fecha: str):
     url = 'https://www.poderjudicialcdmx.gob.mx/'
     url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
-    response = requests.get(url)
-
-    if response.status_code == 200:
-        return True, response.content
-    if response.status_code == 404:
-        return False, response
-    sleep(1)
-    return req_cdmx(fecha)
-
-
-def fetch_pdf(fecha, data: [] = []):
-    fechaurl = datetime.strftime(fecha, '%d%m%Y')
-    flag, response = req_cdmx(fechaurl)
-    if flag:
-        with tempfile.TemporaryDirectory() as pdf_dir:
-            # create pdf
-            f_name = f'{fechaurl}.pdf'
-            file_pdf = Path(pdf_dir + f_name)
-            file_pdf.write_bytes(response)
-
-            if len(data) > 1:
-                result = is_parsed(pdf_dir + f_name, data)
-        print(len(result))
+    with requests.Session() as s:
+        response = s.get(url)
+        # TODO check other status??? timeouts...
+        if response.status_code == 200:
+            return response.content
+        if response.status_code == 500:
+            sleep(1)
+            return req_cdmx(fecha)
+        return None
 
 
 def fetch_pdf_old(fecha, data: []):
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
 
-    flag, response = req_cdmx(fechaurl)
-    if flag:
+    response = req_cdmx(fechaurl)
+    if response is not None:
+
         with tempfile.TemporaryDirectory() as pdf_dir:
             # create pdf
-            f_name = f'{fechaurl}.pdf'
-            file_pdf = Path(pdf_dir + f_name)
+            f_name = pdf_dir + f'{fechaurl}.pdf'
+            file_pdf = Path(f_name)
             file_pdf.write_bytes(response)
 
-            result = is_parsed(pdf_dir + f_name, data)
+            result = is_parsed(f_name, data)
         # SQL
         if len(result) > 0:
             values = ""
