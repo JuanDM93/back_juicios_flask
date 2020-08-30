@@ -69,8 +69,7 @@ def daily_local():
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
 
-        data = [rv]
-        if data is None:
-            pdf_service(data, daily=True)
+        if rv is not None:
+            pdf_service(rv, daily=True)
 
         scheduler.app.logger.debug('dailyLocal job')
