@@ -15,7 +15,7 @@ def start_jobs(app):
 
 @scheduler.task(
     'cron', id='mail_tester',
-    day='*', hour='*', minute='30')
+    day='*', hour='*', minute='*')
 def mail_tester():
     # Mail test
     data = {}
@@ -32,12 +32,11 @@ def mail_tester():
 
 @scheduler.task(
     'cron', id='daily_federal',
-    day='*', hour='*', minute=1)
+    day='*', hour='*', minute='*')
 def daily_federal():
     # daily federal
     sql = ''
     with scheduler.app.app_context():
-        """
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
 
@@ -45,13 +44,13 @@ def daily_federal():
 
         from api.utils.pdf.scrapper import get_federals
         get_federals(data)
-        """
+
         scheduler.app.logger.debug('dailyFederal job')
 
 
 @scheduler.task(
     'cron', id='daily_local',
-    day='*', hour='*', minute='1')
+    day='*', hour='*', minute='*')
 def daily_local():
     # daily_local
     sql = "SELECT juicios_locales.id as id_juicio_local, "
@@ -62,12 +61,11 @@ def daily_local():
     sql += "juzgados_locales.id = juicios_locales.id_juzgado_local"
 
     with scheduler.app.app_context():
-        """
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
 
         data = [rv]
         if data is None:
             pdf_service(data, daily=True)
-        """
+
         scheduler.app.logger.debug('dailyLocal job')
