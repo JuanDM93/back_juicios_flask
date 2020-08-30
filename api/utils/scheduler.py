@@ -52,9 +52,9 @@ def daily_federal():
 
 
 @scheduler.task(
-    'interval', id='daily_local', seconds=5,
-    # 'cron', id='daily_local',
-    # day='*', hour='*',
+    # 'interval', id='daily_local', seconds=5,
+    'cron', id='daily_local',
+    day='*', hour='7',
     )
 def daily_local():
     # daily_local
