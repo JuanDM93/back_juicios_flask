@@ -14,15 +14,6 @@ def start_jobs(app):
 
 
 @scheduler.task(
-    'interval', id='do_job_1',
-    seconds=30,)
-def job1():
-    # interval example
-    with scheduler.app.app_context():
-        scheduler.app.logger.debug('Do Job Scheduler 30')
-
-
-@scheduler.task(
     'cron', id='mail_tester',
     day='*', hour='*', minute='30')
 def mail_tester():
@@ -41,7 +32,7 @@ def mail_tester():
 
 @scheduler.task(
     'cron', id='daily_federal',
-    day='*', hour='*', minute=30)
+    day='*', hour='*', minute=1)
 def daily_federal():
     # daily federal
     sql = ''
@@ -59,7 +50,7 @@ def daily_federal():
 
 @scheduler.task(
     'cron', id='daily_local',
-    day='*', hour='*', minute=30)
+    day='*', hour='*', minute=1)
 def daily_local():
     # daily_local
     sql = "SELECT juicios_locales.id as id_juicio_local, "
