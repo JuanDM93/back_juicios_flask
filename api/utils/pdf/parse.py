@@ -59,21 +59,24 @@ def req_cdmx(fecha: str):
         return None
 
 
+from flask import current_app
 def fetch_pdf(fecha, data: []):
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
+        
 
     response = req_cdmx(fechaurl)
     if response is not None:
 
         with tempfile.TemporaryDirectory() as pdf_dir:
             # create pdf
-            print(fechaurl)
-            f_name = pdf_dir + f'{fechaurl}.pdf'
-            file_pdf = Path(f_name)
-            file_pdf.write_bytes(response)
+            with current_app.app_context():
+                print(fechaurl)
+                f_name = pdf_dir + f'{fechaurl}.pdf'
+                file_pdf = Path(f_name)
+                file_pdf.write_bytes(response)
 
-            result = is_parsed(f_name, data)
-            print(len(result))
+                result = is_parsed(f_name, data)
+                print(len(result))
         # SQL
         if len(result) > 0:
             values = ""

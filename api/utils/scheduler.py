@@ -31,9 +31,9 @@ def mail_tester():
 
 
 @scheduler.task(
-    'interval', id='daily_federal', seconds=30,
+    'interval', id='daily_federal', seconds=5,
     # 'cron', id='daily_federal',
-    # day='*', hour='*', minute='*'
+    # day='*', hour='*',
     )
 def daily_federal():
     # daily federal
@@ -52,9 +52,9 @@ def daily_federal():
 
 
 @scheduler.task(
-    'interval', id='daily_local', seconds=30,
+    'interval', id='daily_local', seconds=5,
     # 'cron', id='daily_local',
-    # day='*', hour='*', minute='*'
+    # day='*', hour='*',
     )
 def daily_local():
     # daily_local
