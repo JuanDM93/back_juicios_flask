@@ -35,8 +35,9 @@ def mail_tester():
     day='*', hour='*', minute='*')
 def daily_federal():
     # daily federal
-    sql = ''
     with scheduler.app.app_context():
+        """
+        sql = ''
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
 
@@ -44,7 +45,7 @@ def daily_federal():
 
         from api.utils.pdf.scrapper import get_federals
         get_federals(data)
-
+        """
         scheduler.app.logger.debug('dailyFederal job')
 
 
