@@ -203,3 +203,31 @@ def informacionLocalExpedienteHistorico(expediente, id_juzgado_local):
     for r in rv:
         r["acuerdos"] = acuerdosHistoricos(r["id_juicio_local"])
     return rv
+
+
+def sqlenviarcorreo(data):
+    fechasql = datetime.strftime(
+        datetime.now() - timedelta(days=1),
+        '%Y-%m-%d'
+    )
+    sql = ""
+    if(len(data) > 1):
+        sql = "SELECT juicios_locales.numero_de_expediente as expediente, "
+        sql += "juzgados_locales.nombre as juzgado,"
+        sql += "juicios_locales.actor, juicios_locales.demandado, "
+        sql += "juicios_locales.id as id_juicio_local "
+        sql += "FROM acuerdos_locales INNER JOIN juicios_locales "
+        sql += "ON juicios_locales.id = acuerdos_locales.id_juicio_local "
+        sql += "INNER JOIN juzgados_locales "
+        sql += "ON juzgados_locales.id = juicios_locales.id_juzgado_local "
+        sql += "WHERE  acuerdos_locales.fecha = '" + fechasql + "'"
+
+        cur, __ = db_connect(sql)
+        rv = cur.fetchall()
+        for r in rv:
+            r["emails"] = listaCorreosLigador(r["id_juicio_local"])
+        for r in rv:
+            r["acuerdos"] = acuerdoslocalesdiarios(r["id_juicio_local"])
+        return rv
+    return informacionLocalExpedienteHistorico(
+        data[0]["expediente"], data[0]["id_juzgado_local"])
