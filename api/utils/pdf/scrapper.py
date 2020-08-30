@@ -133,3 +133,143 @@ def get_acuerdos(data):
 def get_federals(datas):
     for d in datas:
         d['acuerdos'] = get_acuerdos(d)
+
+
+def scrap_locals(session, xfun, args=[]):
+    url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
+
+    body = {
+            'xjxfun': f'{xfun}',
+            'xjxargs[]': [],
+        }
+
+    for arg in args:
+        a = f'S{arg}'
+        body['xjxargs[]'].append(a)
+
+    response = session.post(url, body)
+
+    if len(args) > 1:
+        fun = 'numero'
+        json = response.json()
+        ob = json.get('xjxobj')
+        text = ob[-1]['data']
+    else:
+        fun = 'materia'
+        text = response.text
+
+    soup = bs4.BeautifulSoup(text)
+    select = soup.find(
+        'select', {
+            'name': f'slc{fun}',
+        })
+    options = select.findAll('option')
+
+    result = {}
+    for o in options[1:]:
+        value = o.get('value')
+        text = str(o.text).replace(' ', '')
+        text = text.replace('\"}]}', '')
+        result[text] = value
+
+    return result
+
+
+def scrapper_locals():
+    # --- get nombres
+    url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
+    with requests.Session() as s:
+        response = s.get(url)
+
+        soup = bs4.BeautifulSoup(response.text)
+
+        select = soup.find(
+            'select', {
+                'name': 'slcautoridad',
+            })
+        options = select.findAll('option')
+
+        result = {}
+        for o in options[1:]:
+            o_txt = str(o.text).replace(' ', '')
+            o_txt = o_txt.replace('\"}]}', '')
+            value = o.get('value')
+            print(f"{value}:{o_txt}")
+
+            result[o_txt] = {}
+            materias = scrap_locals(s, 'Materias', [value])
+
+            for m in materias:
+                numeros = scrap_locals(s, 'Numeros', [value, materias.get(m)])
+                result[o_txt][m] = numeros
+
+        return result
+
+
+def build_json_salas(j_locals):
+    nums = [
+        '',
+        'PRIMERA',
+        'SEGUNDA',
+        'TERCERA',
+        'CUARTA',
+        'QUINTA',
+        'SEXTA',
+        'SEPTIMA',
+        'OCTAVA',
+        'NOVENA',
+        'DECIMA',
+    ]
+
+    salas = j_locals['SALA']
+
+    nombres = {}
+    for tipo in salas:
+        nombres[tipo] = []
+        s_nums = salas[tipo]
+        for n in s_nums:
+            name = nums[int(n)] + ' SALA DE LO ' + tipo
+            nombres[tipo].append(name)
+
+    return nombres
+
+
+def build_json_juz(j_locals):
+    unidades = [
+        '',
+        'PRIMERO',
+        'SEGUNDO',
+        'TERCERO',
+        'CUARTO',
+        'QUINTO',
+        'SEXTO',
+        'SEPTIMO',
+        'OCTAVO',
+        'NOVENO',
+        'DECIMO',
+    ]
+    decimos = [
+        '',
+        'DECIMO',
+        'VIGESIMO',
+        'TRIGESIMO',
+        'CUADRAGESIMO',
+        'QUINCUAGESIMO',
+        'OCTOGESIMO',
+        'SEPTUAGESIMO',
+        # MAX 73
+    ]
+
+    juzgados = j_locals['JUZGADO']
+
+    nombres = {}
+    for tipo in juzgados:
+        nombres[tipo] = []
+        j_nums = juzgados[tipo]
+        for n in j_nums.values():
+            d_num = decimos[int(n[:1])]
+            u_num = unidades[int(n[1:])]
+            name = f'{d_num} {u_num} DE LO {tipo}'
+            nombres[tipo].append(name)
+
+    return nombres

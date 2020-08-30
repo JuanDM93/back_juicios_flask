@@ -15,11 +15,12 @@ def start_jobs(app):
 
 @scheduler.task(
     'cron', id='mail_tester',
-    day='*', hour='*', minute='30')
+    day_of_week='*', hour='4', minute='20',
+    )
 def mail_tester():
     # Mail test
     data = {}
-    data['tipo'] = 'a_j_l'
+    data['tipo'] = 'a_j_f'
     data['emails'] = ['ricaror@hotmail.com']
     data['numero_de_expediente'] = '1/2020'
     data['actor'] = 'ACTOR'
@@ -31,9 +32,8 @@ def mail_tester():
 
 
 @scheduler.task(
-    'interval', id='daily_federal', seconds=5,
-    # 'cron', id='daily_federal',
-    # day='*', hour='*',
+    'cron', id='daily_federal',
+    day_of_week='*', second='30',
     )
 def daily_federal():
     # daily federal
@@ -54,7 +54,7 @@ def daily_federal():
 @scheduler.task(
     # 'interval', id='daily_local', seconds=5,
     'cron', id='daily_local',
-    day='*', hour='7',
+    day_of_week='mon-fri', hour=7, jitter=120,
     )
 def daily_local():
     # daily_local

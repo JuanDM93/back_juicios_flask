@@ -26,6 +26,7 @@ def create_app():
         # Mail
         from .utils.mail.service import mail
         mail.init_app(app)
+        app.extensions['mail'].debug = 0    # No logging
 
         # Jobs
         from .utils.scheduler import start_jobs
