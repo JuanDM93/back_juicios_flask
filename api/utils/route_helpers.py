@@ -110,6 +110,7 @@ def dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente):
     # data actualizacion o insercion
     sql = "select juicios_locales.id as id_juicio_local, "
     sql += "juzgados_locales.nombre as juzgado, "
+    sql += "juicios_locales.id_juzgado_local, "
     sql += "juicios_locales.numero_de_expediente as expediente"
     sql += " from juicios_locales INNER JOIN juzgados_locales "
     sql += "on juzgados_locales.id = juicios_locales.id_juzgado_local "
@@ -141,6 +142,7 @@ def acuerdosHistoricos(id_juicio_local):
     sql += str(id_juicio_local) + " AND "
     sql += " acuerdos_locales.fecha BETWEEN '" + yearsql
     sql += "-01-01' AND '" + fechasql + "'"
+    sql += " ORDER BY acuerdos_locales.fecha DESC "
     cur, response = db_connect(sql)
     rv = cur.fetchall()
     return rv
@@ -154,6 +156,8 @@ def acuerdoslocalesdiarios(id_juicio_local):
     sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "
     sql += str(id_juicio_local)+" AND "
     sql += " acuerdos_locales.fecha = '" + fechasql + "'"
+    sql += " ORDER BY acuerdos_locales.fecha DESC "
+
     cur, response = db_connect(sql)
     rv = cur.fetchall()
     return rv
@@ -169,4 +173,33 @@ def informacionActualizacionOregristroUsuario(email):
     sql += " WHERE email = '" + str(email) + "'"
     cur, response = db_connect(sql)
     rv = cur.fetchone()
+    return rv
+
+
+def listaCorreosLigador(id_juicio_local):
+    lista = []
+    for correo in correosLigadosJuiciosLocales(id_juicio_local):
+        lista.append(correo["email"])
+    return lista
+
+
+def informacionLocalExpedienteHistorico(expediente, id_juzgado_local):
+    sql = "select juicios_locales.numero_de_expediente as expediente, "
+    sql += " juzgados_locales.nombre as juzgado, juicios_locales.actor,"
+    sql += " juicios_locales.demandado, juicios_locales.id "
+    sql += " as id_juicio_local FROM juicios_locales "
+    sql += " INNER JOIN juzgados_locales ON juzgados_locales.id "
+    sql += " = juicios_locales.id_juzgado_local "
+    sql += " WHERE juicios_locales.numero_de_expediente = '"
+    sql += str(expediente)
+    sql += "' AND juicios_locales.id_juzgado_local = "
+    sql += str(id_juzgado_local)
+
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+
+    for r in rv:
+        r["emails"] = listaCorreosLigador(r["id_juicio_local"])
+    for r in rv:
+        r["acuerdos"] = acuerdosHistoricos(r["id_juicio_local"])
     return rv

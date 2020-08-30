@@ -129,6 +129,7 @@ rv = [
 import api.utils.route_helpers as rh
 from datetime import (datetime, timedelta)
 from api.utils.db import db_connect
+from api.utils.route_helpers import informacionLocalExpedienteHistorico
 
 
 def sqlenviarcorreo(data):
@@ -151,26 +152,9 @@ def sqlenviarcorreo(data):
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
         for r in rv:
-            r["emails"] = rh.correosLigadosJuiciosLocales(r["id_juicio_local"])
+            r["emails"] = rh.listaCorreosLigador(r["id_juicio_local"])
         for r in rv:
             r["acuerdos"] = rh.acuerdoslocalesdiarios(r["id_juicio_local"])
         return rv
-
-    sql = "select juicios_locales.numero_de_expediente as expediente, "
-    sql = "juzgados_locales.nombre as juzgado, juicios_locales.actor,"
-    sql += "juicios_locales.demandado, juicios_locales.id "
-    sql += "as id_juicio_local FROM juicios_locales "
-    sql += " INNER JOIN juzgados_locales ON juzgados_locales.id"
-    sql += " = juicios_locales.id_juzgado_local "
-    sql += " WHERE juicios_locales.numero_de_expediente = '"
-    sql += str(data[0]["expediente"])
-    sql += "' AND juicios_locales.id_juzgado_local = "
-    sql += str(data[0]["id_juzgado_local"])
-
-    cur, __ = db_connect(sql)
-    rv = cur.fetchall()
-    for r in rv:
-        r["emails"] = rh.correosLigadosJuiciosLocales(r["id_juicio_local"])
-    for r in rv:
-        r["acuerdos"] = rh.acuerdosHistoricos(r["id_juicio_local"])
-    return rv
+    return informacionLocalExpedienteHistorico(
+        data[0]["expediente"], data[0]["id_juzgado_local"])
