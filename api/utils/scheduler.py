@@ -15,7 +15,7 @@ def start_jobs(app):
 
 @scheduler.task(
     'cron', id='mail_tester',
-    day='*', hour='*', minute='*')
+    day='*', hour='*', minute='30')
 def mail_tester():
     # Mail test
     data = {}
