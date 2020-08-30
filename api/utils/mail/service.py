@@ -9,6 +9,12 @@ def search_msg(data):
     if data['tipo'] == 'a_j_l':
         return m_help.ms_actual_local(data)
 
+    if data['tipo'] == 'u_j_l':
+        return m_help.ms_actualizacion_local(data)
+
+    if data['tipo'] == 'd_j_l':
+        return m_help.ms_delet_local(data)
+
     if data['tipo'] == 'a_j_f':
         return m_help.ms_actual_fed(data)
 

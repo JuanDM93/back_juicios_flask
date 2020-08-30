@@ -3,14 +3,7 @@
 
 
 def ms_actual_local(data):
-    """
-msg = f"<p><strong>VARIABLE JUZGADO&nbsp;</strong></p>"
-<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>Variable expediente</p>
-<p><strong>Actor: </strong>Variable expediente</p>
-<p><strong>Demandado: </strong>Variable demandado</p>
-<p style="text-align: center;"><strong>Acuerdos</strong></p>
-<p style="text-align: justify;"><strong>Variable fecha: </strong>Variable descripcion</p>
-    """
+
     sub = f'Alta de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
     msg = f'<p><strong>{data["juzgado"]}</strong></p>'
     msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}</p>'
@@ -19,6 +12,27 @@ msg = f"<p><strong>VARIABLE JUZGADO&nbsp;</strong></p>"
     msg += '<p><strong>Acuerdos</strong></p>'
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
+
+    return sub, msg
+
+
+def ms_actualizacion_local(data):
+    sub = f'Actualizacion de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
+    msg = f'<p><strong>{data["juzgado"]}</strong></p>'
+    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}</p>'
+    msg += f'<p><strong>Actor:  </strong>{data["actor"]}</p>'
+    msg += f'<p><strong>Demandado: </strong>{data["demandado"]}</p>'
+    msg += '<p><strong>Acuerdos</strong></p>'
+    for acuerd in data["acuerdos"]:
+        msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
+
+    return sub, msg
+
+
+def ms_delet_local(data):
+
+    sub = f'Eliminación de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
+    msg = f'<p><strong>Se elimno Juicio en {data["juzgado"]} con expediente {data["expediente"]}</strong></p>'
 
     return sub, msg
 

@@ -104,6 +104,15 @@ def eliminar_juicio():
     # Eliminar juicio local
     id_juicio_local = request.get_json()['id_juicio_local']
     emails = request.get_json()['emails']
+    numero_de_expediente = request.get_json()['numero_de_expediente']
+    juzgado = request.get_json()['juzgado']
+
+    data = {}
+    data['tipo'] = 'd_j_l'
+
+    data['emails'] = emails
+    data['expediente'] = numero_de_expediente
+    data["juzgado"] = juzgado
 
     sql = "DELETE FROM juicios_locales where id = " + str(id_juicio_local)
     __, response = db_connect(sql)
@@ -112,6 +121,7 @@ def eliminar_juicio():
 
     if response > 0:
         result = {'message': 'record delete'}
+        sendMulti(data)
     else:
         result = {'message': 'no record found'}
 
@@ -135,13 +145,6 @@ def actualizar_juicio():
     actor = request.get_json()['actor']
 
     # from .utils.m_help import return_juzgado
-    data = {}
-    data['tipo'] = 'a_j_l'
-
-    data['emails'] = emails
-    data['numero_de_expediente'] = numero_de_expediente
-    data['actor'] = actor
-    data['demandado'] = demandado
     # data['juzgado_local'] = return_juzgado(id_juzgado_local)
     #  TODO
     # data['acuerdos'] = pdf(args)
@@ -162,14 +165,24 @@ def actualizar_juicio():
             id_juzgado_local, numero_de_expediente)
 
         pdf_service([rv])
-        # sendMulti(data)
+
+        dataMail = rh.sqlenviarcorreo([rv])
+        dataMail[0]['tipo'] = 'u_j_l'
+        sendMulti(dataMail[0])
+
         return jsonify({'status': 200})
 
     if orginalJuzgado is True:
         rh.metodo_actualizar_juicio(
             actor, demandado, numero_de_expediente, id_juzgado_local,
             emails, emailsEliminar, id_juicio_local)
-        sendMulti(data)
+
+        rv = rh.dataActualizacionOinsercion(
+            id_juzgado_local, numero_de_expediente)
+        dataMail = rh.sqlenviarcorreo([rv])
+        dataMail[0]['tipo'] = 'u_j_l'
+        sendMulti(dataMail[0])
+
         return jsonify({'status': 200})
 
     if rh.validarExpedienteJuiciosLocales(
@@ -185,7 +198,10 @@ def actualizar_juicio():
     rv = rh.dataActualizacionOinsercion(id_juzgado_local, numero_de_expediente)
 
     pdf_service([rv])
-    # sendMulti(data)
+    dataMail = rh.sqlenviarcorreo([rv])
+    dataMail[0]['tipo'] = 'u_j_l'
+    sendMulti(dataMail[0])
+
     return jsonify({'status': 200})
 
 
