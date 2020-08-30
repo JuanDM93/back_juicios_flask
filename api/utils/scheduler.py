@@ -31,8 +31,10 @@ def mail_tester():
 
 
 @scheduler.task(
-    'cron', id='daily_federal',
-    day='*', hour='*', minute='*')
+    'interval', id='daily_federal', seconds=30,
+    # 'cron', id='daily_federal',
+    # day='*', hour='*', minute='*'
+    )
 def daily_federal():
     # daily federal
     with scheduler.app.app_context():
@@ -50,8 +52,10 @@ def daily_federal():
 
 
 @scheduler.task(
-    'cron', id='daily_local',
-    day='*', hour='*', minute='*')
+    'interval', id='daily_local', seconds=30,
+    # 'cron', id='daily_local',
+    # day='*', hour='*', minute='*'
+    )
 def daily_local():
     # daily_local
     sql = "SELECT juicios_locales.id as id_juicio_local, "
