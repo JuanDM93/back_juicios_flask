@@ -40,10 +40,28 @@ def mail_tester():
 
 
 @scheduler.task(
-    'cron', id='dailyPDF',
+    'cron', id='daily_federal',
     day='*', hour='*', minute=30)
-def dailyPDF():
-    # daily pdf
+def daily_federal():
+    # daily federal
+    sql = ''
+    with scheduler.app.app_context():
+        cur, __ = db_connect(sql)
+        rv = cur.fetchall()
+
+        data = []
+
+        from api.utils.pdf.scrapper import get_federals
+        get_federals(data)
+
+        scheduler.app.logger.debug('dailyFederal job')
+
+
+@scheduler.task(
+    'cron', id='daily_local',
+    day='*', hour='*', minute=30)
+def daily_local():
+    # daily_local
     sql = "SELECT juicios_locales.id as id_juicio_local, "
     sql += "juzgados_locales.nombre as juzgado, "
     sql += "juicios_locales.numero_de_expediente as expediente "
@@ -58,4 +76,4 @@ def dailyPDF():
         data = [rv]
         pdf_service(data, daily=True)
 
-        scheduler.app.logger.debug('dailyPDF job')
+        scheduler.app.logger.debug('dailyLocal job')

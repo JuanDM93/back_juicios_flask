@@ -130,6 +130,6 @@ def get_acuerdos(data):
     return acuerdos
 
 
-def get_daily(datas):
+def get_federals(datas):
     for d in datas:
         d['acuerdos'] = get_acuerdos(d)
