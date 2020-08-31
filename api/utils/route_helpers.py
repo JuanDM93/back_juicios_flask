@@ -133,7 +133,7 @@ def eliminarAcuerdosLocales(id_juicio_local):
 def acuerdosHistoricos(id_juicio_local):
     # en lazar acuerdos historicos
     fechasql = datetime.strftime(
-        datetime.now() - timedelta(days=1), '%Y-%m-%d')
+        datetime.now(), '%Y-%m-%d')
     yearsql = datetime.strftime(
         datetime.now() - timedelta(days=365), '%Y')
 
@@ -145,6 +145,8 @@ def acuerdosHistoricos(id_juicio_local):
     sql += " ORDER BY acuerdos_locales.fecha DESC "
     cur, response = db_connect(sql)
     rv = cur.fetchall()
+    for r in rv:
+        r["fecha"] = r["fecha"].strftime('%Y-%m-%d')
     return rv
 
 

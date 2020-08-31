@@ -2,7 +2,7 @@ import requests
 import tempfile
 from time import sleep
 from pathlib import Path
-from datetime import (datetime, timedelta)
+from datetime import datetime
 
 from api.utils.db import db_connect
 
@@ -73,7 +73,7 @@ def fetch_pdf(fecha, data: []):
         if len(result) > 0:
             values = ""
             for r in result:
-                f_str = fecha - timedelta(days=1)
+                f_str = fecha
                 fecha_sql = datetime.strftime(f_str, '%Y-%m-%d')
                 values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
                 values += str(r["id_juicio_local"]) + "),"

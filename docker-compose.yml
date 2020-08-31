@@ -1,6 +1,11 @@
 version: '3'
 
 services:
+  
+  tika:
+    image: apache/tika 
+    ports: '9998':9998'
+
   api:
     build: ./
     ports:

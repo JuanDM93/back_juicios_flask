@@ -284,3 +284,12 @@ def filtro_juicios():
         r["emails"] = rh.correosLigadosJuiciosLocales(
             r["id_juicio_local"])
     return jsonify(rv)
+
+
+@bp.route('/detalle_expediente', methods=['POST'])
+def detalle_expediente():
+    id_juzgado_local = request.get_json()['id_juzgado_local']
+    numero_de_expediente = request.get_json()['numero_de_expediente']
+    return jsonify(
+        rh.informacionLocalExpedienteHistorico(
+            numero_de_expediente, id_juzgado_local))

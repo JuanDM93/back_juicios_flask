@@ -81,12 +81,16 @@ CRUD (baseURL/admin)
 
 ```bash
 ../register
+../desapachos
 
 ../listausuarios
+../actualizarUsuario
 
 ../logotipo
 
 ../tipousuario
+../eliminarUsuario
+../informacionperfil
 
 ../despachos
 ../altaDespacho
@@ -106,6 +110,7 @@ Locales (baseURL/locales)
 ../juzgados
 
 ../juicios
+../detalle_expediente
 
 ../alta_juicio
 ../eliminar_juicio
