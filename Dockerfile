@@ -10,6 +10,9 @@ COPY . /flask
 
 RUN pip install --upgrade pip setuptools
 
+RUN pip install wheel mysql
+
 RUN pip install -r requirements.txt
+
 
 CMD ["flask", "run"]

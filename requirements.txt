@@ -1,8 +1,6 @@
-six
 flask
 
 # flask_sqlalchemy
-mysql-connector-python
 flask_mysqldb
 
 flask_cors
