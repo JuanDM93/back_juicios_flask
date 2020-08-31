@@ -4,8 +4,12 @@ services:
     image: apache/tika
     ports:
       - '9998:9998'
-    deploy:
-      replicas: 1
+
+  db-server:
+    image: mysql
+    ports:
+      - '3306:3306'
+
   api:
     build: ./
     ports:
