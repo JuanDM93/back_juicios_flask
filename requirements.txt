@@ -1,7 +1,8 @@
+six
 flask
 
 # flask_sqlalchemy
-mysqlclient
+mysql
 flask_mysqldb
 
 flask_cors
