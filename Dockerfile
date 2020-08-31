@@ -12,7 +12,7 @@ RUN pip install --upgrade pip setuptools
 
 RUN pip install six wheel
 
-RUN pip install mysql-connector-python
+RUN pip install mysql-client
 
 RUN pip install -r requirements.txt
 
