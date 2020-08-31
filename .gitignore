@@ -6,6 +6,9 @@
 # Code #
 .vscode
 
+# db
+*.sql
+
 # Environments
 env
 

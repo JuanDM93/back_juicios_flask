@@ -293,3 +293,39 @@ def detalle_expediente():
     return jsonify(
         rh.informacionLocalExpedienteHistorico(
             numero_de_expediente, id_juzgado_local))
+
+
+@bp.route('/juicios_fecha', methods=['POST'])
+def juicios_fecha():
+    # Obtener los juicios locales la informacion
+    id_despacho = request.get_json()['id_despacho']
+    fecha = request.get_json()['fecha']
+
+    sql = "SELECT "
+    sql += 'juzgados_locales.nombre as nombre_juzgado_local, '
+    sql += 'juicios_locales.id_juzgado_local,  '
+    sql += 'juicios_locales.actor,  '
+    sql += 'juicios_locales.demandado,  '
+    sql += 'juicios_locales.numero_de_expediente,  '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local,  '
+    sql += 'usuarios.id_despacho  '
+    sql += 'FROM abogados_responsables_juicios_locales '
+    sql += 'LEFT JOIN usuarios ON usuarios.email = '
+    sql += 'abogados_responsables_juicios_locales.email '
+    sql += 'INNER JOIN juicios_locales on juicios_locales.id = '
+    sql += 'abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'INNER JOIN juzgados_locales on juzgados_locales.id = '
+    sql += 'juicios_locales.id_juzgado_local '
+    sql += 'INNER JOIN acuerdos_locales on acuerdos_locales.id_juicio_local = '
+    sql += 'juicios_locales.id '
+    sql += 'WHERE usuarios.id_despacho  =  ' + str(id_despacho) + ' '
+    sql += 'AND acuerdos_locales.fecha = "' + str(fecha) + '" '
+    sql += 'GROUP BY  abogados_responsables_juicios_locales.id_juicio_local '
+    sql += 'ORDER BY juicios_locales.id_juzgado_local, '
+    sql += 'juicios_locales.numero_de_expediente DESC;'
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["emails"] = rh.correosLigadosJuiciosLocales(
+            r["id_juicio_local"])
+    return jsonify(rv)

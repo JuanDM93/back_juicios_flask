@@ -209,7 +209,7 @@ def informacionLocalExpedienteHistorico(expediente, id_juzgado_local):
 
 def sqlenviarcorreo(data):
     fechasql = datetime.strftime(
-        datetime.now() - timedelta(days=1),
+        datetime.now(),
         '%Y-%m-%d'
     )
     sql = ""
