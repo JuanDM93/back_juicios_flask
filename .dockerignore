@@ -1,6 +1,10 @@
 env
+sql
+juicios
 
+*.sql
 *.pdf
+*.ipynb
 
 .vscode
 __pycache__/

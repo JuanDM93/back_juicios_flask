@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime
 
 from api.utils.db import db_connect
+from api.utils.route_helpers import validarExpedienteLocal
 
 
 def extract_acuerdo(pdf: str, data):
@@ -75,11 +76,11 @@ def fetch_pdf(fecha, data: []):
             for r in result:
                 f_str = fecha
                 fecha_sql = datetime.strftime(f_str, '%Y-%m-%d')
-                values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
-                values += str(r["id_juicio_local"]) + "),"
-
-            values = values[:-1]
-            sql = "INSERT INTO "
-            sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
-            sql += "VALUES " + values
-            db_connect(sql)
+                if validarExpedienteLocal(r["acuerdo"]) is False:
+                    values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
+                    values += str(r["id_juicio_local"]) + "),"
+                    values = values[:-1]
+                    sql = "INSERT INTO "
+                    sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
+                    sql += "VALUES " + values
+                    db_connect(sql)

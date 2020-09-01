@@ -14,7 +14,7 @@ class Config:
     FLASK_ENV = environ.get('FLASK_ENV')
 
     # Database
-    MYSQL_HOST = 'localhost'
+    MYSQL_HOST = '0.0.0.0'
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = environ.get('MYSQL_PASSWORD')
     MYSQL_DB = 'juicios'

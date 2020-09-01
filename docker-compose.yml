@@ -1,34 +1,54 @@
 version: '3'
+
 services:
-
-  tika:
-    image: apache/tika
+  
+  front:
+    build: ./juicios
     ports:
-      - 9998:9998
-
-  db-server:
-    image: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: juicios
+      - 4200:80
     volumes:
-      - ./sql:/docker-entrypoint-initdb.d
-
+      - ./juicios:/front
+      - /front/node_modules
+    networks:
+      - service    
+    links:
+      - api
+        
   api:
     build: ./
     ports:
       - 5000:5000
     volumes:
-        - ./:/flask
+      - ./:/flask
     environment:
-        FLASK_ENV: development
+      FLASK_ENV: development
+    networks:
+      - legacy
+      - service
+    links:
+      - db-server
+      - tika
 
-  front:
-    build: ./juicios
+  db-server:
+    image: mysql
+    networks:
+      - legacy  
     ports:
-      - 4200:4200
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_DATABASE: juicios
     volumes:
-      - ./juicios:/front
-      - /front/node_modules
+      - ./sql:/docker-entrypoint-initdb.d
+
+  tika:
+    image: apache/tika
+    ports:
+      - 9998:9998
+    networks:
+      - legacy
+
+networks:
+  legacy:
+  service:
+      
