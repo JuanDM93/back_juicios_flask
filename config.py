@@ -14,9 +14,10 @@ class Config:
     FLASK_ENV = environ.get('FLASK_ENV')
 
     # Database
-    MYSQL_HOST = '127.0.0.1'
+    MYSQL_HOST = 'db'        # Docker
+    # MYSQL_HOST = 'localhost'       # Local
     MYSQL_USER = 'root'
-    MYSQL_PASSWORD = environ.get('MYSQL_PASSWORD')
+    MYSQL_PASSWORD = 'root'
     MYSQL_DB = 'juicios'
     MYSQL_CURSORCLASS = 'DictCursor'
 
