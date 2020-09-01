@@ -72,7 +72,6 @@ def daily_local():
 
         if rv is not None:
             pdf_service(rv, daily=True)
-            print(sqlenviarcorreoDiario())
             for dataMail in sqlenviarcorreoDiario():
                 dataMail['tipo'] = 'u_j_l'
                 sendMulti(dataMail)
