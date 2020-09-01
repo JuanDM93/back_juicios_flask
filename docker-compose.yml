@@ -9,6 +9,8 @@ services:
     volumes:
       - ./juicios:/front
       - /front/node_modules 
+    depends_on:
+      - api
     links:
       - api
 
@@ -20,6 +22,9 @@ services:
       - ./:/flask
     environment:
       FLASK_ENV: development
+    depends_on:
+      - db
+      - tika
     links:
       - db
       - tika

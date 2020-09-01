@@ -6,8 +6,8 @@ WORKDIR /flask
 COPY . .
 
 RUN pip install --upgrade pip setuptools
-RUN pip install six wheel
-RUN pip install mysql-client
+RUN pip install wheel six
+
 RUN pip install -r requirements.txt
 
 ENV FLASK_APP api

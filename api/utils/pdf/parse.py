@@ -36,7 +36,14 @@ def extract_multi(pdf, data):
 def is_parsed(f_name, data=None):
     # tika
     from tika import parser
-    pdf = parser.from_file(f_name)['content']
+    pdf = parser.from_file(
+        f_name,
+        requestOptions={
+            'timeout': 120,
+        },
+    )
+
+    pdf = pdf['content']
 
     # has content
     if len(pdf) > 1:

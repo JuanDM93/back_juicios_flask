@@ -1,10 +1,16 @@
-env
-sql
-juicios
+.vscode
 
-*.sql
+env
 *.pdf
 *.ipynb
 
-.vscode
+sql
+*.sql
+
+.git
+.gitignore
+*.md
+
 __pycache__/
+
+juicios

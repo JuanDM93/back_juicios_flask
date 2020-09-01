@@ -14,8 +14,8 @@ class Config:
     FLASK_ENV = environ.get('FLASK_ENV')
 
     # Database
-    MYSQL_HOST = 'db'        # Docker
-    # MYSQL_HOST = 'localhost'       # Local
+    # MYSQL_HOST = 'db'        # Docker
+    MYSQL_HOST = 'localhost'       # Local
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'root'
     MYSQL_DB = 'juicios'
@@ -27,6 +27,10 @@ class Config:
 
     # SCHEDULER
     SCHEDULER_API_ENABLED = True
+
+    # TIKA
+    # TIKA_CLIENT_ONLY = True
+    # TIKA_SERVER_ENDPOINT = 'http://tika:9998'
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'
