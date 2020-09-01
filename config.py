@@ -30,7 +30,7 @@ class Config:
 
     # TIKA
     # TIKA_CLIENT_ONLY = True
-    # TIKA_SERVER_ENDPOINT = 'http://tika:9998'
+    # TIKA_SERVER_ENDPOINT = 'http://tika:9998/tika'
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'

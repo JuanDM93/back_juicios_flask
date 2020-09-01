@@ -96,7 +96,7 @@ def get_circuitos():
 
 
 def get_acuerdos(data):
-    # GET Acuerdos
+    # GET Acuerdos -PUBLICO- mods al b_federals
     t_ast = data['t_ast']
     id_org = data['id_org']
     n_exp = data['n_exp']
@@ -131,6 +131,7 @@ def get_acuerdos(data):
 
 
 def get_federals(datas):
+    # dailyFederal
     for d in datas:
         d['acuerdos'] = get_acuerdos(d)
 
@@ -173,37 +174,6 @@ def scrap_locals(session, xfun, args=[]):
         result[text] = value
 
     return result
-
-
-def scrapper_locals():
-    # --- get nombres
-    url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
-    with requests.Session() as s:
-        response = s.get(url)
-
-        soup = bs4.BeautifulSoup(response.text)
-
-        select = soup.find(
-            'select', {
-                'name': 'slcautoridad',
-            })
-        options = select.findAll('option')
-
-        result = {}
-        for o in options[1:]:
-            o_txt = str(o.text).replace(' ', '')
-            o_txt = o_txt.replace('\"}]}', '')
-            value = o.get('value')
-            print(f"{value}:{o_txt}")
-
-            result[o_txt] = {}
-            materias = scrap_locals(s, 'Materias', [value])
-
-            for m in materias:
-                numeros = scrap_locals(s, 'Numeros', [value, materias.get(m)])
-                result[o_txt][m] = numeros
-
-        return result
 
 
 def build_json_salas(j_locals):
@@ -273,3 +243,39 @@ def build_json_juz(j_locals):
             nombres[tipo].append(name)
 
     return nombres
+
+
+def scrapper_locals():
+    # --- get nombres
+    url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
+    with requests.Session() as s:
+        response = s.get(url)
+
+        soup = bs4.BeautifulSoup(response.text)
+
+        select = soup.find(
+            'select', {
+                'name': 'slcautoridad',
+            })
+        options = select.findAll('option')
+
+        result = {}
+        for o in options[1:]:
+            o_txt = str(o.text).replace(' ', '')
+            o_txt = o_txt.replace('\"}]}', '')
+            value = o.get('value')
+            print(f"{value}:{o_txt}")
+
+            result[o_txt] = {}
+            materias = scrap_locals(s, 'Materias', [value])
+
+            for m in materias:
+                numeros = scrap_locals(s, 'Numeros', [value, materias.get(m)])
+                result[o_txt][m] = numeros
+
+        nombres_salas = build_json_salas(result['SALA'])
+        nombres_juzgados = build_json_juz(result['JUZGADO'])
+        # get_sqls(0)
+        # db_connect(sql)
+        result = (nombres_salas, nombres_juzgados)
+        return result
