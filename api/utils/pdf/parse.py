@@ -79,8 +79,9 @@ def fetch_pdf(fecha, data: []):
                 if validarExpedienteLocal(r["acuerdo"]) is False:
                     values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
                     values += str(r["id_juicio_local"]) + "),"
-                    values = values[:-1]
-                    sql = "INSERT INTO "
-                    sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
-                    sql += "VALUES " + values
-                    db_connect(sql)
+            if len(values) > 0:
+                values = values[:-1]
+                sql = "INSERT INTO "
+                sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
+                sql += "VALUES " + values
+                db_connect(sql)

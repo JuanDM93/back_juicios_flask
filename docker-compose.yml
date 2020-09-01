@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  
+
   front:
     build: ./juicios
     ports:
@@ -13,7 +13,7 @@ services:
       - service    
     links:
       - api
-        
+
   api:
     build: ./
     ports:
@@ -39,7 +39,7 @@ services:
       MYSQL_ROOT_PASSWORD: ''
       MYSQL_DATABASE: juicios
     volumes:
-      - ./sql:/docker-entrypoint-initdb.d
+      - ./sql:/docker-entrypoint-initdb.d:wr
 
   tika:
     image: apache/tika
@@ -51,4 +51,3 @@ services:
 networks:
   legacy:
   service:
-      

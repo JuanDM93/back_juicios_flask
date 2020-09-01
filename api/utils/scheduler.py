@@ -54,7 +54,7 @@ def daily_federal():
 
 @scheduler.task(
     'cron', id='daily_local',
-    day_of_week='mon-fri', hour=22, jitter=120,  minute='1',
+    day_of_week='mon-fri', hour=7, jitter=120,  minute=1,
     )
 def daily_local():
     # daily_local
