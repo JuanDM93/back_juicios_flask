@@ -43,6 +43,6 @@ services:
       - ./sql:/docker-entrypoint-initdb.d/
 
   tika:
-    image: apache/tika
+    image: apache/tika:latest-full
     ports:
       - 9998:9998

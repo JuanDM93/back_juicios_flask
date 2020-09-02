@@ -1,7 +1,5 @@
 import requests
-import tempfile
 from time import sleep
-from pathlib import Path
 from datetime import datetime
 
 from api.utils.db import db_connect
@@ -36,13 +34,13 @@ def extract_multi(pdf, data):
 def is_parsed(f_name, data=None):
     # tika
     from tika import parser
-    pdf = parser.from_file(
+    pdf = parser.from_buffer(
         f_name,
+        'http://tika:9998/tika',
         requestOptions={
-            'timeout': 120,
+            'timeout': 3600,
         },
     )
-
     pdf = pdf['content']
 
     # has content
@@ -69,14 +67,7 @@ def fetch_pdf(fecha, data: []):
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
     response = req_cdmx(fechaurl)
     if response is not None:
-
-        with tempfile.TemporaryDirectory() as pdf_dir:
-            # create pdf
-            f_name = pdf_dir + f'{fechaurl}.pdf'
-            file_pdf = Path(f_name)
-            file_pdf.write_bytes(response)
-
-            result = is_parsed(f_name, data)
+        result = is_parsed(response, data)
         # SQL
         if len(result) > 0:
             values = ""
