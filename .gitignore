@@ -7,7 +7,7 @@
 .vscode
 
 # db
-*.sql
+# *.sql
 
 # Environments
 env
