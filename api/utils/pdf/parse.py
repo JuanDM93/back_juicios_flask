@@ -34,19 +34,28 @@ def extract_multi(pdf, data):
 def is_parsed(f_name, data=None):
     # tika
     from tika import parser
-    pdf = parser.from_buffer(
-        f_name,
-        'http://tika:9998/tika',
-        requestOptions={
-            'timeout': 3600,
-        },
-    )
-    pdf = pdf['content']
+    from flask import current_app
 
-    # has content
-    if len(pdf) > 1:
-        return extract_multi(pdf, data)
-    return []
+    try:
+        pdf = parser.from_buffer(
+            f_name,
+            'http://tika:9998/tika',
+            requestOptions={
+                'timeout': 3600,
+            }
+        )
+    except Exception:
+        current_app.logger.warn('TIKA: No response from server')
+    try:
+        pdf = parser.from_buffer(f_name)
+    except Exception:
+        current_app.logger.warn('TIKA: No local jar found')
+    finally:
+        pdf = pdf['content']
+        # has content
+        if len(pdf) > 1:
+            return extract_multi(pdf, data)
+        return []
 
 
 def req_cdmx(fecha: str):
@@ -63,7 +72,7 @@ def req_cdmx(fecha: str):
         return None
 
 
-def fetch_pdf(fecha, data: []): 
+def fetch_pdf(fecha, data: []):
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
     response = req_cdmx(fechaurl)
     if response is not None:
