@@ -251,3 +251,24 @@ def insertarAcuerdosDB(dataExp):
             rv["tipo"] = data['tipo']
             rv["emails"] = listaCorreosLigador(id_jucio_federal)
             sendMulti(rv)
+
+
+def eliminarCorreosAbogadosFederales(
+    # Eliminar abogados reponsables
+        id_juicio_federal, listaCorreoAbogadosFederalesElimar):
+    data = "("
+    for CorreoAbogadoFederales in listaCorreoAbogadosFederalesElimar:
+        data += "'" + CorreoAbogadoFederales + "', "
+    data = data[:-2]
+    data += ")"
+    sql = "DELETE from abogados_responsables_juicios_federales WHERE email IN "
+    sql += data
+    sql += " AND id_juicio_federal = " + str(id_juicio_federal)
+    db_connect(sql)
+
+
+def eliminarAcuerdosFederales(id_jucio_federal):
+    # eliminar acuerdos locales
+    sql = "DELETE FROM acuerdos_juicios_federales where id_jucio_federal = "
+    sql += str(id_jucio_federal)
+    __, response = db_connect(sql)

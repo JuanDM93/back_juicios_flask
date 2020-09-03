@@ -18,6 +18,9 @@ def search_msg(data):
     if data['tipo'] == 'a_j_f':
         return m_help.ms_actual_fed(data)
 
+    if data['tipo'] == 'd_j_f':
+        return m_help.ms_delet_Federal(data)
+
     if data['tipo'] == 'u_j_f':
         return m_help.ms_actualizacion_local(data)
 

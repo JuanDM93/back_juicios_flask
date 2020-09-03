@@ -30,9 +30,23 @@ def ms_actualizacion_local(data):
 
 
 def ms_delet_local(data):
-
     sub = f'Eliminación de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
-    msg = f'<p><strong>Se elimno Juicio en {data["juzgado"]} con expediente {data["expediente"]}</strong></p>'
+    msg = f'<p><strong>Se elimino Juicio en {data["juzgado"]} con expediente {data["expediente"]}</strong></p>'
+
+    return sub, msg
+
+
+def ms_delet_Federal(data):
+    sub = f'Eliminación de Juicio Federal en {data["NOM_LARGO"]} '
+    sub += f' {data["NOM_CIR"]}'
+    sub += f' {data["nombre_juzgado"]}'
+    sub += f' {data["nombre_tipo_juicio"]}'
+    sub += f'con expediente {data["n_exp"]}'
+    msg = f'<p><strong>Se elimino Juicio Federal en {data["NOM_LARGO"]}'
+    msg += f' {data["NOM_CIR"]}'
+    msg += f' {data["nombre_juzgado"]}'
+    msg += f' {data["nombre_tipo_juicio"]}'
+    msg += f' con expediente {data["n_exp"]}</strong></p>'
 
     return sub, msg
 

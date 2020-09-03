@@ -4,6 +4,7 @@ from flask import (
 # Helpers
 from api.utils.db import db_connect
 import api.utils.route_helpers.federals as rh
+from api.utils.mail.service import sendMulti
 
 
 bp = Blueprint(
@@ -101,7 +102,7 @@ def acuerdos_federales():
 def juicios_federales():
     id_despacho = request.get_json()['id_despacho']
     sql = "SELECT juicios_federales.id as id_juicio_federal,"
-    sql += "juicios_federales.id_org, circuitos_federales.NOM_LARGO," 
+    sql += "juicios_federales.id_org, circuitos_federales.NOM_LARGO,"
     sql += "circuitos_federales.NOM_CIR, juzgados_federales.cir_id,"
     sql += "juzgados_federales.nombre_juzgado,"
     sql += "tipo_de_juicios_federales.t_ast, tipo_de_juicios_federales.nombre_tipo_juicio,"
@@ -156,7 +157,7 @@ def filtro_juicios():
         Where += str(t_ast) + " "
 
     sql = "SELECT juicios_federales.id as id_juicio_federal,"
-    sql += "juicios_federales.id_org, circuitos_federales.NOM_LARGO," 
+    sql += "juicios_federales.id_org, circuitos_federales.NOM_LARGO,"
     sql += "circuitos_federales.NOM_CIR, juzgados_federales.cir_id,"
     sql += "juzgados_federales.nombre_juzgado,"
     sql += "tipo_de_juicios_federales.t_ast, tipo_de_juicios_federales.nombre_tipo_juicio,"
@@ -169,7 +170,7 @@ def filtro_juicios():
     sql += "INNER JOIN circuitos_federales ON circuitos_federales.c_id = juicios_federales.cir_id "
     sql += "INNER JOIN juzgados_federales ON juzgados_federales.org_id = juicios_federales.id_org "
     sql += "INNER JOIN tipo_de_juicios_federales ON tipo_de_juicios_federales.t_ast = juicios_federales.t_ast "
-    sql += "WHERE usuarios.id_despacho  = " + str(id_despacho) + Where 
+    sql += "WHERE usuarios.id_despacho  = " + str(id_despacho) + Where
     sql += " GROUP BY  abogados_responsables_juicios_federales.id_juicio_federal "
     sql += "ORDER BY circuitos_federales.id,  juicios_federales.n_exp DESC"
     cur, __ = db_connect(sql)
@@ -178,3 +179,41 @@ def filtro_juicios():
         r["emails"] = rh.listaCorreosLigador(
             r["id_juicio_federal"])
     return jsonify(rv)
+
+
+@bp.route('/eliminar_juicio_federal', methods=['POST'])
+def eliminar_juicio_federal():
+    # Eliminar juicio local
+    id_juicio_federal = request.get_json()['id_juicio_federal']
+    emails = request.get_json()['emails']
+
+    NOM_CIR = request.get_json()['NOM_CIR']
+    NOM_LARGO = request.get_json()['NOM_LARGO']
+    n_exp = request.get_json()['n_exp']
+    nombre_juzgado = request.get_json()['nombre_juzgado']
+    nombre_tipo_juicio = request.get_json()['nombre_tipo_juicio']
+
+    data = {}
+    data['tipo'] = 'd_j_f'
+    data['NOM_LARGO'] = NOM_LARGO
+    data['NOM_CIR'] = NOM_CIR
+    data['nombre_juzgado'] = nombre_juzgado
+    data['nombre_tipo_juicio'] = nombre_tipo_juicio
+    data['n_exp'] = n_exp
+    data['emails'] = emails
+
+    sql = "DELETE FROM juicios_federales where id = " + str(id_juicio_federal)
+    __, response = db_connect(sql)
+
+    rh.eliminarAcuerdosFederales(id_juicio_federal)
+    rh.eliminarCorreosAbogadosFederales(id_juicio_federal, emails)
+
+    if response > 0:
+        result = {'message': 'record delete'}
+        sendMulti(data)
+    else:
+        result = {'message': 'no record found'}
+
+    return jsonify({
+        'status': 200, 'result': result
+        })
