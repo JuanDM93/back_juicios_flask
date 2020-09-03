@@ -4,8 +4,8 @@ from flask import (
 # Helpers
 from api.utils.db import db_connect
 from api.utils.mail.service import sendMulti
-import api.utils.route_helpers as rh
 from api.utils.pdf.fetch import pdf_service
+import api.utils.route_helpers.locals as rh
 
 
 bp = Blueprint(

@@ -18,8 +18,11 @@ def search_msg(data):
     if data['tipo'] == 'a_j_f':
         return m_help.ms_actual_fed(data)
 
-    if data['tipo'] == 'n_j_l':
-        return m_help.ms_nuevo_local(data)
+    if data['tipo'] == 'u_j_f':
+        return m_help.ms_actualizacion_local(data)
+
+    if data['tipo'] == 'd_j_f':
+        return m_help.ms_delet_local(data)
 
     if data['tipo'] == 'a_u':
         return m_help.ms_nuevo_usuario(data)

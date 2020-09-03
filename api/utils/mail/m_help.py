@@ -38,28 +38,27 @@ def ms_delet_local(data):
 
 
 def ms_actual_fed(data):
-    """
-    data['id_juzgado_local']
-    data['numero_de_expediente']
-    data['actor']
-    data['demandado']
-    data['tipo']
-    """
-    msg = f"{data['actor']} ha actualizado su juicio local"
-    sub = f"{data['numero_de_expediente']}"
-    return sub, msg
 
+    sub = f'Alta de Juicio Federal en {data["circuitos_NOM_LARGO"]} '
+    sub += f'{data["circuitos_NOM_CIR"]} '
+    sub += f'{data["nombre_juzgado"]} '
+    sub += f'{data["nombre_tipo_juicio"]} '
+    sub += f'con expediente {data["n_exp"]} '
+    msg = f'<p><strong>{data["circuitos_NOM_LARGO"]} {data["circuitos_NOM_CIR"]}</strong></p>'
+    msg += f'<p><strong>{data["nombre_juzgado"]}</strong></p>'
+    msg += f'<p><strong>{data["nombre_tipo_juicio"]}</strong></p>'
+    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["n_exp"]}</p>'
+    msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
+    msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
+    msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
 
-def ms_nuevo_local(data):
-    """
-    data['id_juzgado_local']
-    data['numero_de_expediente']
-    data['actor']
-    data['demandado']
-    data['tipo']
-    """
-    msg = f"{data['actor']} ha actualizado su juicio local"
-    sub = f"{data['numero_de_expediente']}"
+    for acuerd in data["acuerdos"]:
+        msg += f'<p><strong>No de Acuerdo: </strong>{acuerd["No"]}</p>'
+        msg += f'<p><strong>Fecha del Auto: </strong>{acuerd["Fecha_del_Auto"]}</p>'
+        msg += f'<p><strong>Tipo Cuaderno: </strong>{acuerd["Tipo_Cuaderno"]}</p>'
+        msg += f'<p><strong><span>Fecha de publicaci&oacute;n</span>: </strong>{acuerd["Fecha_de_publicacion"]}</p>'
+        msg += f'<p><strong>Acuerdo: </strong>{acuerd["acuerdo"]}</p>'
+
     return sub, msg
 
 

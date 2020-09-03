@@ -5,8 +5,8 @@ from flask import (
 # Helpers
 from api.utils.db import db_connect
 from api.utils.auth import bcrypt
-import api.utils.route_helpers as rh
 from api.utils.mail.service import sendMulti
+import api.utils.route_helpers.users as rh
 
 
 bp = Blueprint(
