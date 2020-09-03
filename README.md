@@ -71,7 +71,7 @@ flask run
 ```
 
 ## APIs endpoints
-baseURL = http://127.0.0.1:5000
+baseURL = http://localhost:5000
 
 ```bash
 flask routes
@@ -123,7 +123,14 @@ Locales (baseURL/locales)
 Federal (baseURL/federales)
 
 ```bash
-../
+../circuitos_federales
+../juzgados_federales
+../tipo_de_juicios_federales
+
+../acuerdos_federales
+../juicios_federales
+
+../alta_juicios_federales
 ```
 
 ## Contributing
