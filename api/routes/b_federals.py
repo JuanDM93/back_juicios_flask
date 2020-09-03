@@ -76,7 +76,7 @@ def alta_juicios_federales():
     sql += str(n_exp).lstrip().rstrip().upper() + "', '"
     sql += str(Quejoso_Actor_Recurrente_Concursada).lstrip().rstrip().upper() + "', '"
     sql += str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "', '"
-    sql += str(Autoridades) + "')"
+    sql += str(Autoridades).lstrip().rstrip().upper() + "')"
     db_connect(sql)
 
     rh.registrarCorreosAbogadosFederales(data, listaCorreoAbogadosFederales)
@@ -95,3 +95,31 @@ def acuerdos_federales():
     data['n_exp'] = n_exp
     d = rh.get_acuerdos(data)
     return jsonify(d)
+
+
+@bp.route('/juicios_federales', methods=['POST'])
+def juicios_federales():
+    id_despacho = request.get_json()['id_despacho']
+    sql = "SELECT juicios_federales.id as id_juicio_federal,"
+    sql += "juicios_federales.id_org, circuitos_federales.NOM_LARGO," 
+    sql += "circuitos_federales.NOM_CIR, juzgados_federales.cir_id,"
+    sql += "juzgados_federales.nombre_juzgado,"
+    sql += "tipo_de_juicios_federales.t_ast, tipo_de_juicios_federales.nombre_tipo_juicio,"
+    sql += "usuarios.id_despacho, juicios_federales.Quejoso_Actor_Recurrente_Concursada,"
+    sql += "juicios_federales.Tercero_Interesado_Demandado_Acreedor,"
+    sql += "juicios_federales.n_exp,"
+    sql += "juicios_federales.Autoridades FROM abogados_responsables_juicios_federales "
+    sql += "INNER JOIN usuarios on usuarios.email = abogados_responsables_juicios_federales.email "
+    sql += "INNER JOIN juicios_federales on juicios_federales.id = abogados_responsables_juicios_federales.id_juicio_federal "
+    sql += "INNER JOIN circuitos_federales ON circuitos_federales.c_id = juicios_federales.cir_id "
+    sql += "INNER JOIN juzgados_federales ON juzgados_federales.org_id = juicios_federales.id_org "
+    sql += "INNER JOIN tipo_de_juicios_federales ON tipo_de_juicios_federales.t_ast = juicios_federales.t_ast "
+    sql += "WHERE usuarios.id_despacho  = " + str(id_despacho)
+    sql += " GROUP BY  abogados_responsables_juicios_federales.id_juicio_federal "
+    sql += "ORDER BY circuitos_federales.id,  juicios_federales.n_exp DESC"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["emails"] = rh.listaCorreosLigador(
+            r["id_juicio_federal"])
+    return jsonify(rv)
