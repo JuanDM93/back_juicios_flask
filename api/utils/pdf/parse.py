@@ -3,7 +3,7 @@ from time import sleep
 from datetime import datetime
 
 from api.utils.db import db_connect
-from api.utils.route_helpers import validarExpedienteLocal
+from api.utils.route_helpers.locals import validarExpedienteLocal
 
 
 def extract_acuerdo(pdf: str, data):
@@ -63,7 +63,7 @@ def req_cdmx(fecha: str):
         return None
 
 
-def fetch_pdf(fecha, data: []):
+def fetch_pdf(fecha, data: []): 
     fechaurl = datetime.strftime(fecha, '%d%m%Y')
     response = req_cdmx(fechaurl)
     if response is not None:
