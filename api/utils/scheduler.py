@@ -3,7 +3,7 @@ from flask_apscheduler import APScheduler
 from api.utils.db import db_connect
 from api.utils.mail.service import sendMulti
 from api.utils.pdf.fetch import pdf_service
-from api.utils.route_helpers import sqlenviarcorreoDiario
+from api.utils.route_helpers.locals import sqlenviarcorreoDiario
 
 
 scheduler = APScheduler()
