@@ -11,7 +11,7 @@
  Target Server Version : 100413
  File Encoding         : 65001
 
- Date: 02/09/2020 23:11:54
+ Date: 04/09/2020 10:21:59
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,8 @@ CREATE TABLE `abogados_responsables_juicios_federales`  (
 -- ----------------------------
 -- Records of abogados_responsables_juicios_federales
 -- ----------------------------
-INSERT INTO `abogados_responsables_juicios_federales` VALUES (23, 'ricaror@hotmail.com');
+INSERT INTO `abogados_responsables_juicios_federales` VALUES (26, 'ricaror@hotmail.com');
+INSERT INTO `abogados_responsables_juicios_federales` VALUES (27, 'ricaror@hotmail.com');
 
 -- ----------------------------
 -- Table structure for abogados_responsables_juicios_locales
@@ -45,15 +46,13 @@ CREATE TABLE `abogados_responsables_juicios_locales`  (
 -- ----------------------------
 -- Records of abogados_responsables_juicios_locales
 -- ----------------------------
-INSERT INTO `abogados_responsables_juicios_locales` VALUES (144, 'ricaror@hotmail.com');
-INSERT INTO `abogados_responsables_juicios_locales` VALUES (146, 'ricaror@hotmail.com');
 
 -- ----------------------------
 -- Table structure for acuerdos_juicios_federales
 -- ----------------------------
 DROP TABLE IF EXISTS `acuerdos_juicios_federales`;
 CREATE TABLE `acuerdos_juicios_federales`  (
-  `id_jucio_federal` int(255) NULL DEFAULT NULL,
+  `id_juicio_federal` int(255) NULL DEFAULT NULL,
   `Fecha_de_publicacion` date NULL DEFAULT NULL,
   `Fecha_del_Auto` date NULL DEFAULT NULL,
   `Tipo_Cuaderno` text CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL,
@@ -64,10 +63,13 @@ CREATE TABLE `acuerdos_juicios_federales`  (
 -- ----------------------------
 -- Records of acuerdos_juicios_federales
 -- ----------------------------
-INSERT INTO `acuerdos_juicios_federales` VALUES (23, '2020-01-06', '2020-01-03', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Acepta competencia y admite  Notifíquese a las partes de la siguiente forma:  Parte Tipo de notificación  Denunciante Lista  Autoridad denunciada Oficio  ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=1&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=03/01/2020&listaFPublicacion=06/01/2020');
-INSERT INTO `acuerdos_juicios_federales` VALUES (23, '2020-01-13', '2020-01-10', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Autoridades, se les tiene realizando las manifestaciones que a su parte corresponden con relación a la denuncia. Domicilio y delegados de las autoridades denunciadas. Medios electrónicosNotifíquese a las partes de la siguiente forma:ParteTipo de notificaciónDenuncianteListaAutoridad denunciadaLista', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=2&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=10/01/2020&listaFPublicacion=13/01/2020');
-INSERT INTO `acuerdos_juicios_federales` VALUES (23, '2020-01-20', '2020-01-17', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Por lo expuesto y fundado, se resuelve:  Primero. Es improcedente la denuncia por incumplimiento...Segundo. Es infundada la denuncia por incumplimiento de la declaratoria general de inconstitucionalidad.  Notifíquese a las partes de la siguiente forma:  Parte  Notificación Denunciante  Personalmente Autoridades denunciadas  Oficio ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=3&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=17/01/2020&listaFPublicacion=20/01/2020');
-INSERT INTO `acuerdos_juicios_federales` VALUES (23, '2020-02-25', '2020-02-24', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Juzgado Segundo de Distrito del Centro Auxiliar de la Primera Región, con residencia en la Ciudad de México; hágase de su conocimiento que este órgano jurisdiccional se avocó al conocimiento del asunto. Causa estado la resolución de dieciséis de enero de dos mil veinte, donde se declaró improcedente e infundada la denuncia por incumplimiento de la declaratoria general de inconstitucionalidad. Se ordena archivo del asunto como total y definitivamente concluido. Hágase la devolución de documentos originales. Notifíquese a las partes de la siguiente forma: Parte  Tipo de notificación Denunciante  Personalmente  Autoridades denunciadas  Oficio Juzgado Segundo de Distrito del Centro Auxiliar de la Primera Región, con residencia en la Ciudad de México  Oficio', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=4&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=24/02/2020&listaFPublicacion=25/02/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (26, '2020-01-29', '2020-01-28', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Visto el oficio de cuenta, se acepta la competencia declinada y se admite a trámite la denuncia promovida. Acúsese el recibo de estilo correspondiente. Asimismo, este juzgado no advierte alguna irregularidad qué reparar en el procedimiento de denuncia, por lo que no se ordena mayor proveído...  Notifíquese a las partes de la siguiente forma:ParteTipo de notificaciónDenunciantePersonalmenteAutoridades denunciadasOficioJuzgado Primero de Distrito del Centro Auxiliar de la Primera Región, con residencia en la Ciudad de MéxicoOficio', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=2&listaCatOrg=10&listaNeun=26395265&listaAsuId=1&listaExped=2/2020&listaFAuto=28/01/2020&listaFPublicacion=29/01/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (26, '2020-02-17', '2020-02-14', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Por lo expuesto y fundado, se resuelve:  Primero. Es improcedente la denuncia por incumplimiento de la declaratoria... Segundo. Es infundada la denuncia por incumplimiento de la declaratoria general de inconstitucionalidad... .  	  Notifíquese a las partes de la siguiente forma:  Parte  Notificación Denunciante  Personalmente Autoridades denunciadas  Oficio ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=3&listaCatOrg=10&listaNeun=26395265&listaAsuId=1&listaExped=2/2020&listaFAuto=14/02/2020&listaFPublicacion=17/02/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (27, '2020-01-06', '2020-01-03', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Acepta competencia y admite  Notifíquese a las partes de la siguiente forma:  Parte Tipo de notificación  Denunciante Lista  Autoridad denunciada Oficio  ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=1&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=03/01/2020&listaFPublicacion=06/01/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (27, '2020-01-13', '2020-01-10', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Autoridades, se les tiene realizando las manifestaciones que a su parte corresponden con relación a la denuncia. Domicilio y delegados de las autoridades denunciadas. Medios electrónicosNotifíquese a las partes de la siguiente forma:ParteTipo de notificaciónDenuncianteListaAutoridad denunciadaLista', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=2&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=10/01/2020&listaFPublicacion=13/01/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (27, '2020-01-20', '2020-01-17', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Por lo expuesto y fundado, se resuelve:  Primero. Es improcedente la denuncia por incumplimiento...Segundo. Es infundada la denuncia por incumplimiento de la declaratoria general de inconstitucionalidad.  Notifíquese a las partes de la siguiente forma:  Parte  Notificación Denunciante  Personalmente Autoridades denunciadas  Oficio ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=3&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=17/01/2020&listaFPublicacion=20/01/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (26, '2020-08-03', '2020-03-17', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Se tiene por interpuesto recurso de inconformidad presentado por ***, en contra de la resolución de catorce de febrero de dos mil diecinueve. Remítanse los autos al Tribunal Colegiado en Materia Administrativa del Primer Circuito en turno.  Notifíquese a las partes de la siguiente forma:  Parte Tipo de notificación  Denunciante Lista  Autoridades  denunciadas OficioMinisterio Público Federal Oficio  ', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=4&listaCatOrg=10&listaNeun=26395265&listaAsuId=1&listaExped=2/2020&listaFAuto=17/03/2020&listaFPublicacion=03/08/2020');
+INSERT INTO `acuerdos_juicios_federales` VALUES (27, '2020-02-25', '2020-02-24', 'Denuncia por Incumplimiento de la Declaratoria General de Inconstitucionalidad', 'Juzgado Segundo de Distrito del Centro Auxiliar de la Primera Región, con residencia en la Ciudad de México; hágase de su conocimiento que este órgano jurisdiccional se avocó al conocimiento del asunto. Causa estado la resolución de dieciséis de enero de dos mil veinte, donde se declaró improcedente e infundada la denuncia por incumplimiento de la declaratoria general de inconstitucionalidad. Se ordena archivo del asunto como total y definitivamente concluido. Hágase la devolución de documentos originales. Notifíquese a las partes de la siguiente forma: Parte  Tipo de notificación Denunciante  Personalmente  Autoridades denunciadas  Oficio Juzgado Segundo de Distrito del Centro Auxiliar de la Primera Región, con residencia en la Ciudad de México  Oficio', 'https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?listaAcOrd=4&listaCatOrg=10&listaNeun=26276852&listaAsuId=1&listaExped=1/2020&listaFAuto=24/02/2020&listaFPublicacion=25/02/2020');
 
 -- ----------------------------
 -- Table structure for acuerdos_locales
@@ -82,11 +84,6 @@ CREATE TABLE `acuerdos_locales`  (
 -- ----------------------------
 -- Records of acuerdos_locales
 -- ----------------------------
-INSERT INTO `acuerdos_locales` VALUES ('2020-08-28', 'Banco Mercantil del Norte Sociedad Anónima Institución de \nBanca Múltiple Grupo Financiero Banorte vs. Santisteban Maza \nRodrigo Especial Hipotecario Civil Vista Con Oficio 1 Acdo. Núm. \nExp. 117/2020', '144');
-INSERT INTO `acuerdos_locales` VALUES ('2020-08-27', 'Espinosa Amézcua Catalina vs. Rosales González Mario y Rosales \nAlday Ignacio. Controversia de Arrendamiento Inmobiliario Acdo. \n1 Acdo. Núm. Exp. 117/2020', '144');
-INSERT INTO `acuerdos_locales` VALUES ('2020-08-25', 'Inmobiliaria Andes S.A. de C.V. vs. Simple Mob S.A. de C.V. \ny Margarita Josefina Alvarado Mañón Controversia de \nArrendamiento Inmobiliario 1 Acdo. Núm. Exp. 117/2020', '144');
-INSERT INTO `acuerdos_locales` VALUES ('2020-08-26', 'Secreto Providencias Precautorias Mercantil Auto 1 Acdo. Núm. \nExp. 117/2020', '144');
-INSERT INTO `acuerdos_locales` VALUES ('2020-08-31', 'Banco Mercantil del Norte Sociedad Anónima Institución de \nBanca Múltiple Grupo Financiero Banorte vs. Santisteban Maza \nRodrigo Especial Hipotecario Civil Se Da Vista Con Oficio 1 Acdo. \nNúm. Exp. 117/2020', '144');
 
 -- ----------------------------
 -- Table structure for circuitos_federales
@@ -169,12 +166,13 @@ CREATE TABLE `juicios_federales`  (
   `Tercero_Interesado_Demandado_Acreedor` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL,
   `Autoridades` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of juicios_federales
 -- ----------------------------
-INSERT INTO `juicios_federales` VALUES (23, 1, 10, 71, '1/2020', 'QUEJOSO', 'TERCERO', 'autoridades');
+INSERT INTO `juicios_federales` VALUES (26, 1, 10, 71, '2/2020', 'Q', 'T', 'QE');
+INSERT INTO `juicios_federales` VALUES (27, 1, 10, 71, '1/2020', 'WWW', 'WWW', 'WW');
 
 -- ----------------------------
 -- Table structure for juicios_locales
@@ -194,8 +192,6 @@ CREATE TABLE `juicios_locales`  (
 -- ----------------------------
 -- Records of juicios_locales
 -- ----------------------------
-INSERT INTO `juicios_locales` VALUES (144, 'ACTOR', 'DEMANDO', '117/2020', 17);
-INSERT INTO `juicios_locales` VALUES (146, 'A', 'D', '287/2020', 17);
 
 -- ----------------------------
 -- Table structure for juzgados_federales
@@ -994,7 +990,7 @@ CREATE TABLE `juzgados_locales`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 190 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 379 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of juzgados_locales
@@ -1014,180 +1010,202 @@ INSERT INTO `juzgados_locales` VALUES (12, 'SEGUNDA SALA FAMILIAR');
 INSERT INTO `juzgados_locales` VALUES (13, 'TERCERA SALA FAMILIAR');
 INSERT INTO `juzgados_locales` VALUES (14, 'CUARTA SALA FAMILIAR');
 INSERT INTO `juzgados_locales` VALUES (15, 'QUINTA SALA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (16, 'QUINTA SALA PENAL');
-INSERT INTO `juzgados_locales` VALUES (17, 'PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (18, 'SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (16, 'PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (17, 'SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (18, 'TERCERO DE LO CIVIL');
 INSERT INTO `juzgados_locales` VALUES (19, 'CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (20, 'SEXTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (21, 'SÉPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (22, 'OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (23, 'NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (24, 'DÉCIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (25, 'DÉCIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (26, 'DÉCIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (27, 'DÉCIMO TERCERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (28, 'DÉCIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (29, 'DÉCIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (30, 'DÉCIMO SEXTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (31, 'DÉCIMO SÉPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (32, 'DÉCIMO OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (33, 'DÉCIMO NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (34, 'VIGÉSIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (35, 'VIGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (36, 'VIGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (37, 'VIGÉSIMO TERCERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (38, 'VIGÉSIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (39, 'VIGÉSIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (40, 'VIGÉSIMO SEPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (41, 'VIGÉSIMO OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (42, 'VIGÉSIMO NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (43, 'TRIGÉSIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (44, 'TRIGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (45, 'TRIGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (46, 'TRIGÉSIMO TERCERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (47, 'TRIGÉSIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (48, 'TRIGÉSIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (49, 'TRIGÉSIMO SEXTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (50, 'TRIGÉSIMO OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (51, 'TRIGÉSIMO NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (52, 'CUADRAGÉSIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (53, 'CUADRAGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (54, 'CUADRAGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (55, 'CUADRAGÉSIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (56, 'CUADRAGÉSIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (57, 'CUADRAGÉSIMO SEXTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (58, 'CUADRAGÉSIMO SÉPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (59, 'CUADRAGÉSIMO NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (60, 'QUINCUAGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (61, 'QUINCUAGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (62, 'QUINCUAGÉSIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (63, 'QUINCUAGÉSIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (64, 'QUINCUAGÉSIMO SÉPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (65, 'QUINCUAGÉSIMO OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (66, 'SEXAGÉSIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (67, 'SEXAGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (68, 'SEXAGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (69, 'SEXAGÉSIMO TERCERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (70, 'SEXAGÉSIMO CUARTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (71, 'SEXAGÉSIMO QUINTO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (72, 'SEXAGÉSIMO SÉPTIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (73, 'SEXAGÉSIMO OCTAVO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (74, 'SEXAGÉSIMO NOVENO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (75, 'SEPTUAGÉSIMO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (76, 'SEPTUAGÉSIMO PRIMERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (77, 'SEPTUAGÉSIMO SEGUNDO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (78, 'SEPTUAGÉSIMO TERCERO DE LO CIVIL');
-INSERT INTO `juzgados_locales` VALUES (79, 'PRIMERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (80, 'SEGUNDO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (81, 'TERCERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (82, 'CUARTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (83, 'QUINTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (84, 'SEXTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (85, 'SÉPTIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (86, 'OCTAVO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (87, 'NOVENO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (88, 'DÉCIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (89, 'DÉCIMO PRIMERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (90, 'DÉCIMO SEGUNDO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (91, 'DÉCIMO TERCERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (92, 'DÉCIMO CUARTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (93, 'DÉCIMO QUINTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (94, 'DÉCIMO SEXTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (95, 'DÉCIMO SÉPTIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (96, 'DÉCIMO OCTAVO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (97, 'DÉCIMO NOVENO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (98, 'VIGÉSIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (99, 'VIGÉSIMO PRIMERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (100, 'VIGÉSIMO SEGUNDO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (101, 'VIGÉSIMO TERCERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (102, 'VIGÉSIMO CUARTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (103, 'VIGÉSIMO QUINTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (104, 'VIGÉSIMO SEXTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (105, 'VIGÉSIMO SÉPTIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (106, 'VIGÉSIMO OCTAVO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (107, 'VIGÉSIMO NOVENO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (108, 'TRIGÉSIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (109, 'TRIGÉSIMO PRIMERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (110, 'TRIGÉSIMO SEGUNDO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (111, 'TRIGÉSIMO TERCERO DE LO FMAILIAR');
-INSERT INTO `juzgados_locales` VALUES (112, 'TRIGÉSIMO CUARTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (113, 'TRIGÉSIMO QUINTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (114, 'TRIGÉSIMO SEXTO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (115, 'TRIGÉSIMO SÉPTIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (116, 'TRIGÉSIMO OCTAVO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (117, 'TRIGÉSIMO NOVENO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (118, 'CUADRAGÉSIMO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (119, 'CUADRAGÉSIMO PRIMERO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (120, 'CUADRAGÉSIMO SEGUNDO DE LO FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (121, 'TERCERO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (122, 'CUARTO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (123, 'SEXTO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (124, 'OCTAVO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (125, 'DÉCIMO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (126, 'DÉCIMO PRIMERO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (127, 'DÉCIMO TERCERO DE LO CIVIL DE CUANTÍA  MENOR');
-INSERT INTO `juzgados_locales` VALUES (128, 'DÉCIMO SEXTO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (129, 'DÉCIMO OCTAVO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (130, 'VIGÉSIMO DE LO CIVIL CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (131, 'VIGÉSIMO SEGUNDO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (132, 'VIGÉSIMO CUARTO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (133, 'VIGÉSIMO SEXTO DE LO CIVIL DE CUANTÍA MENOR');
-INSERT INTO `juzgados_locales` VALUES (134, 'PRIMERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (135, 'SEGUNDO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (136, 'TERCERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (137, 'CUARTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (138, 'QUINTO DE LO CIVIL PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (139, 'SEXTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (140, 'SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (141, 'OCTAVO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (142, 'NOVENO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (143, 'DÉCIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (144, 'DÉCIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (145, 'DÉCIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (146, 'DÉCIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (147, 'DÉCIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (148, 'DÉCIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (149, 'DÉCIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (150, 'DÉCIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (151, 'DÉCIMO OCTAVO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (152, 'DÉCIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (153, 'VIGÉSIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (154, 'VIGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (155, 'VIGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (156, 'VIGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (157, 'VIGÉSIMO CUARTO  DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (158, 'VIGÉSIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (159, 'VIGÉSIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (160, 'VIGÉSIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL Y DE EXTINCIÓN DE DOMINIO');
-INSERT INTO `juzgados_locales` VALUES (161, 'VIGÉSIMO OCTAVO DE LO CIVIL DE PROCESO ORAL Y DE EXTINCIÓN DE DOMINIO');
-INSERT INTO `juzgados_locales` VALUES (162, 'VIGÉSIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (163, 'TRIGÉSIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (164, 'TRIGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (165, 'TRIGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (166, 'TRIGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (167, 'TRIGÉSIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (168, 'TRIGÉSIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (169, 'TRIGÉSIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (170, 'TRIGÉSIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (171, 'TRIGÉSIMO OCTAVO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (172, 'TRIGÉSIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (173, 'CUADRAGÉSIMO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (174, 'CUADRAGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (175, 'CUADRAGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (176, 'CUADRAGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (177, 'CUADRAGÉSIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
-INSERT INTO `juzgados_locales` VALUES (178, 'PRIMERO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (179, 'SEGUNDO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (180, 'TERCERO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (181, 'CUARTO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (182, 'QUINTO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (183, 'SEXTO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (184, 'SÉPTIMO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (185, 'OCTAVO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (186, 'NOVENO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (187, 'DÉCIMO DE PROCESO ORAL EN MATERIA FAMILIAR');
-INSERT INTO `juzgados_locales` VALUES (188, 'PROCESO ORAL EN MATERIA FAMILIAR CENTRO DE JUSTICIA PARA LAS MUJERES IZTAPALAPA');
-INSERT INTO `juzgados_locales` VALUES (189, 'PROCESO ORAL EN MATERIA FAMILIAR CENTRO DE JUSTICIA PARA LAS MUJERES TLAPAN');
+INSERT INTO `juzgados_locales` VALUES (20, 'QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (21, 'SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (22, 'SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (23, 'OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (24, 'NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (25, 'DÉCIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (26, 'DÉCIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (27, 'DÉCIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (28, 'DÉCIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (29, 'DÉCIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (30, 'DÉCIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (31, 'DÉCIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (32, 'DÉCIMO SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (33, 'DÉCIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (34, 'DÉCIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (35, 'VIGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (36, 'VIGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (37, 'VIGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (38, 'VIGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (39, 'VIGÉSIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (40, 'VIGÉSIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (41, 'VIGÉSIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (42, 'VIGÉSIMO SEPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (43, 'VIGÉSIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (44, 'VIGÉSIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (45, 'TRIGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (46, 'TRIGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (47, 'TRIGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (48, 'TRIGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (49, 'TRIGÉSIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (50, 'TRIGÉSIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (51, 'TRIGÉSIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (52, 'TRIGÉSIMO SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (53, 'TRIGÉSIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (54, 'TRIGÉSIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (55, 'CUADRAGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (56, 'CUADRAGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (57, 'CUADRAGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (58, 'CUADRAGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (59, 'CUADRAGÉSIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (60, 'CUADRAGÉSIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (61, 'CUADRAGÉSIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (62, 'CUADRAGÉSIMO SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (63, 'CUADRAGÉSIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (64, 'CUADRAGÉSIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (65, 'QUINCUAGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (66, 'QUINCUAGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (67, 'QUINCUAGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (68, 'QUINCUAGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (69, 'QUINCUAGÉSIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (70, 'QUINCUAGÉSIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (71, 'QUINCUAGÉSIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (72, 'QUINCUAGÉSIMO SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (73, 'QUINCUAGÉSIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (74, 'QUINCUAGÉSIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (75, 'SEXAGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (76, 'SEXAGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (77, 'SEXAGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (78, 'SEXAGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (79, 'SEXAGÉSIMO CUARTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (80, 'SEXAGÉSIMO QUINTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (81, 'SEXAGÉSIMO SEXTO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (82, 'SEXAGÉSIMO SÉPTIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (83, 'SEXAGÉSIMO OCTAVO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (84, 'SEXAGÉSIMO NOVENO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (85, 'SEPTUAGÉSIMO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (86, 'SEPTUAGÉSIMO PRIMERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (87, 'SEPTUAGÉSIMO SEGUNDO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (88, 'SEPTUAGÉSIMO TERCERO DE LO CIVIL');
+INSERT INTO `juzgados_locales` VALUES (89, 'PRIMERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (90, 'SEGUNDO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (91, 'TERCERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (92, 'CUARTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (93, 'QUINTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (94, 'SEXTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (95, 'SÉPTIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (96, 'OCTAVO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (97, 'NOVENO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (98, 'DÉCIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (99, 'DÉCIMO PRIMERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (100, 'DÉCIMO SEGUNDO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (101, 'DÉCIMO TERCERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (102, 'DÉCIMO CUARTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (103, 'DÉCIMO QUINTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (104, 'DÉCIMO SEXTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (105, 'DÉCIMO SÉPTIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (106, 'DÉCIMO OCTAVO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (107, 'DÉCIMO NOVENO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (108, 'VIGÉSIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (109, 'VIGÉSIMO PRIMERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (110, 'VIGÉSIMO SEGUNDO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (111, 'VIGÉSIMO TERCERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (112, 'VIGÉSIMO CUARTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (113, 'VIGÉSIMO QUINTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (114, 'VIGÉSIMO SEXTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (115, 'VIGÉSIMO SÉPTIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (116, 'VIGÉSIMO OCTAVO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (117, 'VIGÉSIMO NOVENO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (118, 'TRIGÉSIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (119, 'TRIGÉSIMO PRIMERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (120, 'TRIGÉSIMO SEGUNDO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (121, 'TRIGÉSIMO TERCERO DE LO FMAILIAR');
+INSERT INTO `juzgados_locales` VALUES (122, 'TRIGÉSIMO CUARTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (123, 'TRIGÉSIMO QUINTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (124, 'TRIGÉSIMO SEXTO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (125, 'TRIGÉSIMO SÉPTIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (126, 'TRIGÉSIMO OCTAVO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (127, 'TRIGÉSIMO NOVENO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (128, 'CUADRAGÉSIMO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (129, 'CUADRAGÉSIMO PRIMERO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (130, 'CUADRAGÉSIMO SEGUNDO DE LO FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (131, 'PRIMERO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (132, 'SEGUNDO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (133, 'TERCERO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (134, 'CUARTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (135, 'QUINTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (136, 'SEXTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (137, 'OCTAVO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (138, 'NOVENO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (139, 'DÉCIMO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (140, 'DÉCIMO PRIMERO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (141, 'DÉCIMO SEGUNDO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (142, 'DÉCIMO TERCERO DE LO CIVIL DE CUANTÍA  MENOR');
+INSERT INTO `juzgados_locales` VALUES (143, 'DÉCIMO CUARTO DE LO CIVIL DE CUANTÍA  MENOR');
+INSERT INTO `juzgados_locales` VALUES (144, 'DÉCIMO QUINTO DE LO CIVIL DE CUANTÍA  MENOR');
+INSERT INTO `juzgados_locales` VALUES (145, 'DÉCIMO SEXTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (146, 'DÉCIMO SÉPTIMO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (147, 'DÉCIMO OCTAVO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (148, 'DÉCIMO NOVENO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (149, 'VIGÉSIMO DE LO CIVIL CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (150, 'VIGÉSIMO PRIMERO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (151, 'VIGÉSIMO SEGUNDO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (152, 'VIGÉSIMO TERCERO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (153, 'VIGÉSIMO CUARTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (154, 'VIGÉSIMO QUINTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (155, 'VIGÉSIMO SEXTO DE LO CIVIL DE CUANTÍA MENOR');
+INSERT INTO `juzgados_locales` VALUES (156, 'PRIMERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (157, 'SEGUNDO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (158, 'TERCERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (159, 'CUARTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (160, 'QUINTO DE LO CIVIL PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (161, 'SEXTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (162, 'SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (163, 'OCTAVO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (164, 'NOVENO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (165, 'DÉCIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (166, 'DÉCIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (167, 'DÉCIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (168, 'DÉCIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (169, 'DÉCIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (170, 'DÉCIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (171, 'DÉCIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (172, 'DÉCIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (173, 'DÉCIMO OCTAVO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (174, 'DÉCIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (175, 'VIGÉSIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (176, 'VIGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (177, 'VIGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (178, 'VIGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (179, 'VIGÉSIMO CUARTO  DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (180, 'VIGÉSIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (181, 'VIGÉSIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (182, 'VIGÉSIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL Y DE EXTINCIÓN DE DOMINIO');
+INSERT INTO `juzgados_locales` VALUES (183, 'VIGÉSIMO OCTAVO DE LO CIVIL DE PROCESO ORAL Y DE EXTINCIÓN DE DOMINIO');
+INSERT INTO `juzgados_locales` VALUES (184, 'VIGÉSIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (185, 'TRIGÉSIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (186, 'TRIGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (187, 'TRIGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (188, 'TRIGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (189, 'TRIGÉSIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (190, 'TRIGÉSIMO QUINTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (191, 'TRIGÉSIMO SEXTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (192, 'TRIGÉSIMO SÉPTIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (193, 'TRIGÉSIMO OCTAVO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (194, 'TRIGÉSIMO NOVENO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (195, 'CUADRAGÉSIMO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (196, 'CUADRAGÉSIMO PRIMERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (197, 'CUADRAGÉSIMO SEGUNDO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (198, 'CUADRAGÉSIMO TERCERO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (199, 'CUADRAGÉSIMO CUARTO DE LO CIVIL DE PROCESO ORAL');
+INSERT INTO `juzgados_locales` VALUES (200, 'PRIMERO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (201, 'SEGUNDO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (202, 'TERCERO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (203, 'CUARTO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (204, 'QUINTO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (205, 'SEXTO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (206, 'SÉPTIMO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (207, 'OCTAVO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (208, 'NOVENO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (209, 'DÉCIMO DE PROCESO ORAL EN MATERIA FAMILIAR');
+INSERT INTO `juzgados_locales` VALUES (210, 'PROCESO ORAL EN MATERIA FAMILIAR CENTRO DE JUSTICIA PARA LAS MUJERES IZTAPALAPA');
+INSERT INTO `juzgados_locales` VALUES (211, 'PROCESO ORAL EN MATERIA FAMILIAR CENTRO DE JUSTICIA PARA LAS MUJERES TLAPAN');
 
 -- ----------------------------
 -- Table structure for tipo_de_juicios_federales
@@ -9326,7 +9344,7 @@ CREATE TABLE `usuarios`  (
   INDEX `id_tipo_usuario`(`id_tipo_usuario`) USING BTREE,
   INDEX `id_despacho`(`id_despacho`) USING BTREE,
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_tipo_usuario`) REFERENCES `tipo_de_usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = utf8 COLLATE = utf8_spanish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of usuarios
@@ -9337,5 +9355,6 @@ INSERT INTO `usuarios` VALUES (11, 'MARTINEZ', 'MARTINEZ', 'JESUS', 'martinez@gm
 INSERT INTO `usuarios` VALUES (12, 'GONZALO', 'CASTRO', 'JIMENEZ', 'ji@hotmail.com', '$2b$12$vr7zJ84VQlN3dn.7fj0tTe1pQKCqaXQnaMOB6ooGX7SmbUbTZgRQW', 3, 7, '2020-08-26 03:18:46.940353');
 INSERT INTO `usuarios` VALUES (15, 'AS', 'AS', 'AS', 'admin@admin', '$2b$12$lu4q5DSjQJWeulnElopM1u1cDvjJ1WxVaxSjigW39cgyrsO8pMvmC', 1, 2, '2020-08-28 04:15:48.795750');
 INSERT INTO `usuarios` VALUES (22, 'CASTILLO', 'OLIVERA', 'RICARDO CASTILLO', 'ad@ad', '$2b$12$/v.VDE42R.a6/9HfGxPNTuo7Wv1MJuA6CUMG64wsZiQmQh6jZ1rwq', 1, 1, '2020-09-01 15:44:43.319766');
+INSERT INTO `usuarios` VALUES (23, 'CASTILLO', 'OLIVERA', 'RICARDO CASTILLO', 'admin@adm', '$2b$12$XOlfF8nisu16q/611mE0gOzhwQDuu3Z8X4Effe8iwpKINwGFYVeY2', 1, 1, '2020-09-03 05:10:00.310487');
 
 SET FOREIGN_KEY_CHECKS = 1;
