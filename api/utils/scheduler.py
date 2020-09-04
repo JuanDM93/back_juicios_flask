@@ -4,6 +4,7 @@ from api.utils.db import db_connect
 from api.utils.mail.service import sendMulti
 from api.utils.pdf.fetch import pdf_service
 from api.utils.route_helpers.locals import sqlenviarcorreoDiario
+from api.utils.route_helpers.federals import insertarAcuerdosDB
 
 
 scheduler = APScheduler()
@@ -34,21 +35,18 @@ def mail_tester():
 
 @scheduler.task(
     'cron', id='daily_federal',
-    day_of_week='*', second='30',
+    day_of_week='mon-fri', hour=23,  minute=21,
     )
 def daily_federal():
     # daily federal
+    sql = "SELECT cir_id, id_org, t_ast, n_exp from juicios_federales"
     with scheduler.app.app_context():
-        """
-        sql = ''
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
+        for r in rv:
+            r['tipo'] = 'u_j_f'
+        insertarAcuerdosDB(rv)
 
-        data = []
-
-        from api.utils.pdf.scrapper import get_federals
-        get_federals(data)
-        """
         scheduler.app.logger.debug('dailyFederal job')
 
 
