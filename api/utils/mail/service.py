@@ -22,7 +22,7 @@ def search_msg(data):
         return m_help.ms_delet_Federal(data)
 
     if data['tipo'] == 'u_j_f':
-        return m_help.ms_actualizacion_local(data)
+        return m_help.ms_actualizar_fed(data)
 
     if data['tipo'] == 'd_j_f':
         return m_help.ms_delet_local(data)

@@ -213,6 +213,20 @@ def listaCorreosLigador(id_juicio_federal):
     return lista
 
 
+def informacionAcuerdosFederales(id_juicio_federal):
+    sql = "SELECT * "
+    sql += "FROM acuerdos_juicios_federales "
+    sql += "WHERE id_juicio_federal  = " + str(id_juicio_federal)
+    sql += " ORDER BY Fecha_de_publicacion DESC"
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["Fecha_de_publicacion"] = r["Fecha_de_publicacion"].strftime('%Y-%m-%d')
+    for r in rv:
+        r["Fecha_del_Auto"] = r["Fecha_del_Auto"].strftime('%Y-%m-%d')
+    return rv
+
+
 def insertarAcuerdosDB(dataExp):
 
     for data in dataExp:
@@ -220,7 +234,7 @@ def insertarAcuerdosDB(dataExp):
         dataInsert = get_acuerdos(data)
         rv = informacionJuicioAcuerdo(data)
 
-        id_jucio_federal = rv["id_juicio_federal"]
+        id_juicio_federal = rv["id_juicio_federal"]
         values = ""
         acuerdos = []
 
@@ -233,7 +247,7 @@ def insertarAcuerdosDB(dataExp):
                 Fecha_de_publicacion = datain["Fecha_de_publicacion"].split('-')
                 datain["Fecha_de_publicacion"]   = Fecha_de_publicacion[2] + "-" + Fecha_de_publicacion[1] + "-" + Fecha_de_publicacion[0]
 
-                values += "( " + str(id_jucio_federal) + ",'" + str(datain["Fecha_de_publicacion"]) + "',"
+                values += "( " + str(id_juicio_federal) + ",'" + str(datain["Fecha_de_publicacion"]) + "',"
                 values += " '" + str(datain["Fecha_del_Auto"]) + "','" + str(datain["Tipo_Cuaderno"]) + "',"
                 values += " '" + str(datain["acuerdo"]) + "','" + str(datain["url"]) + "'),"
                 acuerdos.append(datain)
@@ -242,14 +256,14 @@ def insertarAcuerdosDB(dataExp):
 
             values = values[:-1]
             sql = "INSERT INTO "
-            sql += "acuerdos_juicios_federales (id_jucio_federal,Fecha_de_publicacion, "
+            sql += "acuerdos_juicios_federales (id_juicio_federal,Fecha_de_publicacion, "
             sql += "Fecha_del_Auto,Tipo_Cuaderno,acuerdo,url)"
             sql += "VALUES " + values
             db_connect(sql)
 
             rv["acuerdos"] = acuerdos
             rv["tipo"] = data['tipo']
-            rv["emails"] = listaCorreosLigador(id_jucio_federal)
+            rv["emails"] = listaCorreosLigador(id_juicio_federal)
             sendMulti(rv)
 
 
@@ -267,8 +281,8 @@ def eliminarCorreosAbogadosFederales(
     db_connect(sql)
 
 
-def eliminarAcuerdosFederales(id_jucio_federal):
+def eliminarAcuerdosFederales(id_juicio_federal):
     # eliminar acuerdos locales
-    sql = "DELETE FROM acuerdos_juicios_federales where id_jucio_federal = "
-    sql += str(id_jucio_federal)
+    sql = "DELETE FROM acuerdos_juicios_federales where id_juicio_federal = "
+    sql += str(id_juicio_federal)
     __, response = db_connect(sql)
