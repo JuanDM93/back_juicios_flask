@@ -21,6 +21,7 @@ services:
     volumes:
       - ./:/flask
     environment:
+      SECLEVEL: 2
       FLASK_ENV: development
     depends_on:
       - db
