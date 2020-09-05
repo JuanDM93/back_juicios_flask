@@ -10,6 +10,7 @@
 # *.sql
 
 # Environments
+venv
 env
 
 *.pyc

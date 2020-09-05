@@ -46,10 +46,10 @@ def is_parsed(f_name, data=None):
         )
     except Exception:
         current_app.logger.warn('TIKA: No response from server')
-    try:
-        pdf = parser.from_buffer(f_name)
-    except Exception:
-        current_app.logger.warn('TIKA: No local jar found')
+        try:
+            pdf = parser.from_buffer(f_name)
+        except Exception:
+            current_app.logger.warn('TIKA: No local jar found')
     finally:
         pdf = pdf['content']
         # has content
