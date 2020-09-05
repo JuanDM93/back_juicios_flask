@@ -162,15 +162,14 @@ def validarAcuerdosFederales(url):
 
 
 def statusJuiciosFederales(url):
-    with requests.Session() as s:
-        response = s.get(url)
-        # TODO check other status??? timeouts...
-        if response.status_code == 200:
-            return response.content
-        if response.status_code == 500:
-            sleep(1)
-            return statusJuiciosFederales(url)
-        return None
+    response = requests.get(url)
+    # TODO check other status??? timeouts...
+    if response.status_code == 200:
+        return response.content
+    if response.status_code == 500:
+        sleep(1)
+        return statusJuiciosFederales(url)
+    return None
 
 
 def informacionJuicioAcuerdo(data):
