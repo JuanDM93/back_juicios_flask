@@ -4,42 +4,59 @@ services:
 
   front:
     build: ./juicios
+
     ports:
       - 4200:80
+
     volumes:
       - ./juicios:/front
-      - /front/node_modules 
+      - /front/node_modules
+
     depends_on:
       - api
+
     links:
       - api
 
+
   api:
     build: ./
+
     ports:
       - 5000:5000
+    
     volumes:
       - ./:/flask
+    
     environment:
-      SECLEVEL: 1
       FLASK_ENV: development
+    
     depends_on:
       - db
       - tika
+    
     links:
       - db
       - tika
 
   db:
     image: mariadb
-    ports:
-      - 3306:3306
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    
     environment:
+      TZ: America/Mexico_City
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: root
       MYSQL_DATABASE: juicios
+    
+    ports:
+      - 3306:3306
+    
+    command: apt-get install tzdata -y
+    command: ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+    
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
 
