@@ -23,7 +23,7 @@ class Config:
 
     # JWT
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
-    JWT_ACCESS_TOKEN_EXPIRES = False    # 60 * 60
+    JWT_ACCESS_TOKEN_EXPIRES = (60 * 60) * 3
 
     # SCHEDULER
     SCHEDULER_API_ENABLED = True
