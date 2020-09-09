@@ -16,6 +16,18 @@ def login():
     # qs
     email = request.get_json()['email']
     password = request.get_json()['password']
+
+    sql = "SELECT despachos.status FROM usuarios "
+    sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho " 
+    sql += "WHERE usuarios.email = '" + str(email)
+    sql += "'"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchone()
+    if rv["status"] == 0:
+        return jsonify({
+            "error": "El usuario esta desactivado por falta de pago"
+        })
+
     # sql
     sql = "SELECT * FROM usuarios where email = '" + str(email) + "'"
     cur, __ = db_connect(sql)
@@ -43,5 +55,5 @@ def login():
                 }]
             })
     return jsonify({
-        "error": "Invalid username and password"
+        "error": "El usuario o contraseña es incorrecto"
         })

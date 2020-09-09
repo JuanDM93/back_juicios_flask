@@ -210,14 +210,17 @@ def despachos():
 def altaDespacho():
     nombreDespacho = request.get_json()['nombreDespacho']
     base64 = request.get_json()['base64']
+    status = request.get_json()['status']
 
     if rh.validarExpedienteDespachos(nombreDespacho):
         return jsonify({
             'status': 400, 'mensaje': 'Esta repetido el registro'})
 
-    sql = "INSERT INTO despachos (nombre,imagen) VALUES ('"
+    sql = "INSERT INTO despachos (nombre,imagen,status) VALUES ('"
     sql += str(nombreDespacho).lstrip().rstrip().upper()
-    sql += "', '" + str(base64) + "')"
+    sql += "', '" + str(base64) + "', "
+    sql += "'" + str(status) + "' "
+    sql += ")"
     db_connect(sql)
     return jsonify({'status': 200})
 
@@ -245,6 +248,7 @@ def actualizarDespacho():
     nombreDespacho = request.get_json()['nombreDespacho']
     base64 = request.get_json()['base64']
     originalNombre = request.get_json()['originalNombre']
+    status = request.get_json()['status']
     if originalNombre is False:
         if rh.validarExpedienteDespachos(nombreDespacho):
             return jsonify({
@@ -253,6 +257,7 @@ def actualizarDespacho():
         sql = "UPDATE despachos SET "
         sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper()
         sql += "', " + "imagen = '" + str(base64) + "'"
+        sql += ", " + "status = '" + str(status) + "'"
         sql += " WHERE id = " + str(id_despacho)
         db_connect(sql)
         return jsonify({'status': 200})
@@ -260,6 +265,7 @@ def actualizarDespacho():
     sql = "UPDATE despachos SET "
     sql += "nombre = '" + str(nombreDespacho).lstrip().rstrip().upper() + "', "
     sql += "imagen = '" + str(base64) + "'"
+    sql += ", " + "status = '" + str(status) + "'"
     sql += " WHERE id = " + str(id_despacho)
     db_connect(sql)
     return jsonify({'status': 200})
