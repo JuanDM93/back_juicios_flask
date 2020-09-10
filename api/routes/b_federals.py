@@ -15,7 +15,6 @@ bp = Blueprint(
 # Get juzgados
 @bp.route('/circuitos_federales', methods=['GET'])
 def circuitos_federales():
-    # mysql
     sql = "SELECT * from circuitos_federales"
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
@@ -69,7 +68,7 @@ def alta_juicios_federales():
     listaCorreoAbogadosFederales = request.get_json()['listaCorreoAbogadosFederales']
 
     sql = "INSERT INTO juicios_federales "
-    sql += "(cir_id, id_org, t_ast, n_exp, Quejoso_Actor_Recurrente_Concursada,Tercero_Interesado_Demandado_Acreedor,Autoridades )"
+    sql += "(cir_id, id_org, t_ast, n_exp, Quejoso_Actor_Recurrente_Concursada,Tercero_Interesado_Demandado_Acreedor,Autoridades,url )"
     sql += " VALUES ("
     sql += str(cir_id) + ", "
     sql += str(id_org) + ", "
@@ -77,7 +76,8 @@ def alta_juicios_federales():
     sql += str(n_exp).lstrip().rstrip().upper() + "', '"
     sql += str(Quejoso_Actor_Recurrente_Concursada).lstrip().rstrip().upper() + "', '"
     sql += str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "', '"
-    sql += str(Autoridades).lstrip().rstrip().upper() + "')"
+    sql += str(Autoridades).lstrip().rstrip().upper() + "',"
+    sql += "'"  + str(rh.urlFederales(data)) +"')"
     db_connect(sql)
 
     rh.registrarCorreosAbogadosFederales(data, listaCorreoAbogadosFederales)
@@ -260,7 +260,8 @@ def actulizar_juicio_federal():
             sql += "n_exp = '" + str(n_exp) + "', "
             sql += "Quejoso_Actor_Recurrente_Concursada = '" + str(Quejoso_Actor_Recurrente_Concursada).lstrip().rstrip().upper() + "', "
             sql += "Autoridades = '" + str(Autoridades).lstrip().rstrip().upper() + "', "
-            sql += "Tercero_Interesado_Demandado_Acreedor = '" + str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "' "
+            sql += "Tercero_Interesado_Demandado_Acreedor = '" + str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "', "
+            sql += "url = '" + str(rh.urlFederales(data)) + "' "
             sql += " WHERE id = " + str(id_juicio_federal)
             db_connect(sql)
             rh.eliminarAcuerdosFederales(id_juicio_federal)
@@ -276,7 +277,8 @@ def actulizar_juicio_federal():
         sql += "n_exp = '" + str(n_exp) + "', "
         sql += "Quejoso_Actor_Recurrente_Concursada = '" + str(Quejoso_Actor_Recurrente_Concursada).lstrip().rstrip().upper() + "', "
         sql += "Autoridades = '" + str(Autoridades).lstrip().rstrip().upper() + "', "
-        sql += "Tercero_Interesado_Demandado_Acreedor = '" + str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "' "
+        sql += "Tercero_Interesado_Demandado_Acreedor = '" + str(Tercero_Interesado_Demandado_Acreedor).lstrip().rstrip().upper() + "', "
+        sql += "url = '" + str(rh.urlFederales(data)) + "' "
         sql += " WHERE id = " + str(id_juicio_federal)
         db_connect(sql)
         rh.eliminarCorreosAbogadosFederales(id_juicio_federal, listaCorreoAbogadosFederales)

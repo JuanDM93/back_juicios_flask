@@ -267,3 +267,16 @@ def eliminarAcuerdosFederales(id_juicio_federal):
     sql = "DELETE FROM acuerdos_juicios_federales where id_juicio_federal = "
     sql += str(id_juicio_federal)
     __, response = db_connect(sql)
+
+
+def urlFederales(data):
+    t_ast = data['t_ast']
+    id_org = data['id_org']
+    n_exp = data['n_exp']
+
+    b_url = 'https://www.dgepj.cjf.gob.mx/'
+    b_url += 'siseinternet/reportes/vercaptura.aspx?'
+    form = f'tipoasunto={t_ast}'
+    form += f'&organismo={id_org}'
+    form += f'&expediente={n_exp}'
+    return b_url + form
