@@ -1,7 +1,6 @@
 from flask_apscheduler import APScheduler
 
 from api.utils.db import db_connect
-from api.utils.mail.service import sendMulti
 from api.utils.pdf.fetch import pdf_service
 from api.utils.route_helpers.locals import sqlenviarcorreoDiario
 from api.utils.route_helpers.federals import insertarAcuerdosDB
@@ -16,21 +15,12 @@ def start_jobs(app):
 
 
 @scheduler.task(
-    'cron', id='mail_tester',
+    'cron', id='tester',
     day_of_week='*', hour='4', minute='20',
     )
-def mail_tester():
-    # Mail test
-    data = {}
-    data['tipo'] = 'a_j_f'
-    data['emails'] = ['ricaror@hotmail.com']
-    data['numero_de_expediente'] = '1/2020'
-    data['actor'] = 'ACTOR'
-    data['demandado'] = 'DEMANDADO'
-
+def sched_tester():
     with scheduler.app.app_context():
-        sendMulti(data)
-        scheduler.app.logger.debug('Mail job executed')
+        scheduler.app.logger.debug('Test job executed')
 
 
 @scheduler.task(
@@ -70,8 +60,6 @@ def daily_local():
 
         if rv is not None:
             pdf_service(rv, daily=True)
-            for dataMail in sqlenviarcorreoDiario():
-                dataMail['tipo'] = 'u_j_l'
-                sendMulti(dataMail)
-
+            sqlenviarcorreoDiario():
+        
         scheduler.app.logger.debug('dailyLocal job')

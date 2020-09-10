@@ -6,7 +6,7 @@ from api.utils.db import db_connect
 from api.utils.route_helpers.locals import validarExpedienteLocal
 
 
-def extract_acuerdo(pdf: str, data):
+def extract_acuerdo(pdf, data):
     x = pdf.find(data['juzgado'])
     juzgado = pdf[x:]
     acuerdo = "Exp. " + data['expediente']
@@ -52,7 +52,6 @@ def is_parsed(f_name, data=None):
             current_app.logger.warn('TIKA: No local jar found')
     finally:
         pdf = pdf['content']
-        # has content
         if len(pdf) > 1:
             return extract_multi(pdf, data)
         return []
@@ -63,7 +62,6 @@ def req_cdmx(fecha: str):
     url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
     with requests.Session() as s:
         response = s.get(url)
-        # TODO check other status??? timeouts...
         if response.status_code == 200:
             return response.content
         if response.status_code == 500:
@@ -77,7 +75,6 @@ def fetch_pdf(fecha, data: []):
     response = req_cdmx(fechaurl)
     if response is not None:
         result = is_parsed(response, data)
-        # SQL
         if len(result) > 0:
             values = ""
             for r in result:

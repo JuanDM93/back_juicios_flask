@@ -31,8 +31,6 @@ def registrarCorreosAbogadosLocales(
     for CorreoAbogadoLocal in listaCorreoAbogadosLocales:
         data += "('" + str(id_juicio_local)
         data += "', '" + CorreoAbogadoLocal + "'), "
-        # TODO
-        # enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
     data = data[:-2]
 
     sql = "INSERT INTO abogados_responsables_juicios_locales"
@@ -55,7 +53,6 @@ def metodo_actualizar_juicio(
     # Helper juicio local
         actor, demandado, numero_de_expediente, id_juzgado_local,
         emails, emailsEliminar, id_juicio_local):
-
     sql = "UPDATE juicios_locales SET "
     sql += "actor = '" + str(actor).lstrip().rstrip().upper() + "', "
     sql += "demandado = '" + str(demandado).lstrip().rstrip().upper() + "', "
@@ -211,4 +208,6 @@ def sqlenviarcorreoDiario():
         r["emails"] = listaCorreosLigador(r["id_juicio_local"])
     for r in rv:
         r["acuerdos"] = acuerdoslocalesdiarios(r["id_juicio_local"])
-    return rv
+    for dataMail in rv:
+        dataMail['tipo'] = 'u_j_l'
+        sendMulti(dataMail)

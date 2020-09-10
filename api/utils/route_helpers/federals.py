@@ -22,8 +22,6 @@ def registrarCorreosAbogadosFederales(
     for CorreoAbogadoLocal in listaCorreoAbogadosFederales:
         data += "('" + str(id_juicio_federal)
         data += "', '" + CorreoAbogadoLocal + "'), "
-        # TODO
-        # enviarCorreo(correoabogadolocal, 'texto formateado'--data['nombre'])
     data = data[:-2]
 
     sql = "INSERT INTO abogados_responsables_juicios_federales"
@@ -45,17 +43,14 @@ def get_acuerdos(data):
     form += f'&expediente={n_exp}'
 
     html = statusJuiciosFederales(b_url + form)
-
     if html is None:
         return []
 
     soup = bs4.BeautifulSoup(html)
-
     select = soup.find(
             'table', {
                 'id': 'grvAcuerdos',
             })
-
     if select is None:
         return []
 
@@ -82,18 +77,14 @@ def get_acuerdos(data):
                 href = href.replace('javascript:DoVerAcuerdo(', '')
                 href = href.replace(")", '')
                 href = href.replace('\"', '')
-                # print(str(href).findAll('DoVerAcuerdo'))
                 acuerdo[titulos[v]] = href.split(',')
             else:
                 acuerdo[titulos[v]] = ac_data[v].text
-
         acuerdos.append(acuerdo)
 
     for ac in acuerdos:
         ac['No'] = ac['No'].replace('\n', '')
 
-    # for ac in acuerdos:
-    #   print(ac['parametros'][4][0:10])
     for ac in acuerdos:
         sintesisURL = "https://www.dgepj.cjf.gob.mx/siseinternet/Actuaria/VerAcuerdo.aspx?"
         sintesisURL += "listaAcOrd=" + ac['parametros'][1]
@@ -111,7 +102,6 @@ def get_acuerdos(data):
             'span', {
                 'id': 'lblAcuerdo',
             })
-
         ac['url'] = sintesisURL
 
         txtsintesis = sinstesistxt.get_text()
@@ -163,7 +153,6 @@ def validarAcuerdosFederales(url):
 
 def statusJuiciosFederales(url):
     response = requests.get(url)
-    # TODO check other status??? timeouts...
     if response.status_code == 200:
         return response.content
     if response.status_code == 500:
@@ -227,20 +216,15 @@ def informacionAcuerdosFederales(id_juicio_federal):
 
 
 def insertarAcuerdosDB(dataExp):
-
     for data in dataExp:
-
         dataInsert = get_acuerdos(data)
         rv = informacionJuicioAcuerdo(data)
 
         id_juicio_federal = rv["id_juicio_federal"]
         values = ""
         acuerdos = []
-
         for datain in dataInsert:
-
             if validarAcuerdosFederales(datain["url"]) is False:
-
                 Fecha_del_Auto = datain["Fecha_del_Auto"].split('-')
                 datain["Fecha_del_Auto"] = Fecha_del_Auto[2] + "-" + Fecha_del_Auto[1] + "-" + Fecha_del_Auto[0]
                 Fecha_de_publicacion = datain["Fecha_de_publicacion"].split('-')
@@ -250,9 +234,7 @@ def insertarAcuerdosDB(dataExp):
                 values += " '" + str(datain["Fecha_del_Auto"]) + "','" + str(datain["Tipo_Cuaderno"]) + "',"
                 values += " '" + str(datain["acuerdo"]) + "','" + str(datain["url"]) + "'),"
                 acuerdos.append(datain)
-
         if len(values) > 0:
-
             values = values[:-1]
             sql = "INSERT INTO "
             sql += "acuerdos_juicios_federales (id_juicio_federal,Fecha_de_publicacion, "
