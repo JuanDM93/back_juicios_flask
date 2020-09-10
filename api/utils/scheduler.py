@@ -59,7 +59,7 @@ def daily_local():
         rv = cur.fetchall()
 
         if rv is not None:
-            pdf_service(rv, daily=True)
+            pdf_service(rv)
             sqlenviarcorreoDiario()
         
         scheduler.app.logger.debug('dailyLocal job')

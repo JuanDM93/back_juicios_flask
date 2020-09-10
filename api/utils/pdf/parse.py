@@ -8,7 +8,15 @@ from api.utils.route_helpers.locals import validarExpedienteLocal
 
 def extract_acuerdo(pdf, data):
     x = pdf.find(data['juzgado'])
+    
     juzgado = pdf[x:]
+
+    punto = 'SECRETARÍA "A"'
+    punto_a = juzgado.find(punto)
+    y = juzgado[punto_a:].find(punto)
+
+    juzgado = juzgado[punto_a:y]
+
     acuerdo = "Exp. " + data['expediente']
     y = juzgado.find(acuerdo)
     if y == -1:
