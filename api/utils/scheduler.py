@@ -15,8 +15,8 @@ def start_jobs(app):
 
 
 @scheduler.task(
-    'cron', id='tester',
-    day_of_week='*', hour='4', minute='20',
+    'interval', id='tester',
+    seconds=10,
     )
 def sched_tester():
     with scheduler.app.app_context():
@@ -25,7 +25,7 @@ def sched_tester():
 
 @scheduler.task(
     'cron', id='daily_federal',
-    day_of_week='mon-fri', hour=23,  minute=21,
+    day_of_week='mon-fri', hour=7,  minute=1,
     )
 def daily_federal():
     # daily federal
@@ -60,6 +60,6 @@ def daily_local():
 
         if rv is not None:
             pdf_service(rv, daily=True)
-            sqlenviarcorreoDiario():
+            sqlenviarcorreoDiario()
         
         scheduler.app.logger.debug('dailyLocal job')
