@@ -1,7 +1,13 @@
 from flask import (
+    Blueprint,
     flash, redirect, request,
     url_for, send_from_directory)
 from werkzeug.utils import secure_filename
+
+
+bp = Blueprint(
+    "uploads", __name__,
+    url_prefix='/uploads')
 
 
 def allowed_file(filename):
@@ -9,7 +15,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/', methods=['GET', 'POST'])
+@bp.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -45,7 +51,7 @@ def upload_file():
     '''
 
 
-@app.route('/uploads/<filename>')
+@app.route('/<filename>')
 def uploaded_file(filename):
     return send_from_directory(
         app.config['UPLOAD_FOLDER'],

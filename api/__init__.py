@@ -34,11 +34,12 @@ def create_app():
 
         # Import routes
         from .routes import (
-            admin, users,
+            admin, users, files
             b_locals, b_federals)
 
         app.register_blueprint(admin.bp)
         app.register_blueprint(users.bp)
+        app.register_blueprint(files.bp)
         app.register_blueprint(b_locals.bp)
         app.register_blueprint(b_federals.bp)
 
