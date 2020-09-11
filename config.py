@@ -27,6 +27,11 @@ class Config:
 
     # SCHEDULER
     SCHEDULER_API_ENABLED = True
+    
+    # FILES
+    UPLOAD_FOLDER = '/sql/uploads'
+    ALLOWED_EXTENSIONS = {'pdf'}
+    #MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'
