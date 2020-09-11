@@ -37,8 +37,8 @@ def upload_file():
             current_app.config['UPLOAD_FOLDER'], filename)
         pdf.save(savepath)
 
-        return redirect(
-            url_for('uploads.uploaded_file', filename=filename))
+        # DB call (filename)
+        return 'Uploaded'
 
 
 @bp.route('/<filename>')
