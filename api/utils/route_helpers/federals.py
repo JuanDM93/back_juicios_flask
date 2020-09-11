@@ -32,6 +32,7 @@ def registrarCorreosAbogadosFederales(
 
 def get_acuerdos(data):
     # GET Acuerdos -PUBLICO- mods al b_federals
+    response = {}
     t_ast = data['t_ast']
     id_org = data['id_org']
     n_exp = data['n_exp']
@@ -44,7 +45,9 @@ def get_acuerdos(data):
 
     html = statusJuiciosFederales(b_url + form)
     if html is None:
-        return []
+        response["acuerdos"] = []
+        response["sentencias"] = []
+        return response
 
     soup = bs4.BeautifulSoup(html)
     select = soup.find(
@@ -52,7 +55,10 @@ def get_acuerdos(data):
                 'id': 'grvAcuerdos',
             })
     if select is None:
-        return []
+        response["acuerdos"] = []
+        response["sentencias"] = []
+        return response
+
 
     tabla = select.findAll('tr')
     titles = tabla[0].findAll('th')
@@ -108,9 +114,51 @@ def get_acuerdos(data):
         txtsintesis = txtsintesis.replace('\n', ' ')
         txtsintesis = txtsintesis.replace('   ', '')
         ac['acuerdo'] = txtsintesis
+        
+    tabletacuerdos = soup.find(
+            'table', {
+                'id': 'grvReporteSentencias',
+            })
+    if select is None:
+        response["acuerdos"] = acuerdos
+        response["sentencias"] = []
+        return response
+    
+    tablaproceso = tabletacuerdos.findAll('tr')
 
-    return acuerdos
-
+    titulosAcuerdos = [
+        "asunto",
+        "fecha_ingreso",
+        "tema",
+        "archivo"
+    ]
+    
+    sentencias = []
+    for a in tablaproceso[1:]:
+        ac_data = a.findAll('td')
+        sentencia = {}
+        for v in range(len(titulosAcuerdos)):
+            if v == len(titulosAcuerdos) - 1:
+                link = ac_data[v].findAll('a')
+                onclick = link[0].get('onclick')
+                onclick = onclick.replace('AbrirVentana(', '')
+                onclick = onclick.replace(");", '')
+                onclick = onclick.replace('\"', '')
+                sentencia[titulosAcuerdos[v]] = onclick.split(',')
+            else:
+                sentencia[titulosAcuerdos[v]] = ac_data[v].text
+        sentencias.append(sentencia)
+    
+    for ac in sentencias:
+        ac['asunto'] = ac['asunto'].replace('\n', '')
+        ac['fecha_ingreso'] = ac['fecha_ingreso'].replace('\n', '')
+        ac['tema'] = ac['tema'].replace('\n', '')
+        ac['tema'] = ac['tema'].replace('\n\n', '')
+        ac['archivo'] = ac['archivo'][0].replace("'", '')
+  
+    response["acuerdos"] = acuerdos
+    response["sentencias"] = sentencias
+    return response
 
 """
   "parametros": [
@@ -143,6 +191,18 @@ def validarAcuerdosFederales(url):
     # Validar expediente
     sql = "SELECT COUNT(1) AS BIT FROM acuerdos_juicios_federales "
     sql += "WHERE url = '" + str(url)
+    sql += "'"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchone()
+    if rv["BIT"] == 0:
+        return False
+    return True
+
+
+def validarSentenciasFederales(archivo):
+    # Validar expediente
+    sql = "SELECT COUNT(1) AS BIT FROM sentencias_federales "
+    sql += "WHERE archivo = '" + str(archivo)
     sql += "'"
     cur, __ = db_connect(sql)
     rv = cur.fetchone()
@@ -214,15 +274,34 @@ def informacionAcuerdosFederales(id_juicio_federal):
         r["Fecha_del_Auto"] = r["Fecha_del_Auto"].strftime('%Y-%m-%d')
     return rv
 
+def informacionSentenciasFederales(id_juicio_federal):
+    sql = "SELECT * "
+    sql += "FROM sentencias_federales "
+    sql += "WHERE id_juicio_federal  = " + str(id_juicio_federal)
+    sql += " ORDER BY fecha_ingreso DESC"
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["fecha_ingreso"] = r["fecha_ingreso"].strftime('%Y-%m-%d')
+    return rv
+
 
 def insertarAcuerdosDB(dataExp):
     for data in dataExp:
-        dataInsert = get_acuerdos(data)
+        scrapper = get_acuerdos(data)
+ 
+        dataInsert = scrapper["acuerdos"]
+        dataSentencias = scrapper["sentencias"]
+        
         rv = informacionJuicioAcuerdo(data)
-
+        
         id_juicio_federal = rv["id_juicio_federal"]
         values = ""
+        valuesSentencias = ""
+        
         acuerdos = []
+        sentencias = []
+
         for datain in dataInsert:
             if validarAcuerdosFederales(datain["url"]) is False:
                 Fecha_del_Auto = datain["Fecha_del_Auto"].split('-')
@@ -245,7 +324,26 @@ def insertarAcuerdosDB(dataExp):
             rv["acuerdos"] = acuerdos
             rv["tipo"] = data['tipo']
             rv["emails"] = listaCorreosLigador(id_juicio_federal)
-            sendMulti(rv)
+            
+            if rv['tipo'] == 'a_j_f' or  rv['tipo'] == 'd_j_f' or rv['tipo'] == 'u_j_f':
+                sendMulti(rv)
+
+        for datain in dataSentencias:
+            if validarAcuerdosFederales(datain["archivo"]) is False:
+                fecha_ingreso = datain["fecha_ingreso"].split('/')
+                datain["fecha_ingreso"] = fecha_ingreso[2] + "-" + fecha_ingreso[1] + "-" + fecha_ingreso[0]
+                valuesSentencias += "( " + str(id_juicio_federal) + ",'" + str(datain["asunto"]) + "',"
+                valuesSentencias += " '" + str(datain["fecha_ingreso"]) + "','" + str(datain["tema"]) + "',"
+                valuesSentencias += " '" + str(datain["archivo"]) + "'),"
+                sentencias.append(datain)
+                
+        if len(valuesSentencias) > 0:
+            valuesSentencias = valuesSentencias[:-1]
+            sql = "INSERT INTO "
+            sql += "sentencias_federales (id_juicio_federal,asunto, "
+            sql += "fecha_ingreso,tema,archivo)"
+            sql += "VALUES " + valuesSentencias
+            db_connect(sql)
 
 
 def eliminarCorreosAbogadosFederales(
@@ -265,6 +363,13 @@ def eliminarCorreosAbogadosFederales(
 def eliminarAcuerdosFederales(id_juicio_federal):
     # eliminar acuerdos locales
     sql = "DELETE FROM acuerdos_juicios_federales where id_juicio_federal = "
+    sql += str(id_juicio_federal)
+    __, response = db_connect(sql)
+
+
+def eliminarSentenciasFederales(id_juicio_federal):
+    # eliminar acuerdos locales
+    sql = "DELETE FROM sentencias_federales where id_juicio_federal = "
     sql += str(id_juicio_federal)
     __, response = db_connect(sql)
 

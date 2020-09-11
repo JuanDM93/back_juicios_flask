@@ -1,5 +1,6 @@
 from flask_mail import Mail, Message
 from . import m_help
+from api.utils.db import db_connect
 
 
 mail = Mail()
@@ -24,9 +25,6 @@ def search_msg(data):
     if data['tipo'] == 'u_j_f':
         return m_help.ms_actualizar_fed(data)
 
-    if data['tipo'] == 'd_j_f':
-        return m_help.ms_delet_local(data)
-
     if data['tipo'] == 'a_u':
         return m_help.ms_nuevo_usuario(data)
 
@@ -37,10 +35,27 @@ def search_msg(data):
         return m_help.ms_eliminar_usuario(data)
 
 
+
+def emailsValidos(emailsValidar):
+      emailsCorrectos = []
+      
+      for email in emailsValidar:
+            sql = "SELECT despachos.status,usuarios.email  FROM usuarios "
+            sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho " 
+            sql += "WHERE usuarios.email = '" + str(email)
+            sql += "'"
+            cur, __ = db_connect(sql)
+            rv = cur.fetchone()
+            if rv["status"] == 1:
+                  emailsCorrectos.append(rv["email"])
+                  
+      return emailsCorrectos
+
+
 def sendMulti(data):
     subject, message = search_msg(data)
     with mail.connect() as conn:
-        for user in data['emails']:
+        for user in emailsValidos(data['emails']):
             msg = Message(
                 recipients=[user],
                 subject=subject,

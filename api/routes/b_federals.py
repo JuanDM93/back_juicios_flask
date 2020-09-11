@@ -206,6 +206,7 @@ def eliminar_juicio_federal():
     __, response = db_connect(sql)
 
     rh.eliminarAcuerdosFederales(id_juicio_federal)
+    rh.eliminarSentenciasFederales(id_juicio_federal)
     rh.eliminarCorreosAbogadosFederales(id_juicio_federal, emails)
 
     if response > 0:
@@ -265,6 +266,7 @@ def actulizar_juicio_federal():
             sql += " WHERE id = " + str(id_juicio_federal)
             db_connect(sql)
             rh.eliminarAcuerdosFederales(id_juicio_federal)
+            rh.eliminarSentenciasFederales(id_juicio_federal)
             rh.eliminarCorreosAbogadosFederales(id_juicio_federal, listaCorreoAbogadosFederales)
             rh.registrarCorreosAbogadosFederales(data, listaCorreoAbogadosFederales)
             rh.insertarAcuerdosDB([data])
@@ -308,6 +310,7 @@ def detalle_expedinte_federal():
     sql += "juicios_federales.Quejoso_Actor_Recurrente_Concursada,"
     sql += "juicios_federales.Tercero_Interesado_Demandado_Acreedor,"
     sql += "juicios_federales.n_exp,"
+    sql += "juicios_federales.url,"
     sql += "juicios_federales.Autoridades FROM juicios_federales "
     sql += "INNER JOIN circuitos_federales ON circuitos_federales.c_id = juicios_federales.cir_id "
     sql += "INNER JOIN juzgados_federales ON juzgados_federales.org_id = juicios_federales.id_org "
@@ -320,6 +323,7 @@ def detalle_expedinte_federal():
     rv = cur.fetchone()
     rv["emails"] = rh.listaCorreosLigador(rv["id_juicio_federal"])
     rv["acuerdos"] = rh.informacionAcuerdosFederales(rv["id_juicio_federal"])
+    rv["sentencias"] = rh.informacionSentenciasFederales(rv["id_juicio_federal"])
     return jsonify([rv])
 
 

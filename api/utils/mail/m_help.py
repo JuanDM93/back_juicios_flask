@@ -10,9 +10,10 @@ def ms_actual_local(data):
     msg += f'<p><strong>Actor:  </strong>{data["actor"]}</p>'
     msg += f'<p><strong>Demandado: </strong>{data["demandado"]}</p>'
     msg += '<p><strong>Acuerdos</strong></p>'
+    """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
-
+        """
     return sub, msg
 
 
@@ -23,9 +24,10 @@ def ms_actualizacion_local(data):
     msg += f'<p><strong>Actor:  </strong>{data["actor"]}</p>'
     msg += f'<p><strong>Demandado: </strong>{data["demandado"]}</p>'
     msg += '<p><strong>Acuerdos</strong></p>'
+    """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
-
+        """
     return sub, msg
 
 
@@ -64,14 +66,14 @@ def ms_actual_fed(data):
     msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
     msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
     msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
-
+    """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>No de Acuerdo: </strong>{acuerd["No"]}</p>'
         msg += f'<p><strong>Fecha del Auto: </strong>{acuerd["Fecha_del_Auto"]}</p>'
         msg += f'<p><strong>Tipo Cuaderno: </strong>{acuerd["Tipo_Cuaderno"]}</p>'
         msg += f'<p><strong><span>Fecha de publicaci&oacute;n</span>: </strong>{acuerd["Fecha_de_publicacion"]}</p>'
         msg += f'<p><strong>Acuerdo: </strong>{acuerd["acuerdo"]}</p>'
-
+        """
     return sub, msg
 
 
@@ -88,14 +90,15 @@ def ms_actualizar_fed(data):
     msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
     msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
     msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
-
+    
+    """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>No de Acuerdo: </strong>{acuerd["No"]}</p>'
         msg += f'<p><strong>Fecha del Auto: </strong>{acuerd["Fecha_del_Auto"]}</p>'
         msg += f'<p><strong>Tipo Cuaderno: </strong>{acuerd["Tipo_Cuaderno"]}</p>'
         msg += f'<p><strong><span>Fecha de publicaci&oacute;n</span>: </strong>{acuerd["Fecha_de_publicacion"]}</p>'
         msg += f'<p><strong>Acuerdo: </strong>{acuerd["acuerdo"]}</p>'
-
+        """
     return sub, msg
 
 
