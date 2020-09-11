@@ -133,6 +133,13 @@ Federal (baseURL/federales)
 ../alta_juicios_federales
 ```
 
+FILES (baseURL/uploads)
+
+```bash
+../
+../<filename>
+
+
 ## Contributing
 
 For major changes, please open an issue first to discuss what you would like to change.

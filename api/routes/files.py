@@ -38,7 +38,7 @@ def upload_file():
         pdf.save(savepath)
 
         # DB call (filename)
-        return 'Uploaded'
+        return filename
 
 
 @bp.route('/<filename>')
