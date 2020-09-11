@@ -34,7 +34,7 @@ def create_app():
 
         # Import routes
         from .routes import (
-            admin, users, files
+            admin, users, files,
             b_locals, b_federals)
 
         app.register_blueprint(admin.bp)

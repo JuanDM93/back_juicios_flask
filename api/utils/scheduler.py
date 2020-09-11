@@ -16,7 +16,7 @@ def start_jobs(app):
 
 @scheduler.task(
     'interval', id='tester',
-    seconds=10,
+    seconds=30,
     )
 def sched_tester():
     with scheduler.app.app_context():

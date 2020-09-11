@@ -1,18 +1,20 @@
+import os
 from flask import (
-    Blueprint,
+    Blueprint, current_app,
     flash, redirect, request,
     url_for, send_from_directory)
 from werkzeug.utils import secure_filename
 
-
+# FILES
 bp = Blueprint(
     "uploads", __name__,
     url_prefix='/uploads')
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename \
+        and filename.rsplit('.', 1)[1].lower() \
+        in current_app.config['ALLOWED_EXTENSIONS']
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -23,22 +25,21 @@ def upload_file():
             flash('No file part')
             return redirect(request.url)
 
-        file = request.files['file']
+        pdf = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
-        if file.filename == '':
+        if pdf.filename == '':
             flash('No selected file')
             return redirect(request.url)
 
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(
-                os.path.join(
-                    app.config['UPLOAD_FOLDER'], filename
-                    )
-                )
+        if pdf and allowed_file(pdf.filename):
+            filename = secure_filename(pdf.filename)
+            savepath = os.path.join(
+                current_app.config['UPLOAD_FOLDER'], filename)
+            pdf.save(savepath)
+
             return redirect(
-                url_for('uploaded_file', filename=filename))
+                url_for('uploads.uploaded_file', filename=filename))
 
     return '''
     <!doctype html>
@@ -54,5 +55,4 @@ def upload_file():
 @bp.route('/<filename>')
 def uploaded_file(filename):
     return send_from_directory(
-        app.config['UPLOAD_FOLDER'],
-        filename)
+        current_app.config['UPLOAD_FOLDER'], filename)

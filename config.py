@@ -25,13 +25,12 @@ class Config:
     JWT_SECRET_KEY = environ.get('JWT_SECRET_KEY')
     JWT_ACCESS_TOKEN_EXPIRES = (60 * 60) * 3
 
-    # SCHEDULER
-    SCHEDULER_API_ENABLED = True
-    
-    # FILES
-    UPLOAD_FOLDER = '/sql/uploads'
-    ALLOWED_EXTENSIONS = {'pdf'}
+    # UPLOADS
+    #UPLOAD_FOLDER = '/api/uploads'    
+    UPLOAD_FOLDER = '/flask/api/uploads'    # docker
+    ALLOWED_EXTENSIONS = {'pdf',}
     #MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'
