@@ -269,3 +269,24 @@ def actualizarDespacho():
     sql += " WHERE id = " + str(id_despacho)
     db_connect(sql)
     return jsonify({'status': 200})
+
+
+@bp.route('/filtroUsuarios', methods=['POST'])
+def filtroUsuarios():
+
+    id_despacho = request.get_json()['id_despacho']    
+    where = "WHERE usuarios.id_despacho = "
+    where += str(id_despacho)
+    sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, "
+    sql += "usuarios.apellido_materno, "
+    sql += "usuarios.nombre, usuarios.email, usuarios.id_tipo_usuario, "
+    sql += "tipo_de_usuario.nombre as nombre_tipo_usuario, "
+    sql += "usuarios.id_despacho,"
+    sql += "despachos.nombre as nombre_despacho from usuarios "
+    sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho "
+    sql += " INNER JOIN tipo_de_usuario on "
+    sql += "tipo_de_usuario.id = usuarios.id_tipo_usuario "
+    sql += where
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    return jsonify(rv)
