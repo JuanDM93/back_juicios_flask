@@ -213,10 +213,12 @@ def validarSentenciasFederales(archivo):
 
 def statusJuiciosFederales(url):
     response = requests.get(url)
+    flag = 5    # intentos
     if response.status_code == 200:
         return response.content
-    if response.status_code == 500:
-        sleep(1)
+    if flag > 0:
+        sleep(flag)
+        flag -= 1
         return statusJuiciosFederales(url)
     return None
 

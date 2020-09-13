@@ -18,6 +18,7 @@ class Config:
     # MYSQL_HOST = 'localhost'   # Local
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'root'
+    # MYSQL_PASSWORD = environ.get('MYSQL_PASSWORD')
     MYSQL_DB = 'juicios'
     MYSQL_CURSORCLASS = 'DictCursor'
 
@@ -26,11 +27,9 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = (60 * 60) * 3
 
     # UPLOADS
-    #UPLOAD_FOLDER = '/api/uploads'    
-    UPLOAD_FOLDER = '/flask/api/uploads'    # docker
+    UPLOAD_FOLDER = path.abspath('./api/uploads')
     ALLOWED_EXTENSIONS = {'pdf',}
     #MAX_CONTENT_LENGTH = 16 * 1024 * 1024
-
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'
