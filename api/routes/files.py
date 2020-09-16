@@ -38,7 +38,7 @@ def upload_file():
     return 'File not allowed.'
 
 
-@bp.route('/file/<filename>', methods=['GET'])
+@bp.route('/<filename>', methods=['GET'])
 def uploaded_file(filename):
     return send_from_directory(
         current_app.config['UPLOAD_FOLDER'],
