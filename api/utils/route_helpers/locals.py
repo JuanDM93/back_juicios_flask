@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from api.utils.db import db_connect
+from api.utils.mail.service import sendMulti
 
 
 def eliminarCorreosAbogadosLocales(
@@ -122,7 +123,8 @@ def acuerdosHistoricos(id_juicio_local):
     yearsql = datetime.strftime(
         datetime.now() - timedelta(days=365), '%Y')
 
-    sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion"
+    sql = "SELECT acuerdos_locales.fecha, acuerdos_locales.descripcion,"
+    sql += " acuerdos_locales.pdf "
     sql += " FROM acuerdos_locales where acuerdos_locales.id_juicio_local = "
     sql += str(id_juicio_local) + " AND "
     sql += " acuerdos_locales.fecha BETWEEN '" + yearsql
@@ -187,27 +189,45 @@ def sqlenviarcorreo(data):
         data[0]["expediente"], data[0]["id_juzgado_local"])
 
 
+def acuerdosObjetosSql(email, fecha):
+    sql = "SELECT juicios_locales.numero_de_expediente, "
+    sql += "juzgados_locales.nombre as nombre_juzgado, "
+    sql += "acuerdos_locales.fecha, "
+    sql += "acuerdos_locales.descripcion "
+    sql += "FROM  usuarios  "
+    sql += "INNER JOIN abogados_responsables_juicios_locales ON abogados_responsables_juicios_locales.email = usuarios.email "
+    sql += "INNER JOIN juicios_locales ON juicios_locales.id = abogados_responsables_juicios_locales.id_juicio_local "
+    sql += "INNER JOIN juzgados_locales ON juzgados_locales.id = juicios_locales.id_juzgado_local "
+    sql += "INNER JOIN acuerdos_locales ON acuerdos_locales.id_juicio_local = juicios_locales.id "
+    sql += "WHERE usuarios.email = '" + str(email) + "'"
+    sql += "AND acuerdos_locales.fecha = '" + str(fecha) + "'"
+    sql += "GROUP BY acuerdos_locales.descripcion,acuerdos_locales.fecha  "
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+
+    for r in rv:
+        r["fecha"] = r["fecha"].strftime('%Y-%m-%d')
+    return rv
+
+
 def sqlenviarcorreoDiario():
+    # - timedelta(days=5)
+    dataMail = []
     fechasql = datetime.strftime(
         datetime.now(),
         '%Y-%m-%d'
     )
-    sql = "SELECT juicios_locales.numero_de_expediente as expediente, "
-    sql += "juzgados_locales.nombre as juzgado,"
-    sql += "juicios_locales.actor, juicios_locales.demandado, "
-    sql += "juicios_locales.id as id_juicio_local "
-    sql += "FROM acuerdos_locales INNER JOIN juicios_locales "
-    sql += "ON juicios_locales.id = acuerdos_locales.id_juicio_local "
-    sql += "INNER JOIN juzgados_locales "
-    sql += "ON juzgados_locales.id = juicios_locales.id_juzgado_local "
-    sql += "WHERE  acuerdos_locales.fecha = '" + fechasql + "'"
-
+    sql = "SELECT email as emails FROM usuarios "
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
     for r in rv:
-        r["emails"] = listaCorreosLigador(r["id_juicio_local"])
+        r["emails"] = [r["emails"]]
     for r in rv:
-        r["acuerdos"] = acuerdoslocalesdiarios(r["id_juicio_local"])
-    for dataMail in rv:
-        dataMail['tipo'] = 'u_j_l'
-        sendMulti(dataMail)
+        r["acuerdos"] = acuerdosObjetosSql(r["emails"][0], fechasql)
+    for data in rv:
+        if len(data["acuerdos"]) > 0:
+            dataMail.append(data)
+
+    for datal in dataMail:
+        datal['tipo'] = 'daily_j_l'
+        sendMulti(datal)

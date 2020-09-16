@@ -31,6 +31,44 @@ def ms_actualizacion_local(data):
     return sub, msg
 
 
+def daily_j_l(data):
+    sub = 'Actualización de Juicios Locales'
+    msg = '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
+    msg += '<tr><th style="background-color: #424242; color: white;">Fecha</th>'
+    msg += '<th style="background-color: #424242; color: white;">No de Expediente</th>'
+    msg += '<th style="background-color: #424242; color: white;">Juzgado</th>'
+    msg += '<th style="background-color: #424242; color: white;">Acuerdo</th></tr>'
+    for acuerd in data["acuerdos"]:
+        msg += "<tr>"
+        msg += f'<td>{acuerd["fecha"]}</td>'
+        msg += f'<td>{acuerd["numero_de_expediente"]}</td>'
+        msg += f'<td>{acuerd["nombre_juzgado"]}</td>'
+        msg += f'<td>{acuerd["descripcion"]}</td>'
+        msg += "</tr>"
+    return sub, msg
+
+
+def daily_j_f(data):
+    sub = 'Actualización de Juicios Federales'
+    msg = '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
+    msg += '<tr><th style="background-color: #424242; color: white;">Fecha de publicación</th>'
+    msg += '<th style="background-color: #424242; color: white;">No de Expediente</th>'
+    msg += '<th style="background-color: #424242; color: white;">Circuito</th>'
+    msg += '<th style="background-color: #424242; color: white;">Juzgado</th>'
+    msg += '<th style="background-color: #424242; color: white;">Tipo de Juicio</th>'
+    msg += '<th style="background-color: #424242; color: white;">Acuerdo</th></tr>'
+    for acuerd in data["acuerdos"]:
+        msg += "<tr>"
+        msg += f'<td>{acuerd["Fecha_de_publicacion"]}</td>'
+        msg += f'<td>{acuerd["n_exp"]}</td>'
+        msg += f'<td>{acuerd["NOM_LARGO"]} {acuerd["NOM_CIR"]}</td>'
+        msg += f'<td>{acuerd["nombre_juzgado"]}</td>'
+        msg += f'<td>{acuerd["nombre_tipo_juicio"]}</td>'
+        msg += f'<td>{acuerd["acuerdo"]}</td>'
+        msg += "</tr>"
+    return sub, msg
+
+
 def ms_delet_local(data):
     sub = f'Eliminación de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
     msg = f'<p><strong>Se elimino Juicio en {data["juzgado"]} con expediente {data["expediente"]}</strong></p>'
@@ -90,7 +128,7 @@ def ms_actualizar_fed(data):
     msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
     msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
     msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
-    
+
     """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>No de Acuerdo: </strong>{acuerd["No"]}</p>'

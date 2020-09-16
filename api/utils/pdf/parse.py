@@ -66,14 +66,16 @@ def is_parsed(f_name, data=None):
 
 
 def req_cdmx(fecha: str):
+    flag = 5    # intentos
     url = 'https://www.poderjudicialcdmx.gob.mx/'
     url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
     with requests.Session() as s:
         response = s.get(url)
         if response.status_code == 200:
             return response.content
-        if response.status_code == 500:
-            sleep(1)
+        if flag > 0:
+            sleep(flag)
+            flag -= 1
             return req_cdmx(fecha)
         return None
 

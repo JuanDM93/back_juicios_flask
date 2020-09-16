@@ -329,3 +329,16 @@ def juicios_fecha():
         r["emails"] = rh.correosLigadosJuiciosLocales(
             r["id_juicio_local"])
     return jsonify(rv)
+
+
+@bp.route('/actualizarPdfAcuerdos', methods=['POST'])
+def actualizarPdfAcuerdos():
+    id_juicio_local = request.get_json()['id_juicio_local']
+    pdf = request.get_json()['pdf']
+    fecha = request.get_json()['fecha']
+    sql = "UPDATE acuerdos_locales SET "
+    sql += "pdf = '" + str(pdf) + "' "
+    sql += " WHERE id_juicio_local = " + str(id_juicio_local)
+    sql += " AND fecha = '" + str(fecha) + "'"
+    db_connect(sql)
+    return jsonify({'status': 200})

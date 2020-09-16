@@ -3,7 +3,8 @@ from flask_apscheduler import APScheduler
 from api.utils.db import db_connect
 from api.utils.pdf.fetch import pdf_service
 from api.utils.route_helpers.locals import sqlenviarcorreoDiario
-from api.utils.route_helpers.federals import insertarAcuerdosDB
+from api.utils.route_helpers.federals import (
+    insertarAcuerdosDB, sqlEnviarCorreoFederal)
 
 
 scheduler = APScheduler()
@@ -15,17 +16,8 @@ def start_jobs(app):
 
 
 @scheduler.task(
-    'interval', id='tester',
-    seconds=30,
-    )
-def sched_tester():
-    with scheduler.app.app_context():
-        scheduler.app.logger.debug('Test job executed')
-
-
-@scheduler.task(
     'cron', id='daily_federal',
-    day_of_week='mon-fri', hour=7,  minute=1,
+    day_of_week='mon-fri', hour=11,  minute=15,
     )
 def daily_federal():
     # daily federal
@@ -34,15 +26,16 @@ def daily_federal():
         cur, __ = db_connect(sql)
         rv = cur.fetchall()
         for r in rv:
-            r['tipo'] = 'u_j_f'
+            r['tipo'] = 'daily_j_f'
         insertarAcuerdosDB(rv)
+        sqlEnviarCorreoFederal()
 
         scheduler.app.logger.debug('dailyFederal job')
 
 
 @scheduler.task(
     'cron', id='daily_local',
-    day_of_week='mon-fri', hour=7,  minute=1,
+    day_of_week='mon-fri', hour=7,  minute=50,
     )
 def daily_local():
     # daily_local
@@ -61,5 +54,4 @@ def daily_local():
         if rv is not None:
             pdf_service(rv)
             sqlenviarcorreoDiario()
-        
         scheduler.app.logger.debug('dailyLocal job')

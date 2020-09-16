@@ -1,8 +1,8 @@
 import os
 from flask import (
     Blueprint, current_app,
-    redirect, request,
-    url_for, send_from_directory)
+    request, send_from_directory,
+    jsonify)
 from werkzeug.utils import secure_filename
 
 # FILES
@@ -17,7 +17,7 @@ def allowed_file(filename):
         in current_app.config['ALLOWED_EXTENSIONS']
 
 
-@bp.route('/', methods=['POST'])
+@bp.route('/file', methods=['POST'])
 def upload_file():
     # check if the post request has the file part
     if 'file' not in request.files:
@@ -34,18 +34,11 @@ def upload_file():
         savepath = os.path.join(
             current_app.config['UPLOAD_FOLDER'], filename)
         pdf.save(savepath)
-        # DB call???(filename)
-        """
-        return redirect(
-            url_for(
-                'uploaded_file',
-                filename=filename))
-        """
-        return filename
+        return jsonify({'status': 200})
     return 'File not allowed.'
 
 
-@bp.route('/<filename>')
+@bp.route('/file/<filename>', methods=['GET'])
 def uploaded_file(filename):
     return send_from_directory(
         current_app.config['UPLOAD_FOLDER'],

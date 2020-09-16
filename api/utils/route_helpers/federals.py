@@ -3,6 +3,7 @@ import requests
 from time import sleep
 from api.utils.mail.service import sendMulti
 from api.utils.db import db_connect
+from datetime import datetime
 
 
 def registrarCorreosAbogadosFederales(
@@ -58,8 +59,6 @@ def get_acuerdos(data):
         response["acuerdos"] = []
         response["sentencias"] = []
         return response
-
-
     tabla = select.findAll('tr')
     titles = tabla[0].findAll('th')
 
@@ -114,7 +113,6 @@ def get_acuerdos(data):
         txtsintesis = txtsintesis.replace('\n', ' ')
         txtsintesis = txtsintesis.replace('   ', '')
         ac['acuerdo'] = txtsintesis
-        
     tabletacuerdos = soup.find(
             'table', {
                 'id': 'grvReporteSentencias',
@@ -123,7 +121,6 @@ def get_acuerdos(data):
         response["acuerdos"] = acuerdos
         response["sentencias"] = []
         return response
-    
     tablaproceso = tabletacuerdos.findAll('tr')
 
     titulosAcuerdos = [
@@ -132,7 +129,6 @@ def get_acuerdos(data):
         "tema",
         "archivo"
     ]
-    
     sentencias = []
     for a in tablaproceso[1:]:
         ac_data = a.findAll('td')
@@ -148,14 +144,12 @@ def get_acuerdos(data):
             else:
                 sentencia[titulosAcuerdos[v]] = ac_data[v].text
         sentencias.append(sentencia)
-    
     for ac in sentencias:
         ac['asunto'] = ac['asunto'].replace('\n', '')
         ac['fecha_ingreso'] = ac['fecha_ingreso'].replace('\n', '')
         ac['tema'] = ac['tema'].replace('\n', '')
         ac['tema'] = ac['tema'].replace('\n\n', '')
         ac['archivo'] = ac['archivo'][0].replace("'", '')
-  
     response["acuerdos"] = acuerdos
     response["sentencias"] = sentencias
     return response
@@ -212,15 +206,16 @@ def validarSentenciasFederales(archivo):
 
 
 def statusJuiciosFederales(url):
-    response = requests.get(url)
     flag = 5    # intentos
-    if response.status_code == 200:
-        return response.content
-    if flag > 0:
-        sleep(flag)
-        flag -= 1
-        return statusJuiciosFederales(url)
-    return None
+    with requests.Session() as s:
+        response = s.get(url)
+        if response.status_code == 200:
+            return response.content
+        if flag > 0:
+            sleep(flag)
+            flag -= 1
+            return statusJuiciosFederales(url)
+        return None
 
 
 def informacionJuicioAcuerdo(data):
@@ -276,6 +271,7 @@ def informacionAcuerdosFederales(id_juicio_federal):
         r["Fecha_del_Auto"] = r["Fecha_del_Auto"].strftime('%Y-%m-%d')
     return rv
 
+
 def informacionSentenciasFederales(id_juicio_federal):
     sql = "SELECT * "
     sql += "FROM sentencias_federales "
@@ -291,16 +287,12 @@ def informacionSentenciasFederales(id_juicio_federal):
 def insertarAcuerdosDB(dataExp):
     for data in dataExp:
         scrapper = get_acuerdos(data)
- 
         dataInsert = scrapper["acuerdos"]
         dataSentencias = scrapper["sentencias"]
-        
         rv = informacionJuicioAcuerdo(data)
-        
         id_juicio_federal = rv["id_juicio_federal"]
         values = ""
         valuesSentencias = ""
-        
         acuerdos = []
         sentencias = []
 
@@ -326,8 +318,11 @@ def insertarAcuerdosDB(dataExp):
             rv["acuerdos"] = acuerdos
             rv["tipo"] = data['tipo']
             rv["emails"] = listaCorreosLigador(id_juicio_federal)
-            
-            if rv['tipo'] == 'a_j_f' or  rv['tipo'] == 'd_j_f' or rv['tipo'] == 'u_j_f':
+            if any([
+                rv['tipo'] == 'a_j_f',
+                rv['tipo'] == 'd_j_f',
+                rv['tipo'] == 'u_j_f']
+                    ):
                 sendMulti(rv)
 
         for datain in dataSentencias:
@@ -338,7 +333,6 @@ def insertarAcuerdosDB(dataExp):
                 valuesSentencias += " '" + str(datain["fecha_ingreso"]) + "','" + str(datain["tema"]) + "',"
                 valuesSentencias += " '" + str(datain["archivo"]) + "'),"
                 sentencias.append(datain)
-                
         if len(valuesSentencias) > 0:
             valuesSentencias = valuesSentencias[:-1]
             sql = "INSERT INTO "
@@ -387,3 +381,50 @@ def urlFederales(data):
     form += f'&organismo={id_org}'
     form += f'&expediente={n_exp}'
     return b_url + form
+
+
+def sqlEnviarCorreoFederal():
+    dataMail = []
+    fechasql = datetime.strftime(
+        datetime.now(),
+        '%Y-%m-%d'
+    )
+    # fechasql = "2020-02-25"
+    sql = "SELECT email as emails FROM usuarios "
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["emails"] = [r["emails"]]
+    for r in rv:
+        r["acuerdos"] = acuerdosObjetosSqlFederales(r["emails"][0], fechasql)
+    for data in rv:
+        if len(data["acuerdos"]) > 0:
+            dataMail.append(data)
+    for datal in dataMail:
+        datal['tipo'] = 'daily_j_f'
+        sendMulti(datal)
+
+
+def acuerdosObjetosSqlFederales(email, fecha):
+    sql = "SELECT juicios_federales.n_exp, "
+    sql += "circuitos_federales.NOM_CIR, "
+    sql += "circuitos_federales.NOM_LARGO, "
+    sql += "juzgados_federales.nombre_juzgado, "
+    sql += "tipo_de_juicios_federales.nombre_tipo_juicio, "
+    sql += "acuerdos_juicios_federales.Fecha_de_publicacion, "
+    sql += "acuerdos_juicios_federales.acuerdo "
+    sql += "FROM  usuarios  "
+    sql += "INNER JOIN abogados_responsables_juicios_federales ON abogados_responsables_juicios_federales.email = usuarios.email "
+    sql += "INNER JOIN juicios_federales ON juicios_federales.id = abogados_responsables_juicios_federales.id_juicio_federal "
+    sql += "INNER JOIN circuitos_federales ON circuitos_federales.c_id = juicios_federales.cir_id "
+    sql += "INNER JOIN juzgados_federales ON juzgados_federales.org_id = juicios_federales.id_org "
+    sql += "INNER JOIN tipo_de_juicios_federales ON tipo_de_juicios_federales.t_ast = juicios_federales.t_ast "
+    sql += "INNER JOIN acuerdos_juicios_federales ON acuerdos_juicios_federales.id_juicio_federal = juicios_federales.id "
+    sql += "WHERE usuarios.email = '" + str(email) + "'"
+    sql += "AND acuerdos_juicios_federales.Fecha_de_publicacion = '" + str(fecha) + "'"
+    sql += "GROUP BY acuerdos_juicios_federales.acuerdo, acuerdos_juicios_federales.Fecha_de_publicacion  "
+    cur, response = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["Fecha_de_publicacion"] = r["Fecha_de_publicacion"].strftime('%Y-%m-%d')
+    return rv

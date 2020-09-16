@@ -19,6 +19,12 @@ def search_msg(data):
     if data['tipo'] == 'a_j_f':
         return m_help.ms_actual_fed(data)
 
+    if data['tipo'] == 'daily_j_l':
+        return m_help.daily_j_l(data)
+
+    if data['tipo'] == 'daily_j_f':
+        return m_help.daily_j_f(data)
+
     if data['tipo'] == 'd_j_f':
         return m_help.ms_delet_Federal(data)
 
@@ -35,21 +41,18 @@ def search_msg(data):
         return m_help.ms_eliminar_usuario(data)
 
 
-
 def emailsValidos(emailsValidar):
-      emailsCorrectos = []
-      
-      for email in emailsValidar:
-            sql = "SELECT despachos.status,usuarios.email  FROM usuarios "
-            sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho " 
-            sql += "WHERE usuarios.email = '" + str(email)
-            sql += "'"
-            cur, __ = db_connect(sql)
-            rv = cur.fetchone()
-            if rv["status"] == 1:
-                  emailsCorrectos.append(rv["email"])
-                  
-      return emailsCorrectos
+    emailsCorrectos = []
+    for email in emailsValidar:
+        sql = "SELECT despachos.status,usuarios.email  FROM usuarios "
+        sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho "
+        sql += "WHERE usuarios.email = '" + str(email)
+        sql += "'"
+        cur, __ = db_connect(sql)
+        rv = cur.fetchone()
+        if rv["status"] == 1:
+            emailsCorrectos.append(rv["email"])
+    return emailsCorrectos
 
 
 def sendMulti(data):
