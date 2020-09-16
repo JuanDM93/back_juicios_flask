@@ -17,7 +17,7 @@ def allowed_file(filename):
         in current_app.config['ALLOWED_EXTENSIONS']
 
 
-@bp.route('/file', methods=['POST'])
+@bp.route('/', methods=['POST'])
 def upload_file():
     # check if the post request has the file part
     if 'file' not in request.files:
