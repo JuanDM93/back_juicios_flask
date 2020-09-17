@@ -267,8 +267,10 @@ def actulizar_juicio_federal():
             db_connect(sql)
             rh.eliminarAcuerdosFederales(id_juicio_federal)
             rh.eliminarSentenciasFederales(id_juicio_federal)
-            rh.eliminarCorreosAbogadosFederales(id_juicio_federal, listaCorreoAbogadosFederales)
-            rh.registrarCorreosAbogadosFederales(data, listaCorreoAbogadosFederales)
+            rh.eliminarCorreosAbogadosFederales(
+                id_juicio_federal, listaCorreoAbogadosFederales)
+            rh.registrarCorreosAbogadosFederales(
+                data, listaCorreoAbogadosFederales)
             rh.insertarAcuerdosDB([data])
             return jsonify({'status': 200})
     else:
@@ -283,8 +285,10 @@ def actulizar_juicio_federal():
         sql += "url = '" + str(rh.urlFederales(data)) + "' "
         sql += " WHERE id = " + str(id_juicio_federal)
         db_connect(sql)
-        rh.eliminarCorreosAbogadosFederales(id_juicio_federal, listaCorreoAbogadosFederales)
-        rh.registrarCorreosAbogadosFederales(data, listaCorreoAbogadosFederales)
+        rh.eliminarCorreosAbogadosFederales(
+            id_juicio_federal, listaCorreoAbogadosFederales)
+        rh.registrarCorreosAbogadosFederales(
+            data, listaCorreoAbogadosFederales)
         rv = rh.informacionJuicioAcuerdo(data)
         rv["acuerdos"] = []
         rv["tipo"] = data['tipo']
