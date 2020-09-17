@@ -1,7 +1,7 @@
 from time import sleep
 
 
-def get_response(session, url, flag=5):
+def get_response(session, url, flag=10):
     response = session.get(url)
     if response.status_code == 200:
         return response.content

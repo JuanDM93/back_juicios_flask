@@ -28,8 +28,8 @@ class Config:
 
     # UPLOADS
     UPLOAD_FOLDER = path.abspath('./api/uploads')
-    ALLOWED_EXTENSIONS = {'pdf',}
-    #MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+    ALLOWED_EXTENSIONS = {'pdf'}
+    # MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
     # Mail
     MAIL_SERVER = 'smtp.gmail.com'
