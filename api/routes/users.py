@@ -18,7 +18,7 @@ def login():
     password = request.get_json()['password']
 
     sql = "SELECT despachos.status FROM usuarios "
-    sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho " 
+    sql += "INNER JOIN despachos on despachos.id = usuarios.id_despacho "
     sql += "WHERE usuarios.email = '" + str(email)
     sql += "'"
     cur, __ = db_connect(sql)

@@ -1,6 +1,6 @@
 ### macOS ###
 .DS_Store
-*.ipynb
+*.ipynb*
 *.pdf
 
 # Code #

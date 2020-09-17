@@ -274,7 +274,7 @@ def actualizarDespacho():
 @bp.route('/filtroUsuarios', methods=['POST'])
 def filtroUsuarios():
 
-    id_despacho = request.get_json()['id_despacho']    
+    id_despacho = request.get_json()['id_despacho']
     where = "WHERE usuarios.id_despacho = "
     where += str(id_despacho)
     sql = "SELECT  usuarios.id as id_usuario, usuarios.apellido_paterno, "
