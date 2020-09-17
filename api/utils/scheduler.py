@@ -17,7 +17,7 @@ def start_jobs(app):
 
 @scheduler.task(
     'cron', id='daily_federal',
-    day_of_week='mon-fri', hour=11,  minute=15,
+    day_of_week='mon-fri', hour=21,  minute=39,
     )
 def daily_federal():
     # daily federal
@@ -35,7 +35,7 @@ def daily_federal():
 
 @scheduler.task(
     'cron', id='daily_local',
-    day_of_week='mon-fri', hour=7,  minute=50,
+    day_of_week='mon-fri', hour=00,  minute=31,
     )
 def daily_local():
     # daily_local
@@ -46,7 +46,6 @@ def daily_local():
     sql += "FROM juicios_locales "
     sql += "INNER JOIN juzgados_locales on "
     sql += "juzgados_locales.id = juicios_locales.id_juzgado_local"
-
     with scheduler.app.app_context():
         cur, __ = db_connect(sql)
         rv = cur.fetchall()

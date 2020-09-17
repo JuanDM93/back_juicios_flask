@@ -249,6 +249,7 @@ def scrapper_locals():
     # --- get nombres
     url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
     with requests.Session() as s:
+        sleep(2)
         response = s.get(url)
 
         soup = bs4.BeautifulSoup(response.text)
