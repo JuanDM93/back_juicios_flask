@@ -59,6 +59,7 @@ def is_parsed(f_name, data=None):
         except Exception:
             current_app.logger.warn('TIKA: No local jar found')
     finally:
+        print(pdf)
         pdf = pdf['content']
         if len(pdf) > 1:
             return extract_multi(pdf, data)
@@ -66,13 +67,17 @@ def is_parsed(f_name, data=None):
 
 
 def req_cdmx(fecha: str):
+    
     flag = 5    # intentos
     url = 'https://www.poderjudicialcdmx.gob.mx/'
     url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
     with requests.Session() as s:
+        sleep(2)
         response = s.get(url)
         if response.status_code == 200:
             return response.content
+        if response.status_code == 500:
+            sleep(1)
         if flag > 0:
             sleep(flag)
             flag -= 1

@@ -4,12 +4,12 @@
 
 def ms_actual_local(data):
 
-    sub = f'Alta de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
-    msg = f'<p><strong>{data["juzgado"]}</strong></p>'
-    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}</p>'
-    msg += f'<p><strong>Actor:  </strong>{data["actor"]}</p>'
-    msg += f'<p><strong>Demandado: </strong>{data["demandado"]}</p>'
-    msg += '<p><strong>Acuerdos</strong></p>'
+    sub = f'Alta de Juicio Local en {data["juzgado"]} con expediente {data["expediente"]}'
+    msg = f'<p>Se acaba de agregar el siguiente asunto a tus juicios asignados:</p>'
+    msg += f'<strong>{data["juzgado"]}</strong><br>'
+    msg += f'<strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}<br>'
+    msg += f'<strong>Actor:  </strong>{data["actor"]}<br>'
+    msg += f'<strong>Demandado: </strong>{data["demandado"]}<br>'
     """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
@@ -18,12 +18,12 @@ def ms_actual_local(data):
 
 
 def ms_actualizacion_local(data):
-    sub = f'Actualización de Juicio en {data["juzgado"]} con expediente {data["expediente"]}'
-    msg = f'<p><strong>{data["juzgado"]}</strong></p>'
-    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}</p>'
-    msg += f'<p><strong>Actor:  </strong>{data["actor"]}</p>'
-    msg += f'<p><strong>Demandado: </strong>{data["demandado"]}</p>'
-    msg += '<p><strong>Acuerdos</strong></p>'
+    sub = f'Actualización de Juicio Local en {data["juzgado"]} con expediente {data["expediente"]}'
+    msg = f'<p>Se acaba de modificar el siguiente asunto:</p>'
+    msg += f'<strong>{data["juzgado"]}</strong><br>'
+    msg += f'<strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["expediente"]}<br>'
+    msg += f'<strong>Actor:  </strong>{data["actor"]}<br>'
+    msg += f'<strong>Demandado: </strong>{data["demandado"]}<br>'
     """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>{acuerd["fecha"]}: </strong>{acuerd["descripcion"]}</p>'
@@ -33,16 +33,17 @@ def ms_actualizacion_local(data):
 
 def daily_j_l(data):
     sub = 'Actualización de Juicios Locales'
-    msg = '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
-    msg += '<tr><th style="background-color: #424242; color: white;">Fecha</th>'
+    msg = f'<p>Acuerdo(s) publicado(s) el día de hoy:</p>'
+    msg += '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
+    msg += '<tr><th style="background-color: #424242; color: white;">Juzgado</th>'
+    msg += '<th style="background-color: #424242; color: white;">Fecha</th>'
     msg += '<th style="background-color: #424242; color: white;">No de Expediente</th>'
-    msg += '<th style="background-color: #424242; color: white;">Juzgado</th>'
     msg += '<th style="background-color: #424242; color: white;">Acuerdo</th></tr>'
     for acuerd in data["acuerdos"]:
         msg += "<tr>"
+        msg += f'<td>{acuerd["nombre_juzgado"]}</td>'
         msg += f'<td>{acuerd["fecha"]}</td>'
         msg += f'<td>{acuerd["numero_de_expediente"]}</td>'
-        msg += f'<td>{acuerd["nombre_juzgado"]}</td>'
         msg += f'<td>{acuerd["descripcion"]}</td>'
         msg += "</tr>"
     return sub, msg
@@ -50,20 +51,27 @@ def daily_j_l(data):
 
 def daily_j_f(data):
     sub = 'Actualización de Juicios Federales'
-    msg = '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
-    msg += '<tr><th style="background-color: #424242; color: white;">Fecha de publicación</th>'
-    msg += '<th style="background-color: #424242; color: white;">No de Expediente</th>'
-    msg += '<th style="background-color: #424242; color: white;">Circuito</th>'
+    msg = f'<p>Acuerdo(s) publicado(s) el día de hoy:</p>'
+    msg += '<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000">'
+    msg += '<tr>'
+    
+    
+    msg += '<th style="background-color: #424242; color: white;">Quejoso/Actor/Recurrente/Concursada</th>'
+    msg += '<th style="background-color: #424242; color: white;">Tercero Interesado/Demandado/Acreedor</th>'
     msg += '<th style="background-color: #424242; color: white;">Juzgado</th>'
+    msg += '<th style="background-color: #424242; color: white;">No de Expediente</th>'
     msg += '<th style="background-color: #424242; color: white;">Tipo de Juicio</th>'
+    msg += '<th style="background-color: #424242; color: white;">Fecha de publicación</th>'
     msg += '<th style="background-color: #424242; color: white;">Acuerdo</th></tr>'
     for acuerd in data["acuerdos"]:
         msg += "<tr>"
-        msg += f'<td>{acuerd["Fecha_de_publicacion"]}</td>'
-        msg += f'<td>{acuerd["n_exp"]}</td>'
-        msg += f'<td>{acuerd["NOM_LARGO"]} {acuerd["NOM_CIR"]}</td>'
+        
+        msg += f'<td>{acuerd["Quejoso_Actor_Recurrente_Concursada"]}</td>'
+        msg += f'<td>{acuerd["Tercero_Interesado_Demandado_Acreedor"]}</td>'
         msg += f'<td>{acuerd["nombre_juzgado"]}</td>'
+        msg += f'<td>{acuerd["n_exp"]}</td>'
         msg += f'<td>{acuerd["nombre_tipo_juicio"]}</td>'
+        msg += f'<td>{acuerd["Fecha_de_publicacion"]}</td>'        
         msg += f'<td>{acuerd["acuerdo"]}</td>'
         msg += "</tr>"
     return sub, msg
@@ -97,13 +105,13 @@ def ms_actual_fed(data):
     sub += f'{data["nombre_juzgado"]} '
     sub += f'{data["nombre_tipo_juicio"]} '
     sub += f'con expediente {data["n_exp"]} '
-    msg = f'<p><strong>{data["circuitos_NOM_LARGO"]} {data["circuitos_NOM_CIR"]}</strong></p>'
-    msg += f'<p><strong>{data["nombre_juzgado"]}</strong></p>'
-    msg += f'<p><strong>{data["nombre_tipo_juicio"]}</strong></p>'
-    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["n_exp"]}</p>'
-    msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
-    msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
-    msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
+    msg = f'<p>Se acaba de agregar el siguiente asunto a tus juicios asignados:<br>'
+    msg += f'<strong>{data["circuitos_NOM_LARGO"]} {data["circuitos_NOM_CIR"]}</strong><br>'
+    msg += f'<strong>{data["nombre_juzgado"]}</strong><br>'
+    msg += f'<strong>{data["nombre_tipo_juicio"]}</strong><br>'
+    msg += f'<strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["n_exp"]}<br>'
+    msg += f'<strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}<br>'
+    msg += f'<strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}<br>'
     """
     for acuerd in data["acuerdos"]:
         msg += f'<p><strong>No de Acuerdo: </strong>{acuerd["No"]}</p>'
@@ -121,13 +129,14 @@ def ms_actualizar_fed(data):
     sub += f'{data["nombre_juzgado"]} '
     sub += f'{data["nombre_tipo_juicio"]} '
     sub += f'con expediente {data["n_exp"]} '
-    msg = f'<p><strong>{data["circuitos_NOM_LARGO"]} {data["circuitos_NOM_CIR"]}</strong></p>'
-    msg += f'<p><strong>{data["nombre_juzgado"]}</strong></p>'
-    msg += f'<p><strong>{data["nombre_tipo_juicio"]}</strong></p>'
-    msg += f'<p><strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["n_exp"]}</p>'
-    msg += f'<p><strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}</p>'
-    msg += f'<p><strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}</p>'
-    msg += f'<p><strong>Autoridades: </strong>{data["Autoridades"]}</p>'
+    msg = f'Se acaba de modificar el siguiente asunto:<br>'
+    msg += f'<strong>{data["circuitos_NOM_LARGO"]} {data["circuitos_NOM_CIR"]}</strong><br>'
+    msg += f'<strong>{data["nombre_juzgado"]}</strong><br>'
+    msg += f'<strong>{data["nombre_tipo_juicio"]}</strong><br>'
+    msg += f'<strong>N<b>&uacute;mero</b><span>&nbsp;de&nbsp;</span><b>expediente: </b></strong>{data["n_exp"]}<br>'
+    msg += f'<strong>Quejoso/Actor/Recurrente/Concursada: </strong>{data["Quejoso_Actor_Recurrente_Concursada"]}<br>'
+    msg += f'<strong>Tercero Interesado/Demandado/Acreedor: </strong>{data["Tercero_Interesado_Demandado_Acreedor"]}<br>'
+    msg += f'<strong>Autoridades: </strong>{data["Autoridades"]}<br>'
 
     """
     for acuerd in data["acuerdos"]:

@@ -208,9 +208,12 @@ def validarSentenciasFederales(archivo):
 def statusJuiciosFederales(url):
     flag = 5    # intentos
     with requests.Session() as s:
+        sleep(2)
         response = s.get(url)
         if response.status_code == 200:
             return response.content
+        if response.status_code == 500:
+            sleep(1)
         if flag > 0:
             sleep(flag)
             flag -= 1
@@ -389,7 +392,7 @@ def sqlEnviarCorreoFederal():
         datetime.now(),
         '%Y-%m-%d'
     )
-    # fechasql = "2020-02-25"
+    fechasql = "2020-02-25"
     sql = "SELECT email as emails FROM usuarios "
     cur, __ = db_connect(sql)
     rv = cur.fetchall()
@@ -407,6 +410,8 @@ def sqlEnviarCorreoFederal():
 
 def acuerdosObjetosSqlFederales(email, fecha):
     sql = "SELECT juicios_federales.n_exp, "
+    sql += "juicios_federales.Quejoso_Actor_Recurrente_Concursada, "
+    sql += "juicios_federales.Tercero_Interesado_Demandado_Acreedor, "
     sql += "circuitos_federales.NOM_CIR, "
     sql += "circuitos_federales.NOM_LARGO, "
     sql += "juzgados_federales.nombre_juzgado, "
