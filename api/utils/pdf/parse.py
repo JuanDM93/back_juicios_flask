@@ -1,8 +1,8 @@
 import requests
-from time import sleep
 from datetime import datetime
 
 from api.utils.db import db_connect
+from api.utils.pdf.fetch import get_response
 from api.utils.route_helpers.locals import validarExpedienteLocal
 
 
@@ -49,40 +49,27 @@ def is_parsed(f_name, data=None):
             f_name,
             'http://tika:9998/tika',
             requestOptions={
-                'timeout': 3600,
+                'timeout': 60,
             }
         )
     except Exception:
         current_app.logger.warn('TIKA: No response from server')
-        try:
-            pdf = parser.from_buffer(f_name)
-        except Exception:
-            current_app.logger.warn('TIKA: No local jar found')
+    try:
+        pdf = parser.from_buffer(f_name)
+    except Exception:
+        current_app.logger.warn('TIKA: No local jar found')
     finally:
-        print(pdf)
-        pdf = pdf['content']
-        if len(pdf) > 1:
-            return extract_multi(pdf, data)
+        if pdf:
+            if pdf['content']:
+                return extract_multi(pdf['content'], data)
         return []
 
 
 def req_cdmx(fecha: str):
-    
-    flag = 5    # intentos
     url = 'https://www.poderjudicialcdmx.gob.mx/'
     url += f'wp-content/PHPs/boletin/boletin_repositorio/{fecha}1.pdf'
-    with requests.Session() as s:
-        sleep(2)
-        response = s.get(url)
-        if response.status_code == 200:
-            return response.content
-        if response.status_code == 500:
-            sleep(1)
-        if flag > 0:
-            sleep(flag)
-            flag -= 1
-            return req_cdmx(fecha)
-        return None
+    with requests.sessions.Session() as s:
+        return get_response(s, url)
 
 
 def fetch_pdf(fecha, data: []):

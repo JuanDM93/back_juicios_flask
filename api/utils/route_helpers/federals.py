@@ -1,6 +1,6 @@
 import bs4
 import requests
-from time import sleep
+from api.utils.pdf.fetch import get_response
 from api.utils.mail.service import sendMulti
 from api.utils.db import db_connect
 from datetime import datetime
@@ -206,19 +206,8 @@ def validarSentenciasFederales(archivo):
 
 
 def statusJuiciosFederales(url):
-    flag = 5    # intentos
-    with requests.Session() as s:
-        sleep(2)
-        response = s.get(url)
-        if response.status_code == 200:
-            return response.content
-        if response.status_code == 500:
-            sleep(1)
-        if flag > 0:
-            sleep(flag)
-            flag -= 1
-            return statusJuiciosFederales(url)
-        return None
+    with requests.sessions.Session() as s:
+        return get_response(s, url)
 
 
 def informacionJuicioAcuerdo(data):
@@ -392,7 +381,7 @@ def sqlEnviarCorreoFederal():
         datetime.now(),
         '%Y-%m-%d'
     )
-    #fechasql = "2020-02-25"
+    # fechasql = "2020-02-25"
     sql = "SELECT email as emails FROM usuarios "
     cur, __ = db_connect(sql)
     rv = cur.fetchall()

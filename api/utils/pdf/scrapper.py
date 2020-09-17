@@ -1,8 +1,9 @@
 import bs4
 import requests
+from api.utils.pdf.fetch import get_response
 
 
-def scrap_tipo(data):
+def scrap_tipo(s, data):
     # Scrap Tipos
     b_url = 'https://www.dgepj.cjf.gob.mx/'
     b_url += 'internet/expedientes/ExpedienteyTipo.asp'
@@ -11,7 +12,7 @@ def scrap_tipo(data):
         'Buscar': 'Buscar',
         'Circuito': data['cir_id'],
     }
-    html = requests.post(b_url, body)
+    html = s.post(b_url, body)
     soup = bs4.BeautifulSoup(html.text)
     # Tipos
     select = soup.find(
@@ -28,11 +29,10 @@ def scrap_tipo(data):
         return results
 
 
-def scrap_circuitos(url, circuito):
+def scrap_circuitos(s, url, circuito):
     # Scrap Circuitos
-    html = requests.get(url)
+    html = get_response(s, url)
     soup = bs4.BeautifulSoup(html.text)
-
     # Circuito
     c_name = soup.find(
         'input', {
@@ -45,14 +45,12 @@ def scrap_circuitos(url, circuito):
             'name': 'Circuito',
         })
     c_id = c_id['value']
-
     # Organismos
     select = soup.find(
         'select', {
             'name': 'Organismo',
         })
     options = select.findAll('option')
-
     # Object
     results = {
         'c_name': c_name,
@@ -69,9 +67,8 @@ def scrap_circuitos(url, circuito):
                 'cir_id': c_id,
             }
             results['organismos'][o_id] = {
-                o_txt: scrap_tipo(data),
+                o_txt: scrap_tipo(s, data),
             }
-
         return True, results
     return False, results
 
@@ -85,14 +82,15 @@ def get_circuitos():
         52, 53, 54, 55, 56, 109
     ]
     circuitos = {}
-    # for i in range(1, 1000):
-    for i in cirs_ids:
-        b_url = 'https://www.dgepj.cjf.gob.mx/'
-        b_url += f'internet/expedientes/circuitos.asp?Cir={i}'
-        flag, result = scrap_circuitos(b_url, i)
-        if flag:
-            circuitos[i] = result
-    return circuitos
+    with requests.sessions.Session() as s:
+        # for i in range(1, 1000):
+        for i in cirs_ids:
+            b_url = 'https://www.dgepj.cjf.gob.mx/'
+            b_url += f'internet/expedientes/circuitos.asp?Cir={i}'
+            flag, result = scrap_circuitos(s, b_url, i)
+            if flag:
+                circuitos[i] = result
+        return circuitos
 
 
 def get_acuerdos(data):
@@ -107,7 +105,8 @@ def get_acuerdos(data):
     form += f'&organismo={id_org}'
     form += f'&expediente={n_exp}'
 
-    html = requests.get(b_url + form)
+    with requests.sessions.Session() as s:
+        html = get_response(s, b_url + form)
     soup = bs4.BeautifulSoup(html.text)
 
     select = soup.find(
@@ -248,12 +247,10 @@ def build_json_juz(j_locals):
 def scrapper_locals():
     # --- get nombres
     url = 'http://boletinpj.poderjudicialcdmx.gob.mx:816/v2/'
-    with requests.Session() as s:
-        sleep(2)
-        response = s.get(url)
+    with requests.sessions.Session() as s:
+        response = get_response(s, url)
 
         soup = bs4.BeautifulSoup(response.text)
-
         select = soup.find(
             'select', {
                 'name': 'slcautoridad',
