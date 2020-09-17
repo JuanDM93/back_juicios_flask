@@ -1,6 +1,6 @@
 import bs4
 import requests
-from api.utils.pdf.fetch import get_response
+from api.utils.session import get_response
 
 
 def scrap_tipo(s, data):

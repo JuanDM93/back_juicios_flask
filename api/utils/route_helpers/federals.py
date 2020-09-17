@@ -1,7 +1,7 @@
 import bs4
 import requests
-from api.utils.pdf.fetch import get_response
 from api.utils.mail.service import sendMulti
+from api.utils.session import get_response
 from api.utils.db import db_connect
 from datetime import datetime
 

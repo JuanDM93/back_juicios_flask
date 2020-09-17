@@ -2,8 +2,8 @@ import requests
 from datetime import datetime
 
 from api.utils.db import db_connect
-from api.utils.pdf.fetch import get_response
 from api.utils.route_helpers.locals import validarExpedienteLocal
+from api.utils.session import get_response
 
 
 def extract_acuerdo(pdf, data):
