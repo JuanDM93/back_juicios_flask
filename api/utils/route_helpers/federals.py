@@ -392,7 +392,7 @@ def sqlEnviarCorreoFederal():
         datetime.now(),
         '%Y-%m-%d'
     )
-    fechasql = "2020-02-25"
+    #fechasql = "2020-02-25"
     sql = "SELECT email as emails FROM usuarios "
     cur, __ = db_connect(sql)
     rv = cur.fetchall()

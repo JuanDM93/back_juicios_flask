@@ -96,11 +96,13 @@ def fetch_pdf(fecha, data: []):
                 f_str = fecha
                 fecha_sql = datetime.strftime(f_str, '%Y-%m-%d')
                 if validarExpedienteLocal(r["acuerdo"]) is False:
+                    url = 'https://www.poderjudicialcdmx.gob.mx/'
+                    url += f'wp-content/PHPs/boletin/boletin_repositorio/{fechaurl}1.pdf'
                     values += "( '" + fecha_sql + "','" + str(r["acuerdo"]) + "',"
-                    values += str(r["id_juicio_local"]) + "),"
+                    values += str(r["id_juicio_local"])+",'" + url +"'),"
             if len(values) > 0:
                 values = values[:-1]
                 sql = "INSERT INTO "
-                sql += "acuerdos_locales (fecha,descripcion,id_juicio_local) "
+                sql += "acuerdos_locales (fecha,descripcion,id_juicio_local, pdfboletin) "
                 sql += "VALUES " + values
                 db_connect(sql)
