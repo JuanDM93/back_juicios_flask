@@ -237,6 +237,63 @@ def juicios_asignados():
     return jsonify(rv)
 
 
+@bp.route('/filtro_juicios_acuerdos', methods=['POST'])
+def filtro_juicios_acuerdos():
+    numero_de_expediente = request.get_json()['numero_de_expediente']
+    actor = request.get_json()['actor']
+    demandado = request.get_json()['demandado']
+    
+    ValuesWhere = []
+    Where = ""
+    if (
+        len(numero_de_expediente) > 0 and
+        str(numero_de_expediente).isspace() is False
+            ):
+        ValuesWhere.append(" juicios_locales.numero_de_expediente like '%" + str(numero_de_expediente) + "%' ")
+        
+    if (
+        len(actor) > 0 and
+        str(actor).isspace() is False
+            ):
+        ValuesWhere.append(" juicios_locales.actor like '%" + str(actor) + "%' ")
+        
+    if (
+        len(demandado) > 0 and
+        str(demandado).isspace() is False
+            ):
+        ValuesWhere.append(" juicios_locales.demandado like '%" + str(demandado) + "%' ")
+    
+    for data in ValuesWhere:
+        Where += data + "AND"
+    
+    if(len(ValuesWhere)<1):
+        return jsonify([])
+    
+    Where = Where[:-3]
+    sql = "SELECT "
+    sql += "juzgados_locales.nombre as nombre_juzgado_local, "
+    sql += "juicios_locales.actor, "
+    sql += "juicios_locales.demandado, "
+    sql += "juicios_locales.numero_de_expediente, "
+    sql += "acuerdos_locales.fecha, "
+    sql += "acuerdos_locales.descripcion, "
+    sql += "acuerdos_locales.pdfboletin "
+    sql += "from " 
+    sql += "juicios_locales "
+    sql += "INNER JOIN acuerdos_locales on acuerdos_locales.id_juicio_local = juicios_locales.id "
+    sql += "INNER JOIN juzgados_locales on juzgados_locales.id "
+    sql += "WHERE " + Where
+    sql += "GROUP BY acuerdos_locales.descripcion "
+    sql += "ORDER BY acuerdos_locales.fecha  DESC;"
+    cur, __ = db_connect(sql)
+    rv = cur.fetchall()
+    for r in rv:
+        r["fecha"] = r["fecha"].strftime('%Y-%m-%d')
+    return jsonify(rv)
+
+    
+    
+
 @bp.route('/filtro_juicios', methods=['POST'])
 def filtro_juicios():
     # Filtros Juicios locales
