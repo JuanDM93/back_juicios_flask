@@ -55,7 +55,7 @@ services:
     command: ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
     
     command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    restart: on-failure
     
     volumes:
       - ./sql:/docker-entrypoint-initdb.d/
