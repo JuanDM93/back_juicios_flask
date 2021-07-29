@@ -9,7 +9,7 @@ class Config:
     """Set Flask configuration from .env file."""
 
     # General Config
-    # SECRET_KEY = environ.get('SECRET_KEY')
+    SECRET_KEY = environ.get('SECRET_KEY')
     FLASK_APP = environ.get('FLASK_APP')
     FLASK_ENV = environ.get('FLASK_ENV')
 
@@ -38,4 +38,4 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = environ.get('MAIL_PASSWORD')
-    MAIL_DEFAULT_SENDER = environ.get('MAIL_USERNAME')
+    MAIL_DEFAULT_SENDER = MAIL_USERNAME
